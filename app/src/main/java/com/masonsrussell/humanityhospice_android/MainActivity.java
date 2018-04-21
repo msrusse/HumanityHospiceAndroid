@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity
 {
+	private FirebaseAuth mAuth;
 	Button signInButton;
 	TextView createAccountView;
 
@@ -17,7 +21,29 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mAuth = FirebaseAuth.getInstance();
 
+
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		// Check if user is signed in (non-null) and update UI accordingly.
+		FirebaseUser currentUser = mAuth.getCurrentUser();
+		if (currentUser != null)
+		{
+			//Intent intent = new Intent(this, HomePageActivity.class);
+			//startActivity(intent);
+		}
+		else
+		{
+			onLoad();
+		}
+	}
+
+	private void onLoad()
+	{
 		signInButton = findViewById(R.id.signInButton);
 		createAccountView = findViewById(R.id.createAccountView);
 
@@ -25,7 +51,7 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				//Intent intent = new Intent(this, LoginActivity.class);
+				//Intent intent = new Intent(this, .class);
 				//startActivity(intent);
 			}
 		});
@@ -39,4 +65,6 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 	}
+
+
 }
