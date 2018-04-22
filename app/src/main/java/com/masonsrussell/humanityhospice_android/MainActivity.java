@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				//Intent intent = new Intent(this, .class);
-				//startActivity(intent);
+				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+				startActivity(intent);
 			}
 		});
 
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				//Intent intent = new Intent(this, CreateAccountActivity.class);
-				//startActivity(intent);
+				Intent intent = new Intent(getApplicationContext(), CreateAccountActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
