@@ -1,0 +1,113 @@
+{
+  "project_info": {
+    "project_number": "669612038928",
+    "firebase_url": "https://humanityhospice-9ce45.firebaseio.com",
+    "project_id": "humanityhospice-9ce45",
+    "storage_bucket": "humanityhospice-9ce45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669612038928:android:6cece9a565c6f29c",
+        "android_client_info": {
+          "package_name": "com.masonsrussell.humanityhospice_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669612038928-g38bsstn9aivb9vvtcscsqnob9rjcmqv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masonsrussell.humanityhospice_android",
+            "certificate_hash": "ba5de34a22d28d1f580019bcd9f6aa03590c17fc"
+          }
+        },
+        {
+          "client_id": "669612038928-n9g2ddsb1hrqq5h7v6rvgut2il6f7fam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkeO8LsnOWYTr_sW7H4Ub0POYgZPLAgBg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669612038928-9789l6sv9r8ifb40t765d14qombtr22s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paradigmappdev.HumanityHospice"
+              }
+            },
+            {
+              "client_id": "669612038928-n9g2ddsb1hrqq5h7v6rvgut2il6f7fam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669612038928:android:4c9cfa8498c45c91",
+        "android_client_info": {
+          "package_name": "com.masonsrussell.humanityhospiceandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669612038928-ef94aphdso2u3h6iln2mp9kr4qbofpv3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masonsrussell.humanityhospiceandroid",
+            "certificate_hash": "ba5de34a22d28d1f580019bcd9f6aa03590c17fc"
+          }
+        },
+        {
+          "client_id": "669612038928-n9g2ddsb1hrqq5h7v6rvgut2il6f7fam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkeO8LsnOWYTr_sW7H4Ub0POYgZPLAgBg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669612038928-9789l6sv9r8ifb40t765d14qombtr22s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paradigmappdev.HumanityHospice"
+              }
+            },
+            {
+              "client_id": "669612038928-n9g2ddsb1hrqq5h7v6rvgut2il6f7fam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
