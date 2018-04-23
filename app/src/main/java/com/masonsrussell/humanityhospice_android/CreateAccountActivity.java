@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Random;
 
 public class CreateAccountActivity extends AppCompatActivity
 {
@@ -31,6 +35,8 @@ public class CreateAccountActivity extends AppCompatActivity
 	String password, email, firstName, lastName;
 	private FirebaseUser user;
 	private static final String TAG = "CreateAccountActivity";
+	RadioGroup accountTypeSelector;
+	RadioButton selectedAccountType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,6 +46,7 @@ public class CreateAccountActivity extends AppCompatActivity
 		firstNameEditText = findViewById(R.id.firstNameEditText);
 		lastNameEditText = findViewById(R.id.lastNameEditText);
 		emailEditText = findViewById(R.id.emailEditText);
+		accountTypeSelector = findViewById(R.id.accountTypeSelector);
 		passwordEditText = findViewById(R.id.passwordEditText);
 		verifyPasswordEditText = findViewById(R.id.reenterPasswordEditText);
 		loginView = findViewById(R.id.loginView);
@@ -64,6 +71,7 @@ public class CreateAccountActivity extends AppCompatActivity
 						{
 						Toast.makeText(CreateAccountActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
 					}
+
 				}
 				else
 				{
@@ -93,7 +101,7 @@ public class CreateAccountActivity extends AppCompatActivity
 							// Sign in success, update UI with the signed-in user's information
 							Log.d(TAG, "createUserWithEmail:success");
 							user = mAuth.getCurrentUser();
-							addPersonalData();
+							createPatient();
 						} else {
 							// If sign in fails, display a message to the user.
 							Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -102,6 +110,25 @@ public class CreateAccountActivity extends AppCompatActivity
 						}
 					}
 				});
+	}
+
+	private void createPatient()
+	{
+		int accountTypeSelected = accountTypeSelector.getCheckedRadioButtonId();
+		selectedAccountType = findViewById(accountTypeSelected);
+		if (selectedAccountType.getText().equals("Patient"))
+		{
+			FirebaseCalls.createPatient(generateRandom(), firstName, lastName);
+		}
+		else
+		{
+			HashMap<String, String> usersAndCodes = FirebaseCalls.getPatientInviteCodes();
+			for (String user : usersAndCodes.keySet())
+			{
+				continue;
+			}
+		}
+		addPersonalData();
 	}
 
 	private void addPersonalData()
@@ -122,5 +149,22 @@ public class CreateAccountActivity extends AppCompatActivity
 						}
 					}
 				});
+	}
+
+	static String generateString(Random rng, String characters)
+	{
+		char[] text = new char[6];
+		for (int i = 0; i < 6; i++)
+		{
+			text[i] = characters.charAt(rng.nextInt(characters.length()));
+		}
+		return new String(text);
+	}
+
+	String generateRandom()
+	{
+		Random random = new Random();
+		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		return generateString(random, chars);
 	}
 }

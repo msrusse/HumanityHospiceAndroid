@@ -66,9 +66,11 @@
             android:inputType="textPassword" />
 
         <RadioGroup
+            android:id="@+id/accountTypeSelector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:checkedButton="@+id/patientButton">
 
             <RadioButton
                 android:id="@+id/patientButton"
