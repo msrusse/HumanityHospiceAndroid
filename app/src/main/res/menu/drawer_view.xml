@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_journal"
+            android:icon="@mipmap/journal"
+            android:title="@string/journal" />
+        <item
+            android:id="@+id/nav_encouragement_board"
+            android:icon="@mipmap/encouragement"
+            android:title="@string/encouragement_board" />
+        <item
+            android:id="@+id/nav_photo_album"
+            android:icon="@mipmap/photo_album"
+            android:title="@string/photo_album" />
+        <item
+            android:id="@+id/nav_create_family_account"
+            android:icon="@mipmap/create_family"
+            android:title="@string/create_family_account" />
+        <item
+            android:id="@+id/nav_invite"
+            android:icon="@mipmap/invite"
+            android:title="@string/invite_people"/>
+        <item
+            android:id="@+id/nav_sign_out"
+            android:icon="@mipmap/sign_out"
+            android:title="@string/sign_out"/>
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@mipmap/about"
+            android:title="@string/about"/>
+
+    </group>
+</menu>

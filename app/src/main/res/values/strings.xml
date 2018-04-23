@@ -6,4 +6,18 @@
     <string name="title_activity_login">Sign In</string>
     <string name="already_registered">Already have an account? Log in</string>
     <string name="create_account">Create Account</string>
+    <string name="journal">My Journal</string>
+    <string name="encouragement_board">Encouragement Board</string>
+    <string name="photo_album">My Photo Album</string>
+    <string name="create_family_account">Create Family Account</string>
+    <string name="invite_people">Invite People</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="about">About Humanity Hospice</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>
