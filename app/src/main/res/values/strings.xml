@@ -24,4 +24,6 @@
     <string name="private_access_url">My Private Access Web URL:</string>
     <string name="share_code">Share My Code</string>
     <string name="share_web_url">Share My Web URL</string>
+    <string name="enter_patient_code">Enter The Patients Access Code:</string>
+    <string name="private_access_code">Private Access Code</string>
 </resources>

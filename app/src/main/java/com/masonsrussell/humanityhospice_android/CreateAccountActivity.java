@@ -1,12 +1,16 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +57,28 @@ public class CreateAccountActivity extends AppCompatActivity
 		createAccountButton = findViewById(R.id.createAccountButton);
 		mAuth = FirebaseAuth.getInstance();
 
+		accountTypeSelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId)
+			{
+				selectedAccountType = findViewById(checkedId);
+				if (selectedAccountType.getText().equals("Friend"))
+				{
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateAccountActivity.this);
+
+					// set dialog message
+					alertDialogBuilder.setView(R.layout.dialog_enter_patient_code);
+
+
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
+
+					// show it
+					alertDialog.show();
+				}
+			}
+		});
+
 		createAccountButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -91,6 +117,8 @@ public class CreateAccountActivity extends AppCompatActivity
 		});
 	}
 
+
+
 	private void createAccount()
 	{
 		mAuth.createUserWithEmailAndPassword(email, password)
@@ -101,7 +129,7 @@ public class CreateAccountActivity extends AppCompatActivity
 							// Sign in success, update UI with the signed-in user's information
 							Log.d(TAG, "createUserWithEmail:success");
 							user = mAuth.getCurrentUser();
-							createPatient();
+							createAccountInDtabase();
 						} else {
 							// If sign in fails, display a message to the user.
 							Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -112,7 +140,7 @@ public class CreateAccountActivity extends AppCompatActivity
 				});
 	}
 
-	private void createPatient()
+	private void createAccountInDtabase()
 	{
 		int accountTypeSelected = accountTypeSelector.getCheckedRadioButtonId();
 		selectedAccountType = findViewById(accountTypeSelected);
@@ -167,4 +195,6 @@ public class CreateAccountActivity extends AppCompatActivity
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		return generateString(random, chars);
 	}
+
+
 }
