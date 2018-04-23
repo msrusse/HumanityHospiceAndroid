@@ -29,19 +29,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/journal"
+                    android:text="@string/encouragement_board"
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
             </android.support.v7.widget.Toolbar>
-
-            <Button
-                android:id="@+id/writePostButton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/ic_create" />
 
         </FrameLayout>
 

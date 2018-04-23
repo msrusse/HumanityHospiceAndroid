@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class JournalActivity extends AppCompatActivity
+public class EncouragementBoardActivity extends AppCompatActivity
 {
 	TextView signOut;
 	Button writePostButton;
@@ -29,25 +29,16 @@ public class JournalActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_journal);
+		setContentView(R.layout.activity_encouragement_board);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 		signOut = findViewById(R.id.signOutView);
 		mAuth = FirebaseAuth.getInstance();
-		writePostButton = findViewById(R.id.writePostButton);
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
 		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-		writePostButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				Toast.makeText(getApplicationContext(), "The button works", Toast.LENGTH_SHORT).show();
-			}
-		});
 
 		signOut.setOnClickListener(new View.OnClickListener()
 		{
@@ -71,12 +62,12 @@ public class JournalActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								mDrawerLayout.closeDrawers();
-								break;
-							case "Encouragement Board":
-								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
+								Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 								startActivity(intent);
 								finish();
+								break;
+							case "Encouragement Board":
+								mDrawerLayout.closeDrawers();
 								break;
 							case "My Photo Album":
 
