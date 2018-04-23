@@ -85,10 +85,13 @@ public class JournalActivity extends AppCompatActivity
 
 								break;
 							case "Invite People":
-
+								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
+								startActivity(intent3);
+								finish();
 								break;
 							case "Sign Out":
-
+								mAuth.signOut();
+								finish();
 								break;
 							case "About Humanity Hospice":
 
@@ -144,6 +147,7 @@ public class JournalActivity extends AppCompatActivity
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 			mDrawerLayout.closeDrawer(GravityCompat.START);
 		} else {
+			mAuth.signOut();
 			finish();
 		}
 	}

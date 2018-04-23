@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class EncouragementBoardActivity extends AppCompatActivity
+public class InvitePeopleActivity extends AppCompatActivity
 {
 	TextView signOut;
 	Button writePostButton;
@@ -29,7 +29,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_encouragement_board);
+		setContentView(R.layout.activity_invite_people);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 		signOut = findViewById(R.id.signOutView);
 		mAuth = FirebaseAuth.getInstance();
@@ -40,17 +40,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-		signOut.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mAuth.signOut();
-				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		});
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -67,7 +56,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Encouragement Board":
-								mDrawerLayout.closeDrawers();
+								Intent intent1 = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "My Photo Album":
 
@@ -76,9 +67,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 
 								break;
 							case "Invite People":
-								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
-								startActivity(intent3);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Sign Out":
 								mAuth.signOut();

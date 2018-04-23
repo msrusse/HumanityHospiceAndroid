@@ -20,4 +20,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="my_private_access_code">My Private Access Code:</string>
+    <string name="private_access_url">My Private Access Web URL:</string>
+    <string name="share_code">Share My Code</string>
+    <string name="share_web_url">Share My Web URL</string>
 </resources>
