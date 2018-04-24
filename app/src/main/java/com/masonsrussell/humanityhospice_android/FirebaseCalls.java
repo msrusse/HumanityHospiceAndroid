@@ -1,5 +1,7 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.provider.ContactsContract;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,40 +43,24 @@ public class FirebaseCalls
 		patientMetaData.updateChildren(metaDataMap);
 	}
 
-	public static HashMap<String, String> getPatientInviteCodes()
+	public static void createReader(String fName, String lName, String patientID, String accessCode)
 	{
-		DatabaseReference patients = mDatabase.getReference("Patients");
-		patients.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot)
-			{
-				HashMap<String, Object> allPatients = (HashMap)dataSnapshot.getValue();
-				patientIds.addAll(allPatients.keySet());
-			}
+		DatabaseReference patients = mDatabase.getReference("Readers");
+		DatabaseReference individualReader = patients.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference readerMetaData = individualReader.child("MetaData");
+		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
 
-			@Override
-			public void onCancelled(DatabaseError databaseError)
-			{
+		Map<String, Object> readerInfo = new HashMap<>();
+		readerInfo.put("ReadingFrom", "");
+		individualReader.updateChildren(readerInfo);
 
-			}
-		});
-		for(String id : patientIds)
-		{
-			final String finalId = id;
-			patients.child(id).child("InviteCode").addListenerForSingleValueEvent(new ValueEventListener() {
-				@Override
-				public void onDataChange(DataSnapshot dataSnapshot)
-				{
-					patientInviteCodes.put(finalId, dataSnapshot.getValue().toString());
-				}
+		Map<String, Object> metaDataMap = new HashMap<>();
+		metaDataMap.put("firstName", fName);
+		metaDataMap.put("lastName", lName);
+		readerMetaData.updateChildren(metaDataMap);
 
-				@Override
-				public void onCancelled(DatabaseError databaseError)
-				{
-
-				}
-			});
-		}
-		return patientInviteCodes;
+		Map<String, Object> patientsReadingMap = new HashMap<>();
+		patientsReadingMap.put(patientID, accessCode);
+		patientsToReadFrom.updateChildren(patientsReadingMap);
 	}
 }

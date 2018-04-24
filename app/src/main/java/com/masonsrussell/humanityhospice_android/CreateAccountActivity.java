@@ -26,8 +26,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -37,11 +43,15 @@ public class CreateAccountActivity extends AppCompatActivity
 	EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, verifyPasswordEditText;
 	TextView loginView;
 	private FirebaseAuth mAuth;
+	private FirebaseDatabase mDatabase;
 	String password, email, firstName, lastName, patientAccessCode;
 	private FirebaseUser user;
 	private static final String TAG = "CreateAccountActivity";
 	RadioGroup accountTypeSelector;
 	RadioButton selectedAccountType;
+	Boolean verifiedAccess = true;
+	static ArrayList<String> patientIds = new ArrayList<>();
+	static HashMap<String, String> patientInviteCodes = new HashMap<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -57,78 +67,75 @@ public class CreateAccountActivity extends AppCompatActivity
 		loginView = findViewById(R.id.loginView);
 		createAccountButton = findViewById(R.id.createAccountButton);
 		mAuth = FirebaseAuth.getInstance();
+		mDatabase = FirebaseDatabase.getInstance();
 
-		accountTypeSelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+		final DatabaseReference patients = mDatabase.getReference("Patients");
+		patients.addListenerForSingleValueEvent(new ValueEventListener()
+		{
 			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId)
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
+				patientIds.addAll(allPatients.keySet());
+				getInviteCodes(patients);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
+
+		accountTypeSelector.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+		{
+			@Override
+			public void onCheckedChanged(RadioGroup group, final int checkedId)
 			{
 				selectedAccountType = findViewById(checkedId);
 				if (selectedAccountType.getText().equals("Friend"))
 				{
-					final Dialog dialog = new Dialog(CreateAccountActivity.this);
-					dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-					dialog.setContentView(R.layout.dialog_enter_patient_code);
-
-					Button enter = dialog.findViewById(R.id.enterButton);
-					Button cancel = dialog.findViewById(R.id.cancelButton);
-					final EditText accessCode = dialog.findViewById(R.id.accessCode);
-					dialog.show();
-
-					enter.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v)
-						{
-							if (!TextUtils.isEmpty(accessCode.getText()))
-							{
-								patientAccessCode = accessCode.getText().toString();
-								dialog.hide();
-							}
-							else
-							{
-								Toast.makeText(getApplicationContext(), "Please enter an access code", Toast.LENGTH_SHORT).show();
-							}
-						}
-					});
-
-					cancel.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v)
-						{
-							dialog.hide();
-						}
-					});
+					displayDialog();
+				} else
+				{
+					verifiedAccess = true;
 				}
 			}
 		});
 
-		createAccountButton.setOnClickListener(new View.OnClickListener() {
+		createAccountButton.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View v)
 			{
-				if (!TextUtils.isEmpty(emailEditText.getText()) && !TextUtils.isEmpty(firstNameEditText.getText()) && !TextUtils.isEmpty(lastNameEditText.getText()) && !TextUtils.isEmpty(passwordEditText.getText()) && !TextUtils.isEmpty(verifyPasswordEditText.getText()))
+				if (!TextUtils.isEmpty(emailEditText.getText()) && !TextUtils.isEmpty(firstNameEditText.getText()) && !TextUtils.isEmpty(lastNameEditText.getText()) && !TextUtils.isEmpty(passwordEditText.getText()) && !TextUtils.isEmpty(verifyPasswordEditText.getText()) && verifiedAccess)
 				{
 					email = emailEditText.getText().toString();
 					firstName = firstNameEditText.getText().toString();
 					lastName = lastNameEditText.getText().toString();
-					if(passwordEditText.getText().toString().equals(verifyPasswordEditText.getText().toString()))
+					if (passwordEditText.getText().toString().equals(verifyPasswordEditText.getText().toString()))
 					{
 						password = passwordEditText.getText().toString();
 						createAccount();
-					}
-					else
-						{
+					} else
+					{
 						Toast.makeText(CreateAccountActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
 					}
 
-				}
-				else
+				} else if (!verifiedAccess)
+				{
+					accountTypeSelector.check(R.id.friendButton);
+					Toast.makeText(getApplicationContext(), "Please enter a verified patient code", Toast.LENGTH_SHORT).show();
+					displayDialog();
+				} else
 				{
 					Toast.makeText(CreateAccountActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
 
-		loginView.setOnClickListener(new View.OnClickListener() {
+		loginView.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View v)
 			{
@@ -139,20 +146,72 @@ public class CreateAccountActivity extends AppCompatActivity
 		});
 	}
 
+	private void displayDialog()
+	{
+		final Dialog dialog = new Dialog(CreateAccountActivity.this);
 
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_enter_patient_code);
+
+		Button enter = dialog.findViewById(R.id.enterButton);
+		Button cancel = dialog.findViewById(R.id.cancelButton);
+		final EditText accessCode = dialog.findViewById(R.id.accessCode);
+		dialog.show();
+
+		enter.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (!TextUtils.isEmpty(accessCode.getText()))
+				{
+					String patientCode = accessCode.getText().toString();
+					if (checkForPatientCode(patientCode))
+					{
+						patientAccessCode = patientCode;
+						verifiedAccess = true;
+						dialog.hide();
+					} else
+					{
+						verifiedAccess = false;
+						Toast.makeText(getApplicationContext(), "No matching Patient for entered code", Toast.LENGTH_SHORT).show();
+					}
+				} else
+				{
+					verifiedAccess = false;
+					Toast.makeText(getApplicationContext(), "Please enter an access code", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
+		cancel.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				verifiedAccess = false;
+
+				dialog.hide();
+			}
+		});
+	}
 
 	private void createAccount()
 	{
 		mAuth.createUserWithEmailAndPassword(email, password)
-				.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+				.addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+				{
 					@Override
-					public void onComplete(@NonNull Task<AuthResult> task) {
-						if (task.isSuccessful()) {
+					public void onComplete(@NonNull Task<AuthResult> task)
+					{
+						if (task.isSuccessful())
+						{
 							// Sign in success, update UI with the signed-in user's information
 							Log.d(TAG, "createUserWithEmail:success");
 							user = mAuth.getCurrentUser();
 							createAccountInDtabase();
-						} else {
+						} else
+						{
 							// If sign in fails, display a message to the user.
 							Log.w(TAG, "createUserWithEmail:failure", task.getException());
 							Toast.makeText(CreateAccountActivity.this, "Authentication failed.",
@@ -169,13 +228,14 @@ public class CreateAccountActivity extends AppCompatActivity
 		if (selectedAccountType.getText().equals("Patient"))
 		{
 			FirebaseCalls.createPatient(generateRandom(), firstName, lastName);
-		}
-		else
+		} else
 		{
-			HashMap<String, String> usersAndCodes = FirebaseCalls.getPatientInviteCodes();
-			for (String user : usersAndCodes.keySet())
+			for (String PID : patientInviteCodes.keySet())
 			{
-				continue;
+				if (patientInviteCodes.get(PID).equals(patientAccessCode))
+				{
+					FirebaseCalls.createReader(firstName, lastName, PID, patientAccessCode);
+				}
 			}
 		}
 		addPersonalData();
@@ -188,10 +248,13 @@ public class CreateAccountActivity extends AppCompatActivity
 				.build();
 
 		user.updateProfile(profileUpdates)
-				.addOnCompleteListener(new OnCompleteListener<Void>() {
+				.addOnCompleteListener(new OnCompleteListener<Void>()
+				{
 					@Override
-					public void onComplete(@NonNull Task<Void> task) {
-						if (task.isSuccessful()) {
+					public void onComplete(@NonNull Task<Void> task)
+					{
+						if (task.isSuccessful())
+						{
 							Log.d(TAG, "User profile updated.");
 							Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 							startActivity(intent);
@@ -218,5 +281,35 @@ public class CreateAccountActivity extends AppCompatActivity
 		return generateString(random, chars);
 	}
 
+	static boolean checkForPatientCode(String enteredCode)
+	{
+		for (String user : patientInviteCodes.keySet())
+		{
+			if (patientInviteCodes.get(user).equals(enteredCode)) return true;
+		}
+		return false;
+	}
+
+	private static void getInviteCodes(DatabaseReference patients)
+	{
+		for (String id : patientIds)
+		{
+			final String finalId = id;
+			patients.child(id).child("InviteCode").addListenerForSingleValueEvent(new ValueEventListener()
+			{
+				@Override
+				public void onDataChange(DataSnapshot dataSnapshot)
+				{
+					patientInviteCodes.put(finalId, dataSnapshot.getValue().toString());
+				}
+
+				@Override
+				public void onCancelled(DatabaseError databaseError)
+				{
+
+				}
+			});
+		}
+	}
 
 }
