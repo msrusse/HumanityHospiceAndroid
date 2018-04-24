@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -36,7 +37,7 @@ public class CreateAccountActivity extends AppCompatActivity
 	EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, verifyPasswordEditText;
 	TextView loginView;
 	private FirebaseAuth mAuth;
-	String password, email, firstName, lastName;
+	String password, email, firstName, lastName, patientAccessCode;
 	private FirebaseUser user;
 	private static final String TAG = "CreateAccountActivity";
 	RadioGroup accountTypeSelector;
@@ -64,17 +65,38 @@ public class CreateAccountActivity extends AppCompatActivity
 				selectedAccountType = findViewById(checkedId);
 				if (selectedAccountType.getText().equals("Friend"))
 				{
-					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateAccountActivity.this);
+					final Dialog dialog = new Dialog(CreateAccountActivity.this);
+					dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+					dialog.setContentView(R.layout.dialog_enter_patient_code);
 
-					// set dialog message
-					alertDialogBuilder.setView(R.layout.dialog_enter_patient_code);
+					Button enter = dialog.findViewById(R.id.enterButton);
+					Button cancel = dialog.findViewById(R.id.cancelButton);
+					final EditText accessCode = dialog.findViewById(R.id.accessCode);
+					dialog.show();
 
+					enter.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v)
+						{
+							if (!TextUtils.isEmpty(accessCode.getText()))
+							{
+								patientAccessCode = accessCode.getText().toString();
+								dialog.hide();
+							}
+							else
+							{
+								Toast.makeText(getApplicationContext(), "Please enter an access code", Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
 
-					// create alert dialog
-					AlertDialog alertDialog = alertDialogBuilder.create();
-
-					// show it
-					alertDialog.show();
+					cancel.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v)
+						{
+							dialog.hide();
+						}
+					});
 				}
 			}
 		});
