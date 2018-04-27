@@ -19,6 +19,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity
 {
@@ -57,7 +65,7 @@ public class LoginActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getApplicationContext(), CreateAccountActivity.class);
+				Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 				startActivity(intent);
 				finish();
 			}
@@ -74,7 +82,7 @@ public class LoginActivity extends AppCompatActivity
 						if (task.isSuccessful()) {
 							// Sign in success, update UI with the signed-in user's information
 							Log.d(TAG, "signInWithEmail:success");
-							Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+							Intent intent = new Intent(getApplicationContext(), CheckAccountTypeActivity.class);
 							startActivity(intent);
 							finish();
 						} else {

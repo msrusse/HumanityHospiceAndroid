@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,13 +18,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class InvitePeopleActivity extends AppCompatActivity
 {
-	TextView signOut;
+	TextView signOut, accessCodeView;
 	Button writePostButton;
 	private FirebaseAuth mAuth;
+	private FirebaseDatabase mDatabase;
 	private DrawerLayout mDrawerLayout;
+	private static String TAG = "InvitePeopleActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -33,12 +41,22 @@ public class InvitePeopleActivity extends AppCompatActivity
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 		signOut = findViewById(R.id.signOutView);
 		mAuth = FirebaseAuth.getInstance();
+		accessCodeView = findViewById(R.id.accessCodeView);
+		mDatabase = FirebaseDatabase.getInstance();
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
-		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionbar.setDisplayHomeAsUpEnabled(true);
-		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+		try
+		{
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+		}
+		catch (NullPointerException ex)
+		{
+			Log.d(TAG, ex.getMessage());
+		}
+
 
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
@@ -111,6 +129,8 @@ public class InvitePeopleActivity extends AppCompatActivity
 					}
 				}
 		);
+
+		getAccessCode();
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -130,5 +150,23 @@ public class InvitePeopleActivity extends AppCompatActivity
 			mAuth.signOut();
 			finish();
 		}
+	}
+
+	public void getAccessCode()
+	{
+		DatabaseReference userRef = mDatabase.getReference().child("Patients").child(mAuth.getCurrentUser().getUid()).child("InviteCode");
+		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				accessCodeView.setText(dataSnapshot.getValue().toString());
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
 	}
 }

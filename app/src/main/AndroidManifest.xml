@@ -25,7 +25,8 @@
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".JournalActivity" />
         <activity android:name=".EncouragementBoardActivity" />
-        <activity android:name=".InvitePeopleActivity"></activity>
+        <activity android:name=".InvitePeopleActivity" />
+        <activity android:name=".CheckAccountTypeActivity"></activity>
     </application>
 
 </manifest>

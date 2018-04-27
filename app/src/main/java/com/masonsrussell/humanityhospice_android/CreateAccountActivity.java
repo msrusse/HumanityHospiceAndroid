@@ -209,7 +209,7 @@ public class CreateAccountActivity extends AppCompatActivity
 							// Sign in success, update UI with the signed-in user's information
 							Log.d(TAG, "createUserWithEmail:success");
 							user = mAuth.getCurrentUser();
-							createAccountInDtabase();
+							createAccountInDatabase();
 						} else
 						{
 							// If sign in fails, display a message to the user.
@@ -221,7 +221,7 @@ public class CreateAccountActivity extends AppCompatActivity
 				});
 	}
 
-	private void createAccountInDtabase()
+	private void createAccountInDatabase()
 	{
 		int accountTypeSelected = accountTypeSelector.getCheckedRadioButtonId();
 		selectedAccountType = findViewById(accountTypeSelected);
