@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 public class InvitePeopleActivity extends AppCompatActivity
 {
 	TextView signOut, accessCodeView;
-	Button writePostButton;
+	Button shareInviteCodeButton;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	private DrawerLayout mDrawerLayout;
@@ -43,6 +43,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 		mAuth = FirebaseAuth.getInstance();
 		accessCodeView = findViewById(R.id.accessCodeView);
 		mDatabase = FirebaseDatabase.getInstance();
+		shareInviteCodeButton = findViewById(R.id.shareMyCodeButton);
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
@@ -56,7 +57,6 @@ public class InvitePeopleActivity extends AppCompatActivity
 		{
 			Log.d(TAG, ex.getMessage());
 		}
-
 
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
@@ -129,8 +129,20 @@ public class InvitePeopleActivity extends AppCompatActivity
 					}
 				}
 		);
-
 		getAccessCode();
+		shareInviteCodeButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				String shareBody = accessCodeView.getText().toString();
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "View my Humanity Hospice Profile using the following access code:");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+				startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+			}
+		});
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
