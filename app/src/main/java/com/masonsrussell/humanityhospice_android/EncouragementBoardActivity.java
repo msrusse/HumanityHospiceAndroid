@@ -73,7 +73,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 
 								break;
 							case "Create Family Account":
-
+								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
+								startActivity(intent2);
+								finish();
 								break;
 							case "Invite People":
 								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);

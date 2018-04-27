@@ -82,7 +82,9 @@ public class InvitePeopleActivity extends AppCompatActivity
 
 								break;
 							case "Create Family Account":
-
+								Intent intent3 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
+								startActivity(intent3);
+								finish();
 								break;
 							case "Invite People":
 								mDrawerLayout.closeDrawers();
