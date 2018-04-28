@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class EncouragementBoardActivity extends AppCompatActivity
 {
-	TextView signOut;
+	TextView navHeaderName, navHeaderEmail;
 	Button writePostButton;
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
@@ -31,7 +31,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_encouragement_board);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
-		signOut = findViewById(R.id.signOutView);
 		mAuth = FirebaseAuth.getInstance();
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -40,17 +39,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-		signOut.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mAuth.signOut();
-				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		});
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -131,6 +119,10 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		{
 			case android.R.id.home:
 				mDrawerLayout.openDrawer(GravityCompat.START);
+				navHeaderName = findViewById(R.id.navHeaderName);
+				navHeaderEmail = findViewById(R.id.navHeaderEmail);
+				navHeaderEmail.setText(mAuth.getCurrentUser().getEmail());
+				navHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

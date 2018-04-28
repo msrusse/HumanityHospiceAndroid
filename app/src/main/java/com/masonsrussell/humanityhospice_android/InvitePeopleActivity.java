@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class InvitePeopleActivity extends AppCompatActivity
 {
-	TextView signOut, accessCodeView;
+	TextView accessCodeView, navHeaderName, navHeaderEmail;
 	Button shareInviteCodeButton;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
@@ -39,7 +39,6 @@ public class InvitePeopleActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_invite_people);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
-		signOut = findViewById(R.id.signOutView);
 		mAuth = FirebaseAuth.getInstance();
 		accessCodeView = findViewById(R.id.accessCodeView);
 		mDatabase = FirebaseDatabase.getInstance();
@@ -152,6 +151,10 @@ public class InvitePeopleActivity extends AppCompatActivity
 		{
 			case android.R.id.home:
 				mDrawerLayout.openDrawer(GravityCompat.START);
+				navHeaderName = findViewById(R.id.navHeaderName);
+				navHeaderEmail = findViewById(R.id.navHeaderEmail);
+				navHeaderEmail.setText(mAuth.getCurrentUser().getEmail());
+				navHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

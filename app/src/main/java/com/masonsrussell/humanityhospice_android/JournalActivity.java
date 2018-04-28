@@ -17,10 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class JournalActivity extends AppCompatActivity
 {
-	TextView signOut;
+	TextView navHeaderName, navHeaderEmail;
 	Button writePostButton;
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
@@ -31,9 +32,8 @@ public class JournalActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_journal);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
-		signOut = findViewById(R.id.signOutView);
-		mAuth = FirebaseAuth.getInstance();
 		writePostButton = findViewById(R.id.writePostButton);
+		mAuth = FirebaseAuth.getInstance();
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
@@ -49,17 +49,6 @@ public class JournalActivity extends AppCompatActivity
 			}
 		});
 
-		signOut.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mAuth.signOut();
-				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		});
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -67,6 +56,7 @@ public class JournalActivity extends AppCompatActivity
 					@Override
 					public boolean onNavigationItemSelected(MenuItem menuItem)
 					{
+
 						// set item as selected to persist highlight
 						switch(menuItem.toString())
 						{
@@ -140,6 +130,10 @@ public class JournalActivity extends AppCompatActivity
 		{
 			case android.R.id.home:
 				mDrawerLayout.openDrawer(GravityCompat.START);
+				navHeaderName = findViewById(R.id.navHeaderName);
+				navHeaderEmail = findViewById(R.id.navHeaderEmail);
+				navHeaderEmail.setText(mAuth.getCurrentUser().getEmail());
+				navHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -22,6 +22,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 {
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
+	private TextView navHeaderName, navHeaderEmail;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -117,6 +118,10 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 		{
 			case android.R.id.home:
 				mDrawerLayout.openDrawer(GravityCompat.START);
+				navHeaderName = findViewById(R.id.navHeaderName);
+				navHeaderEmail = findViewById(R.id.navHeaderEmail);
+				navHeaderEmail.setText(mAuth.getCurrentUser().getEmail());
+				navHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
