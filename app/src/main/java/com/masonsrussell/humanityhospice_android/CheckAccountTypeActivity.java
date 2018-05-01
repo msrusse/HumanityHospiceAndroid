@@ -56,6 +56,10 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				{
 					isReader();
 				}
+				else
+				{
+					getFamily();
+				}
 			}
 
 			@Override
@@ -82,6 +86,14 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		finish();
 	}
 
+	private void isFamily()
+	{
+		Toast.makeText(getApplicationContext(), "You are Family", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+		startActivity(intent);
+		finish();
+	}
+
 	private void getPatients()
 	{
 		DatabaseReference patientsRef = mDatabase.getReference("Patients");
@@ -94,6 +106,33 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				if (allPatients.containsKey(mAuth.getCurrentUser().getUid()))
 				{
 					isPatient();
+				}
+				else
+				{
+					getReaders();
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
+	}
+
+	private void getFamily()
+	{
+		DatabaseReference patientsRef = mDatabase.getReference("Family");
+		patientsRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				HashMap<String, Object> allFamily = (HashMap) dataSnapshot.getValue();
+				if (allFamily.containsKey(mAuth.getCurrentUser().getUid()))
+				{
+					isFamily();
 				}
 				else
 				{

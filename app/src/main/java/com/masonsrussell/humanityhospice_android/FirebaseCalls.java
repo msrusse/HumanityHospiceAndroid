@@ -67,7 +67,7 @@ public class FirebaseCalls
 	public static void createFamily(String fName, String lName, String patientID, String familyID)
 	{
 		DatabaseReference family = mDatabase.getReference("Family");
-		DatabaseReference individualFamily = family.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference individualFamily = family.child(familyID);
 		DatabaseReference familyMetaData = individualFamily.child("MetaData");
 
 		Map<String, Object> patientInfo = new HashMap<>();

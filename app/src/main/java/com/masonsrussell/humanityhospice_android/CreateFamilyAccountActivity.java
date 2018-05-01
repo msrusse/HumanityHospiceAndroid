@@ -233,5 +233,6 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 		mAuth2.signOut();
 		Intent intent = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
 		startActivity(intent);
+		finish();
 	}
 }
