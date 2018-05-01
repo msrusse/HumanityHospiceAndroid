@@ -63,4 +63,21 @@ public class FirebaseCalls
 		patientsReadingMap.put(patientID, accessCode);
 		patientsToReadFrom.updateChildren(patientsReadingMap);
 	}
+
+	public static void createFamily(String fName, String lName, String patientID, String familyID)
+	{
+		DatabaseReference family = mDatabase.getReference("Family");
+		DatabaseReference individualFamily = family.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference familyMetaData = individualFamily.child("MetaData");
+
+		Map<String, Object> patientInfo = new HashMap<>();
+		patientInfo.put("PatientID", patientID);
+		individualFamily.updateChildren(patientInfo);
+
+		Map<String, Object> metaDataMap = new HashMap<>();
+		metaDataMap.put("DOB", 0);
+		metaDataMap.put("firstName", fName);
+		metaDataMap.put("lName", lName);
+		familyMetaData.updateChildren(metaDataMap);
+	}
 }
