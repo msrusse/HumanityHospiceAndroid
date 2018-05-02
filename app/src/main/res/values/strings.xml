@@ -26,4 +26,7 @@
     <string name="share_web_url">Share My Web URL</string>
     <string name="enter_patient_code">Enter The Patients Access Code:</string>
     <string name="private_access_code">Private Access Code</string>
+    <string name="write_post">New Post</string>
+    <string name="post_hint">New Post...</string>
+    <string name="post">Post</string>
 </resources>

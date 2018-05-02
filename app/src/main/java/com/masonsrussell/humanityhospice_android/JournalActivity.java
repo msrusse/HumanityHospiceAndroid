@@ -45,6 +45,8 @@ public class JournalActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
+				Intent intent = new Intent(getApplicationContext(), WritePostActivity.class);
+				startActivity(intent);
 				Toast.makeText(getApplicationContext(), "The button works", Toast.LENGTH_SHORT).show();
 			}
 		});

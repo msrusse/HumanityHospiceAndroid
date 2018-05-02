@@ -17,12 +17,11 @@ public class FirebaseCalls
 {
 	private static FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-	static ArrayList<String> patientIds = new ArrayList<>();
-	static HashMap<String, String> patientInviteCodes = new HashMap<>();
 
-	public void createPost(FirebaseAuth mAuth, String post)
+	public void createPost(String post)
 	{
-
+		DatabaseReference posts = mDatabase.getReference("Posts");
+		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
 	}
 
 	public static void createPatient(String inviteCode, String fName, String lName)
@@ -39,7 +38,7 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("DOB", 0);
 		metaDataMap.put("firstName", fName);
-		metaDataMap.put("lName", lName);
+		metaDataMap.put("lastName", lName);
 		patientMetaData.updateChildren(metaDataMap);
 	}
 
@@ -77,7 +76,7 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("DOB", 0);
 		metaDataMap.put("firstName", fName);
-		metaDataMap.put("lName", lName);
+		metaDataMap.put("lastName", lName);
 		familyMetaData.updateChildren(metaDataMap);
 	}
 }
