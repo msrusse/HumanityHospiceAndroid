@@ -65,17 +65,17 @@
                     app:srcCompat="@mipmap/about" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/postEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
                     android:ems="10"
                     android:hint="@string/post_hint"
                     android:inputType="textMultiLine"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textColorLink="@color/colorPrimary"
-                    android:textCursorDrawable="@color/colorPrimary"
-                    android:backgroundTint="@color/colorPrimary" />
+                    android:textCursorDrawable="@color/colorPrimary" />
             </LinearLayout>
         </LinearLayout>
 

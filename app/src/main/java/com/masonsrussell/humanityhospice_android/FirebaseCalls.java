@@ -9,7 +9,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +20,30 @@ public class FirebaseCalls
 	private static FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-	public void createPost(String post)
+	public static void createPost(String post, int totalPosts)
 	{
-		DatabaseReference posts = mDatabase.getReference("Posts");
+		DatabaseReference posts = mDatabase.getReference("Journals");
 		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
+
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("poster", mAuth.getCurrentUser().getDisplayName());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("post", post);
+		newPost.updateChildren(posterInfo);
+	}
+
+	public static void createFirstPost(String fName, String lName)
+	{
+		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference newPost = patientsPosts.child("post0");
+
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("poster", fName + " " + lName);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("post", "Joined Humanity Hospice");
+		newPost.updateChildren(posterInfo);
 	}
 
 	public static void createPatient(String inviteCode, String fName, String lName)
@@ -40,6 +62,7 @@ public class FirebaseCalls
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
 		patientMetaData.updateChildren(metaDataMap);
+		createFirstPost(fName, lName);
 	}
 
 	public static void createReader(String fName, String lName, String patientID, String accessCode)
