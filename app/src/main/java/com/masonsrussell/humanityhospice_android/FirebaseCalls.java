@@ -33,6 +33,19 @@ public class FirebaseCalls
 		newPost.updateChildren(posterInfo);
 	}
 
+	public static void createEncouragementPost(String post, int totalPosts)
+	{
+		DatabaseReference posts = mDatabase.getReference("EncouragementBoard");
+		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
+
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("poster", mAuth.getCurrentUser().getDisplayName());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("post", post);
+		newPost.updateChildren(posterInfo);
+	}
+
 	public static void createFirstPost(String fName, String lName)
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");

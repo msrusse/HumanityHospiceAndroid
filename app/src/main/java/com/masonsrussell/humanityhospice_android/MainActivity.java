@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
 		FirebaseUser currentUser = mAuth.getCurrentUser();
 		if (currentUser != null)
 		{
-			Intent intent = new Intent(this, JournalActivity.class);
+			Intent intent = new Intent(this, CheckAccountTypeActivity.class);
 			startActivity(intent);
 		}
 		else

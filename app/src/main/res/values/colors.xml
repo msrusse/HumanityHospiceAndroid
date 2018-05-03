@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="primaryPurple">#7572c1</color>
     <color name="primaryWhite">#ffffff</color>
+    <color name="lighterPurple">#E7EBFD</color>
 </resources>
