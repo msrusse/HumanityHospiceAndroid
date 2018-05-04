@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -61,7 +62,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				HashMap<String, Object> allReaders = (HashMap) dataSnapshot.getValue();
 				if (allReaders.containsKey(mAuth.getCurrentUser().getUid()))
 				{
-					isReader();
+					getReaderPatientID();
 				}
 				else
 				{
@@ -77,9 +78,9 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		});
 	}
 
-	private void isReader()
+	private void isReader(String patientID)
 	{
-		Toast.makeText(getApplicationContext(), "You are a Reader", Toast.LENGTH_SHORT).show();
+		AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID);
 		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 		startActivity(intent);
 		finish();
@@ -87,31 +88,31 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void isPatient()
 	{
-		Toast.makeText(getApplicationContext(), "You are a Patient", Toast.LENGTH_SHORT).show();
+		AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid());
 		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 		startActivity(intent);
 		finish();
 	}
 
-	private void isFamily()
+	private void isFamily(String patientID)
 	{
 		if (mAuth.getCurrentUser().getDisplayName() == null)
 		{
-			getFamilyName();
+			getFamilyName(patientID);
 		}
 		else
 		{
-			Toast.makeText(getApplicationContext(), "You are Family", Toast.LENGTH_SHORT).show();
+			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID);
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
 		}
 	}
 
-	private void getFamilyName()
+	private void getFamilyName(final String patientID)
 	{
 		DatabaseReference familyRef = mDatabase.getReference("Family");
-		familyRef.child(mAuth.getUid()).child("MetaData").addListenerForSingleValueEvent(new ValueEventListener() {
+		familyRef.child(mAuth.getCurrentUser().getUid()).child("MetaData").addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
@@ -119,7 +120,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				String firstName = metaDataValues.get("firstName").toString();
 				String lastName = metaDataValues.get("lastName").toString();
 				user = mAuth.getCurrentUser();
-				addPersonalData(firstName, lastName);
+				addPersonalData(firstName, lastName, patientID);
 			}
 
 			@Override
@@ -130,7 +131,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		});
 	}
 
-	private void addPersonalData(String firstName, String lastName)
+	private void addPersonalData(String firstName, String lastName, final String patientID)
 	{
 		UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
 				.setDisplayName(firstName + " " + lastName)
@@ -143,11 +144,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 					public void onComplete(@NonNull Task<Void> task)
 					{
 						if (task.isSuccessful())
-						{
-							Toast.makeText(getApplicationContext(), "You are Family", Toast.LENGTH_SHORT).show();
-							Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
-							startActivity(intent);
-							finish();
+						{isFamily(patientID);
 						}
 					}
 				});
@@ -182,8 +179,8 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getFamily()
 	{
-		DatabaseReference patientsRef = mDatabase.getReference("Family");
-		patientsRef.addListenerForSingleValueEvent(new ValueEventListener()
+		DatabaseReference familyRef = mDatabase.getReference("Family");
+		familyRef.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
@@ -191,12 +188,52 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				HashMap<String, Object> allFamily = (HashMap) dataSnapshot.getValue();
 				if (allFamily.containsKey(mAuth.getCurrentUser().getUid()))
 				{
-					isFamily();
+					getFamilyPatientID();
 				}
 				else
 				{
 					getReaders();
 				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
+	}
+
+	private void getFamilyPatientID()
+	{
+		DatabaseReference familyRef = mDatabase.getReference("Family");
+		DatabaseReference individualFamilyRef = familyRef.child(mAuth.getCurrentUser().getUid());
+		individualFamilyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				HashMap<String, Object> familyInfo = (HashMap) dataSnapshot.getValue();
+				isFamily(familyInfo.get("PatientID").toString());
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
+	}
+
+	private void getReaderPatientID()
+	{
+		DatabaseReference readerRef = mDatabase.getReference("Readers");
+		DatabaseReference individualReaderRef = readerRef.child(mAuth.getCurrentUser().getUid());
+		individualReaderRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				HashMap<String, Object> readerInfo = (HashMap) dataSnapshot.getValue();
+				isReader(readerInfo.get("ReadingFrom").toString());
 			}
 
 			@Override

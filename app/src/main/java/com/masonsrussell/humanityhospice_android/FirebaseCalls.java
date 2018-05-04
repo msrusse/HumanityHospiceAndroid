@@ -23,7 +23,7 @@ public class FirebaseCalls
 	public static void createPost(String post, int totalPosts)
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");
-		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
 
 		Map<String, Object> posterInfo = new HashMap<>();
@@ -36,7 +36,7 @@ public class FirebaseCalls
 	public static void createEncouragementPost(String post, int totalPosts)
 	{
 		DatabaseReference posts = mDatabase.getReference("EncouragementBoard");
-		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
 
 		Map<String, Object> posterInfo = new HashMap<>();
@@ -49,7 +49,7 @@ public class FirebaseCalls
 	public static void createFirstPost(String fName, String lName)
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");
-		DatabaseReference patientsPosts = posts.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.child("post0");
 
 		Map<String, Object> posterInfo = new HashMap<>();
@@ -62,7 +62,7 @@ public class FirebaseCalls
 	public static void createPatient(String inviteCode, String fName, String lName)
 	{
 		DatabaseReference patients = mDatabase.getReference("Patients");
-		DatabaseReference individualPatient = patients.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference individualPatient = patients.child(AccountInformation.patientID);
 		DatabaseReference patientMetaData = individualPatient.child("MetaData");
 
 		Map<String, Object> patientInfo = new HashMap<>();
@@ -86,7 +86,7 @@ public class FirebaseCalls
 		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
 
 		Map<String, Object> readerInfo = new HashMap<>();
-		readerInfo.put("ReadingFrom", "");
+		readerInfo.put("ReadingFrom", patientID);
 		individualReader.updateChildren(readerInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();
@@ -99,14 +99,14 @@ public class FirebaseCalls
 		patientsToReadFrom.updateChildren(patientsReadingMap);
 	}
 
-	public static void createFamily(String fName, String lName, String patientID, String familyID)
+	public static void createFamily(String fName, String lName, String familyID)
 	{
 		DatabaseReference family = mDatabase.getReference("Family");
 		DatabaseReference individualFamily = family.child(familyID);
 		DatabaseReference familyMetaData = individualFamily.child("MetaData");
 
 		Map<String, Object> patientInfo = new HashMap<>();
-		patientInfo.put("PatientID", patientID);
+		patientInfo.put("PatientID", AccountInformation.patientID);
 		individualFamily.updateChildren(patientInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();

@@ -189,7 +189,6 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 
 	private void createAccount()
 	{
-		final String patientCode = mAuth.getCurrentUser().getUid();
 		FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
 				.setDatabaseUrl("https://console.firebase.google.com/u/0/project/humanityhospice-9ce45/")
 				.setApiKey("AIzaSyAwIcQm5O23O87FXYTa8jkPPeOlu9HRJCM")
@@ -213,16 +212,16 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 						}
 						else
 						{
-							createAccountInDatabase(patientCode, mAuth2.getUid());
+							createAccountInDatabase(mAuth2.getUid());
 						}
 					}
 				});
 
 	}
 
-	private void createAccountInDatabase(String patientCode, String familyID)
+	private void createAccountInDatabase(String familyID)
 	{
-		FirebaseCalls.createFamily(firstName, lastName, patientCode, familyID);
+		FirebaseCalls.createFamily(firstName, lastName, familyID);
 		addPersonalData();
 	}
 

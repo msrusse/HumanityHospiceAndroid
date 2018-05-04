@@ -51,10 +51,19 @@ public class JournalActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_journal);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
+		//Toast.makeText(getApplicationContext(), AccountInformation.patientID, Toast.LENGTH_LONG).show();
 		writePostButton = findViewById(R.id.writePostButton);
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
 		postsListView = findViewById(R.id.postsListView);
+		if (AccountInformation.accountType.equals("Reader"))
+		{
+			writePostButton.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			setFamilyPatientNavMenu();
+		}
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
@@ -73,6 +82,10 @@ public class JournalActivity extends AppCompatActivity
 			}
 		});
 
+	}
+
+	private void setFamilyPatientNavMenu()
+	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -148,6 +161,7 @@ public class JournalActivity extends AppCompatActivity
 				}
 		);
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId())
@@ -166,7 +180,7 @@ public class JournalActivity extends AppCompatActivity
 	private void getJournalPosts()
 	{
 		DatabaseReference journalPostsRef = mDatabase.getReference("Journals");
-		journalPostsRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
