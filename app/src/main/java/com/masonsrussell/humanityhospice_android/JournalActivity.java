@@ -31,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class JournalActivity extends AppCompatActivity
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
-	Map<String, Map> posts = new HashMap<>();
+	List<Map<String, Object>> posts = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -196,8 +198,8 @@ public class JournalActivity extends AppCompatActivity
 						Map<String, Object> addPost = new HashMap<>();
 						addPost.put("Post", postsMap.get(post).get("post").toString());
 						addPost.put("Poster", postsMap.get(post).get("poster").toString());
-						addPost.put("Time", postsMap.get(post).get("timestamp"));
-						posts.put(post.toString(), addPost);
+						addPost.put("timestamp", postsMap.get(post).get("timestamp"));
+						posts.add(addPost);
 					}
 					setListView();
 				}
@@ -219,25 +221,16 @@ public class JournalActivity extends AppCompatActivity
 	{
 		try
 		{
-			String[] postsStringArray = new String[posts.size()];
-			String[] posterStringArray = new String[posts.size()];
-			long[] timeStampLongArray = new long[posts.size()];
-			for (Object key : posts.keySet())
-			{
-				int postLocation = key.toString().charAt(4) - '0';
-				postsStringArray[posts.size()-1-postLocation] = posts.get(key).get("Post").toString();
-				posterStringArray[posts.size()-1-postLocation] = posts.get(key).get("Poster").toString();
-				timeStampLongArray[posts.size()-1-postLocation] = (long) posts.get(key).get("Time");
-
-			}
+			Collections.sort(posts, new MapComparator("timestamp"));
 			ArrayList<String> postsArrayList = new ArrayList<>();
 			ArrayList<String> posterArrayList = new ArrayList<>();
 			ArrayList<Long> timestampArrayList = new ArrayList<>();
-			for (int i=0;i<posts.size();i++)
+			Collections.reverse(posts);
+			for (Map post : posts)
 			{
-				postsArrayList.add(postsStringArray[i]);
-				posterArrayList.add(posterStringArray[i]);
-				timestampArrayList.add(timeStampLongArray[i]);
+				postsArrayList.add(post.get("Post").toString());
+				posterArrayList.add(post.get("Poster").toString());
+				timestampArrayList.add((Long) post.get("timestamp"));
 			}
 			ListAdapter listAdapter = new CustomListAdapter(JournalActivity.this, R.layout.journal_listview_adapter, postsArrayList, posterArrayList, timestampArrayList);
 			postsListView.setAdapter(listAdapter);
@@ -245,6 +238,25 @@ public class JournalActivity extends AppCompatActivity
 		catch (Exception ex)
 		{
 			Log.d("JournalActivity", ex.getMessage());
+		}
+	}
+
+	class MapComparator implements Comparator<Map<String, Object>>
+	{
+		private final String key;
+
+		public MapComparator(String key)
+		{
+			this.key = key;
+		}
+
+		public int compare(Map<String, Object> first,
+		                   Map<String, Object> second)
+		{
+			// TODO: Null checking, both for maps and values
+			Long firstValue = (Long)first.get(key);
+			Long secondValue =  (Long) second.get(key);
+			return firstValue.compareTo(secondValue);
 		}
 	}
 

@@ -24,9 +24,6 @@ public class WritePostActivity extends AppCompatActivity
 {
 	private Button writePostButton;
 	private EditText postBox;
-	private FirebaseAuth mAuth;
-	private FirebaseDatabase mDatabase;
-	int totalPosts = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -35,8 +32,6 @@ public class WritePostActivity extends AppCompatActivity
 		setContentView(R.layout.activity_write_post);
 		writePostButton = findViewById(R.id.writePostButton);
 		postBox = findViewById(R.id.postEditText);
-		mAuth = FirebaseAuth.getInstance();
-		mDatabase = FirebaseDatabase.getInstance();
 
 		writePostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -48,33 +43,9 @@ public class WritePostActivity extends AppCompatActivity
 				}
 				else
 				{
-					getTotalPosts(postBox.getText().toString());
+					FirebaseCalls.createPost(postBox.getText().toString());
 					finish();
 				}
-			}
-		});
-	}
-
-	private void getTotalPosts(final String post)
-	{
-		DatabaseReference postsRef = mDatabase.getReference("Journals");
-		DatabaseReference pateintRef = postsRef.child(mAuth.getCurrentUser().getUid());
-		pateintRef.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot)
-			{
-				Map<Object, Object> snapshot = (HashMap) dataSnapshot.getValue();
-				for (Object key : snapshot.keySet())
-				{
-					totalPosts ++;
-				}
-				FirebaseCalls.createPost(post, totalPosts);
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError)
-			{
-
 			}
 		});
 	}

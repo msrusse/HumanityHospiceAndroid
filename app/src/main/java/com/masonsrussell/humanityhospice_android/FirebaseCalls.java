@@ -20,11 +20,11 @@ public class FirebaseCalls
 	private static FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-	public static void createPost(String post, int totalPosts)
+	public static void createPost(String post)
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
-		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
+		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
@@ -37,7 +37,7 @@ public class FirebaseCalls
 	{
 		DatabaseReference posts = mDatabase.getReference("EncouragementBoard");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
-		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
+		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
