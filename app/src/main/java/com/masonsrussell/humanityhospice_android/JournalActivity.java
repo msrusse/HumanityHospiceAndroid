@@ -51,42 +51,48 @@ public class JournalActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_journal);
-		mDrawerLayout = findViewById(R.id.drawer_layout);
-		//Toast.makeText(getApplicationContext(), AccountInformation.patientID, Toast.LENGTH_LONG).show();
-		writePostButton = findViewById(R.id.writePostButton);
-		mAuth = FirebaseAuth.getInstance();
-		mDatabase = FirebaseDatabase.getInstance();
-		postsListView = findViewById(R.id.postsListView);
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		ActionBar actionbar = getSupportActionBar();
-		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionbar.setDisplayHomeAsUpEnabled(true);
-		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 		if (AccountInformation.accountType.equals("Reader"))
 		{
-			writePostButton.setVisibility(View.INVISIBLE);
-			setFamilyPatientNavMenu();
+			setContentView(R.layout.activity_reader_journal);
+			mDrawerLayout = findViewById(R.id.drawer_layout);
+			//Toast.makeText(getApplicationContext(), AccountInformation.patientID, Toast.LENGTH_LONG).show();
+			mAuth = FirebaseAuth.getInstance();
+			mDatabase = FirebaseDatabase.getInstance();
+			postsListView = findViewById(R.id.postsListView);
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+			setReaderNavMenu();
 		}
 		else
 		{
+			setContentView(R.layout.activity_journal);
+			mDrawerLayout = findViewById(R.id.drawer_layout);
+			//Toast.makeText(getApplicationContext(), AccountInformation.patientID, Toast.LENGTH_LONG).show();
+			writePostButton = findViewById(R.id.writePostButton);
+			mAuth = FirebaseAuth.getInstance();
+			mDatabase = FirebaseDatabase.getInstance();
+			postsListView = findViewById(R.id.postsListView);
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setFamilyPatientNavMenu();
+			writePostButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v)
+				{
+					Intent intent = new Intent(getApplicationContext(), WritePostActivity.class);
+					startActivity(intent);
+				}
+			});
 		}
-
-
-
 		getJournalPosts();
-
-		writePostButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(), WritePostActivity.class);
-				startActivity(intent);
-			}
-		});
-
 	}
 
 	private void setFamilyPatientNavMenu()
@@ -128,6 +134,77 @@ public class JournalActivity extends AppCompatActivity
 								finish();
 								break;
 							case "About Humanity Hospice":
+
+								break;
+						}
+						// close drawer when item is tapped
+						mDrawerLayout.closeDrawers();
+
+						// Add code here to update the UI based on the item selected
+						// For example, swap UI fragments here
+
+						return true;
+					}
+				});
+
+		mDrawerLayout.addDrawerListener(
+				new DrawerLayout.DrawerListener() {
+					@Override
+					public void onDrawerSlide(View drawerView, float slideOffset) {
+						// Respond when the drawer's position changes
+					}
+
+					@Override
+					public void onDrawerOpened(View drawerView) {
+						// Respond when the drawer is opened
+
+					}
+
+					@Override
+					public void onDrawerClosed(View drawerView) {
+						// Respond when the drawer is closed
+					}
+
+					@Override
+					public void onDrawerStateChanged(int newState) {
+						// Respond when the drawer motion state changes
+					}
+				}
+		);
+	}
+
+	private void setReaderNavMenu()
+	{
+		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(
+				new NavigationView.OnNavigationItemSelectedListener()
+				{
+					@Override
+					public boolean onNavigationItemSelected(MenuItem menuItem)
+					{
+
+						// set item as selected to persist highlight
+						switch(menuItem.toString())
+						{
+							case "Journal":
+								mDrawerLayout.closeDrawers();
+								break;
+							case "Encouragement Board":
+								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
+								startActivity(intent);
+								finish();
+								break;
+							case "Photo Album":
+
+								break;
+							case "Sign Out":
+								mAuth.signOut();
+								finish();
+								break;
+							case "About Humanity Hospice":
+
+								break;
+							case "Add Patient":
 
 								break;
 						}

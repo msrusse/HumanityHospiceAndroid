@@ -50,45 +50,147 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_encouragement_board);
-		mDrawerLayout = findViewById(R.id.drawer_layout);
-		writePostButton = findViewById(R.id.writePostButton);
-		mAuth = FirebaseAuth.getInstance();
-		mDatabase = FirebaseDatabase.getInstance();
-		encouragementBoardListView = findViewById(R.id.postsListView);
-		switch (AccountInformation.accountType)
+
+		if (AccountInformation.accountType.equals("Patient"))
 		{
-			case "Patient":
-				writePostButton.setVisibility(View.INVISIBLE);
-				getPatientEncouragement();
-				break;
-			case "Reader":
-				getReaderEncouragement();
-				break;
-			case "Family":
-				getPatientEncouragement();
-				break;
+			setContentView(R.layout.activity_encouragement_board);
+			mDrawerLayout = findViewById(R.id.drawer_layout);
+			writePostButton = findViewById(R.id.writePostButton);
+			mAuth = FirebaseAuth.getInstance();
+			mDatabase = FirebaseDatabase.getInstance();
+			encouragementBoardListView = findViewById(R.id.postsListView);
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+			writePostButton.setVisibility(View.INVISIBLE);
+			setFamilyPatientNavMenu();
+			getPatientEncouragement();
 		}
-
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		ActionBar actionbar = getSupportActionBar();
-		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionbar.setDisplayHomeAsUpEnabled(true);
-		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-		setFamilyPatientNavMenu();
-
-		writePostButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(getApplicationContext(), WriteEncouragementActivity.class);
-				startActivity(intent);
-			}
-		});
+		else if (AccountInformation.accountType.equals("Reader"))
+		{
+			setContentView(R.layout.activity_reader_encouragement_board);
+			mDrawerLayout = findViewById(R.id.drawer_layout);
+			writePostButton = findViewById(R.id.writePostButton);
+			mAuth = FirebaseAuth.getInstance();
+			mDatabase = FirebaseDatabase.getInstance();
+			encouragementBoardListView = findViewById(R.id.postsListView);
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+			setReaderNavMenu();
+			writePostButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v)
+				{
+					Intent intent = new Intent(getApplicationContext(), WriteEncouragementActivity.class);
+					startActivity(intent);
+				}
+			});
+			getReaderEncouragement();
+		}
+		else
+		{
+			setContentView(R.layout.activity_encouragement_board);
+			mDrawerLayout = findViewById(R.id.drawer_layout);
+			writePostButton = findViewById(R.id.writePostButton);
+			mAuth = FirebaseAuth.getInstance();
+			mDatabase = FirebaseDatabase.getInstance();
+			encouragementBoardListView = findViewById(R.id.postsListView);
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+			setFamilyPatientNavMenu();
+			writePostButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v)
+				{
+					Intent intent = new Intent(getApplicationContext(), WriteEncouragementActivity.class);
+					startActivity(intent);
+				}
+			});
+			getPatientEncouragement();
+		}
 	}
 
+
+	private void setReaderNavMenu()
+	{
+		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(
+				new NavigationView.OnNavigationItemSelectedListener()
+				{
+					@Override
+					public boolean onNavigationItemSelected(MenuItem menuItem)
+					{
+						// set item as selected to persist highlight
+						switch(menuItem.toString())
+						{
+							case "Journal":
+								Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+								startActivity(intent);
+								finish();
+								break;
+							case "Encouragement Board":
+								mDrawerLayout.closeDrawers();
+								break;
+							case "Photo Album":
+
+								break;
+							case "Sign Out":
+								mAuth.signOut();
+								finish();
+								break;
+							case "About Humanity Hospice":
+
+								break;
+							case "Add Patient":
+
+								break;
+						}
+						// close drawer when item is tapped
+						mDrawerLayout.closeDrawers();
+
+						// Add code here to update the UI based on the item selected
+						// For example, swap UI fragments here
+
+						return true;
+					}
+				});
+
+		mDrawerLayout.addDrawerListener(
+				new DrawerLayout.DrawerListener() {
+					@Override
+					public void onDrawerSlide(View drawerView, float slideOffset) {
+						// Respond when the drawer's position changes
+					}
+
+					@Override
+					public void onDrawerOpened(View drawerView) {
+						// Respond when the drawer is opened
+
+					}
+
+					@Override
+					public void onDrawerClosed(View drawerView) {
+						// Respond when the drawer is closed
+					}
+
+					@Override
+					public void onDrawerStateChanged(int newState) {
+						// Respond when the drawer motion state changes
+					}
+				}
+		);
+	}
 
 	private void setFamilyPatientNavMenu()
 	{
