@@ -39,9 +39,10 @@
 
                     <TextView
                         android:id="@+id/usernameTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="fill_horizontal"
                         android:paddingBottom="8dp"
                         android:paddingLeft="8dp"
                         android:paddingTop="8dp"
@@ -52,7 +53,7 @@
 
                     <TextView
                         android:id="@+id/posterTextView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="left|start" />

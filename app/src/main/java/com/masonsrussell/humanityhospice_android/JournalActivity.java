@@ -56,20 +56,23 @@ public class JournalActivity extends AppCompatActivity
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
 		postsListView = findViewById(R.id.postsListView);
-		if (AccountInformation.accountType.equals("Reader"))
-		{
-			writePostButton.setVisibility(View.INVISIBLE);
-		}
-		else
-		{
-			setFamilyPatientNavMenu();
-		}
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
 		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+		if (AccountInformation.accountType.equals("Reader"))
+		{
+			writePostButton.setVisibility(View.INVISIBLE);
+			setFamilyPatientNavMenu();
+		}
+		else
+		{
+			setFamilyPatientNavMenu();
+		}
+
+
 
 		getJournalPosts();
 

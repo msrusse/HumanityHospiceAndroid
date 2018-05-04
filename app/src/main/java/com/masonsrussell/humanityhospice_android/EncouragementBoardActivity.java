@@ -54,12 +54,28 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
 		encouragementBoardListView = findViewById(R.id.postsListView);
+		switch (AccountInformation.accountType)
+		{
+			case "Patient":
+				writePostButton.setVisibility(View.INVISIBLE);
+				getPatientEncouragement();
+				break;
+			case "Reader":
+				getReaderEncouragement();
+				break;
+			case "Family":
+				getPatientEncouragement();
+				break;
+		}
+
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
 		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+		setFamilyPatientNavMenu();
 
 		writePostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -69,7 +85,11 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				startActivity(intent);
 			}
 		});
+	}
 
+
+	private void setFamilyPatientNavMenu()
+	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -143,8 +163,8 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					}
 				}
 		);
-		getEncouragementPosts();
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId())
@@ -160,10 +180,10 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void getEncouragementPosts()
+	private void getPatientEncouragement()
 	{
 		DatabaseReference journalPostsRef = mDatabase.getReference("EncouragementBoard");
-		journalPostsRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
@@ -184,6 +204,44 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				catch (Exception ex)
 				{
 					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+				}
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
+	}
+
+	private void getReaderEncouragement()
+	{
+		DatabaseReference journalPostsRef = mDatabase.getReference("EncouragementBoard");
+		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				try
+				{
+					dataSnapshot.getValue();
+					Map<Object, Map> postsMap = (HashMap) dataSnapshot.getValue();
+					for (Object post : postsMap.keySet())
+					{
+						Map<String, Object> addPost = new HashMap<>();
+						if (postsMap.get(post).get("posterID").toString().equals(mAuth.getCurrentUser().getUid()))
+						{
+							addPost.put("Post", postsMap.get(post).get("post").toString());
+							addPost.put("Poster", postsMap.get(post).get("poster").toString());
+							addPost.put("Time", postsMap.get(post).get("timestamp"));
+							posts.put(post.toString(), addPost);
+						}
+					}
+					setListView();
+				}
+				catch (Exception ex)
+				{
+					Log.d("EncouragementBoard", ex.getMessage());
 				}
 			}
 
@@ -259,11 +317,25 @@ public class EncouragementBoardActivity extends AppCompatActivity
 			TextView poster = mView.findViewById(R.id.usernameTextView);
 			TextView posted = mView.findViewById(R.id.posterTextView);
 
-			if (items.get(position) != null)
+			if (AccountInformation.accountType.equals("Reader"))
 			{
-				postBody.setText(items.get(position));
-				poster.setText(posters.get(position));
-				posted.setText(R.string.posted_in_board);
+				if (items.get(position) != null)
+				{
+					String you = "You";
+					String posted1 = "posted";
+					postBody.setText(items.get(position));
+					poster.setText(you);
+					posted.setText(posted1);
+				}
+			}
+			else
+			{
+				if (items.get(position) != null)
+				{
+					postBody.setText(items.get(position));
+					poster.setText(posters.get(position));
+					posted.setText(R.string.posted_in_board);
+				}
 			}
 
 			return mView;

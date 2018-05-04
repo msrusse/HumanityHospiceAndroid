@@ -27,7 +27,7 @@ public class FirebaseCalls
 		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("poster", mAuth.getCurrentUser().getDisplayName());
+		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
 		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
@@ -40,9 +40,10 @@ public class FirebaseCalls
 		DatabaseReference newPost = patientsPosts.child("post" + totalPosts);
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("poster", mAuth.getCurrentUser().getDisplayName());
+		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
 		posterInfo.put("post", post);
+		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -81,7 +82,7 @@ public class FirebaseCalls
 	public static void createReader(String fName, String lName, String patientID, String accessCode)
 	{
 		DatabaseReference patients = mDatabase.getReference("Readers");
-		DatabaseReference individualReader = patients.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference individualReader = patients.child(AccountInformation.username);
 		DatabaseReference readerMetaData = individualReader.child("MetaData");
 		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
 
