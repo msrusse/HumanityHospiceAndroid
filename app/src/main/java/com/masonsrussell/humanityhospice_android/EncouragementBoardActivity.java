@@ -125,6 +125,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	private void setReaderNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
 				{
@@ -150,10 +151,12 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								finish();
 								break;
 							case "About Humanity Hospice":
-
+								Intent intent2 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
+								startActivity(intent2);
+								finish();
 								break;
 							case "Add Patient":
-								Intent intent3 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
+								Intent intent3 = new Intent(getApplicationContext(), AddPatientActivity.class);
 								startActivity(intent3);
 								finish();
 								break;
@@ -200,6 +203,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	private void setFamilyPatientNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
 				{
@@ -284,8 +288,8 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				mDrawerLayout.openDrawer(GravityCompat.START);
 				navHeaderName = findViewById(R.id.navHeaderName);
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
-				navHeaderEmail.setText(mAuth.getCurrentUser().getEmail());
-				navHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
+				navHeaderEmail.setText(AccountInformation.email);
+				navHeaderName.setText(AccountInformation.username);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

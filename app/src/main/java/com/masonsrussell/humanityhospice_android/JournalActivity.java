@@ -98,6 +98,7 @@ public class JournalActivity extends AppCompatActivity
 	private void setFamilyPatientNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
 				{
@@ -178,6 +179,7 @@ public class JournalActivity extends AppCompatActivity
 	private void setReaderNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
 				{
@@ -232,6 +234,7 @@ public class JournalActivity extends AppCompatActivity
 					@Override
 					public void onDrawerSlide(View drawerView, float slideOffset) {
 						// Respond when the drawer's position changes
+
 					}
 
 					@Override
@@ -261,8 +264,8 @@ public class JournalActivity extends AppCompatActivity
 				mDrawerLayout.openDrawer(GravityCompat.START);
 				navHeaderName = findViewById(R.id.navHeaderName);
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
-				navHeaderEmail.setText(mAuth.getCurrentUser().getEmail());
-				navHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
+				navHeaderEmail.setText(AccountInformation.email);
+				navHeaderName.setText(AccountInformation.username);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

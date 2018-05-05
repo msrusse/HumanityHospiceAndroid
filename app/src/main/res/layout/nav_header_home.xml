@@ -31,7 +31,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="Android Studio"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
@@ -40,7 +39,6 @@
             android:id="@+id/navHeaderEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="android.studio@android.com"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
