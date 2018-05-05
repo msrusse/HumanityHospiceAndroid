@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -52,12 +53,15 @@
             android:name=".CreateFamilyAccountActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name=".WritePostActivity"
+        <activity
+            android:name=".WritePostActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".WriteEncouragementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WriteEncouragementActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity android:name=".AboutHumanityHospiceActivity"></activity>
     </application>
 
 </manifest>

@@ -134,7 +134,9 @@ public class JournalActivity extends AppCompatActivity
 								finish();
 								break;
 							case "About Humanity Hospice":
-
+								Intent intent4 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
+								startActivity(intent4);
+								finish();
 								break;
 						}
 						// close drawer when item is tapped
@@ -202,9 +204,14 @@ public class JournalActivity extends AppCompatActivity
 								finish();
 								break;
 							case "About Humanity Hospice":
-
+								Intent intent2 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
+								startActivity(intent2);
+								finish();
 								break;
 							case "Add Patient":
+
+								break;
+							case "Change Patient":
 
 								break;
 						}
