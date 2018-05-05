@@ -235,7 +235,7 @@ public class CreateAccountActivity extends AppCompatActivity
 			{
 				if (patientInviteCodes.get(PID).equals(patientAccessCode))
 				{
-					FirebaseCalls.createReader(firstName, lastName, PID, patientAccessCode);
+					FirebaseCalls.createReader(firstName, lastName, PID);
 				}
 			}
 		}

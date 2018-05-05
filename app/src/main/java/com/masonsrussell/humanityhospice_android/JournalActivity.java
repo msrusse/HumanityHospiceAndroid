@@ -209,7 +209,9 @@ public class JournalActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Add Patient":
-
+								Intent intent3 = new Intent(getApplicationContext(), AddPatientActivity.class);
+								startActivity(intent3);
+								finish();
 								break;
 							case "Change Patient":
 

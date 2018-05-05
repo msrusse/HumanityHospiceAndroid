@@ -79,10 +79,10 @@ public class FirebaseCalls
 		createFirstPost(fName, lName);
 	}
 
-	public static void createReader(String fName, String lName, String patientID, String accessCode)
+	public static void createReader(String fName, String lName, String patientID)
 	{
 		DatabaseReference patients = mDatabase.getReference("Readers");
-		DatabaseReference individualReader = patients.child(AccountInformation.username);
+		DatabaseReference individualReader = patients.child(mAuth.getCurrentUser().getUid());
 		DatabaseReference readerMetaData = individualReader.child("MetaData");
 		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
 
@@ -96,7 +96,7 @@ public class FirebaseCalls
 		readerMetaData.updateChildren(metaDataMap);
 
 		Map<String, Object> patientsReadingMap = new HashMap<>();
-		patientsReadingMap.put(patientID, accessCode);
+		patientsReadingMap.put(patientID, true);
 		patientsToReadFrom.updateChildren(patientsReadingMap);
 	}
 
@@ -115,5 +115,19 @@ public class FirebaseCalls
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
 		familyMetaData.updateChildren(metaDataMap);
+	}
+
+	public static void addAdditionalPatientForReader(String patientID)
+	{
+		DatabaseReference readers = mDatabase.getReference("Readers");
+		DatabaseReference individualReader = readers.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference readersPatients = individualReader.child("Patients");
+		DatabaseReference readingFromRef = individualReader.child("ReadingFrom");
+
+		Map<String, Object> readersPatientsMap = new HashMap<>();
+		readersPatientsMap.put(patientID, true);
+		readersPatients.updateChildren(readersPatientsMap);
+
+		readingFromRef.setValue(patientID);
 	}
 }
