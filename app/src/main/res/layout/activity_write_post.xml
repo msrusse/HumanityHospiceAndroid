@@ -15,6 +15,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/closeButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/rounded_button"
+                android:text="x"
+                android:textColor="@color/primaryWhite" />
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -37,8 +48,9 @@
                 android:id="@+id/writePostButton"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
-                android:layout_gravity="right|center_vertical"
+                android:layout_gravity="center_vertical|end"
                 android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/rounded_button"
                 android:text="@string/post"
                 android:textColor="@color/primaryWhite"
