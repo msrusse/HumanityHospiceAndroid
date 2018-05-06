@@ -161,7 +161,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Change Patient":
-
+								Intent intent4 = new Intent(getApplicationContext(), ChangePatientActivity.class);
+								startActivity(intent4);
+								finish();
 								break;
 						}
 						// close drawer when item is tapped

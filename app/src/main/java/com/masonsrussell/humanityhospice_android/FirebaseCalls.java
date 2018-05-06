@@ -130,4 +130,12 @@ public class FirebaseCalls
 
 		readingFromRef.setValue(patientID);
 	}
+
+	public static void updatePatientReadingFrom(String patientID)
+	{
+		DatabaseReference readers = mDatabase.getReference("Readers");
+		DatabaseReference individualReader = readers.child(mAuth.getCurrentUser().getUid());
+		DatabaseReference readingFromRef = individualReader.child("ReadingFrom");
+		readingFromRef.setValue(patientID);
+	}
 }

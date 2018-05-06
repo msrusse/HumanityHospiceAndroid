@@ -175,7 +175,9 @@ public class AddPatientActivity extends AppCompatActivity
 								mDrawerLayout.closeDrawers();
 								break;
 							case "Change Patient":
-
+								Intent intent3 = new Intent(getApplicationContext(), ChangePatientActivity.class);
+								startActivity(intent3);
+								finish();
 								break;
 						}
 						// close drawer when item is tapped
