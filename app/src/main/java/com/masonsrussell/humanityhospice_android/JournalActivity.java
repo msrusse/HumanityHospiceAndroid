@@ -282,6 +282,7 @@ public class JournalActivity extends AppCompatActivity
 			{
 				try
 				{
+					posts.clear();
 					dataSnapshot.getValue();
 					Map<Object, Map> postsMap = (HashMap) dataSnapshot.getValue();
 					for (Object post : postsMap.keySet())
