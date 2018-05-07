@@ -23,18 +23,14 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class CreateFamilyAccountActivity extends AppCompatActivity
 {
 	private FirebaseAuth mAuth;
 	private FirebaseAuth mAuth2;
 	private DrawerLayout mDrawerLayout;
-	private TextView navHeaderName, navHeaderEmail;
-	private Button createAccountButton;
 	private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, verifyPasswordEditText;
 	private String password, email, firstName, lastName;
-	private FirebaseUser originalUser, newUser;
 	private static final String TAG = "CreateFamilyAccount";
 
 	@Override
@@ -44,13 +40,12 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 		setContentView(R.layout.activity_create_family_account);
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 		mAuth = FirebaseAuth.getInstance();
-		createAccountButton = findViewById(R.id.createAccountButton);
+		Button createAccountButton = findViewById(R.id.createAccountButton);
 		firstNameEditText = findViewById(R.id.firstNameEditText);
 		lastNameEditText = findViewById(R.id.lastNameEditText);
 		emailEditText = findViewById(R.id.emailEditText);
 		passwordEditText = findViewById(R.id.passwordEditText);
 		verifyPasswordEditText = findViewById(R.id.reenterPasswordEditText);
-		originalUser = mAuth.getCurrentUser();
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
@@ -167,8 +162,8 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 		{
 			case android.R.id.home:
 				mDrawerLayout.openDrawer(GravityCompat.START);
-				navHeaderName = findViewById(R.id.navHeaderName);
-				navHeaderEmail = findViewById(R.id.navHeaderEmail);
+				TextView navHeaderName = findViewById(R.id.navHeaderName);
+				TextView navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
 				return true;

@@ -62,7 +62,8 @@
         android:gravity="bottom"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        tools:layout_editor_absoluteY="4dp">
+        tools:layout_editor_absoluteY="4dp"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/copyrightView"

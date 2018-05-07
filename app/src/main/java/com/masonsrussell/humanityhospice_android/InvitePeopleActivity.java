@@ -28,6 +28,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	private DrawerLayout mDrawerLayout;
+	@SuppressWarnings("FieldCanBeLocal")
 	private static String TAG = "InvitePeopleActivity";
 
 	@Override

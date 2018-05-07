@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 public class WritePostActivity extends AppCompatActivity
 {
-	private Button writePostButton, closeButton;
 	private EditText postBox;
 
 	@Override
@@ -18,8 +17,8 @@ public class WritePostActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_write_post);
-		writePostButton = findViewById(R.id.writePostButton);
-		closeButton = findViewById(R.id.closeButton);
+		Button writePostButton = findViewById(R.id.writePostButton);
+		Button closeButton = findViewById(R.id.closeButton);
 		postBox = findViewById(R.id.postEditText);
 
 		closeButton.setOnClickListener(new View.OnClickListener() {

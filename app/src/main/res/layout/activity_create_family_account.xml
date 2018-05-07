@@ -93,7 +93,8 @@
                 android:inputType="textEmailAddress"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:backgroundTint="@color/colorPrimary"
+                tools:ignore="UnusedAttribute" />
 
             <EditText
                 android:id="@+id/passwordEditText"
@@ -105,7 +106,8 @@
                 android:inputType="textPassword"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:backgroundTint="@color/colorPrimary"
+                tools:ignore="UnusedAttribute" />
 
             <EditText
                 android:id="@+id/reenterPasswordEditText"

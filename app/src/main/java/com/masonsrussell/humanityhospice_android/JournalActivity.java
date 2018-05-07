@@ -313,7 +313,7 @@ public class JournalActivity extends AppCompatActivity
 	{
 		try
 		{
-			Collections.sort(posts, new MapComparator("timestamp"));
+			Collections.sort(posts, new MapComparator());
 			ArrayList<String> postsArrayList = new ArrayList<>();
 			ArrayList<String> posterArrayList = new ArrayList<>();
 			ArrayList<Long> timestampArrayList = new ArrayList<>();
@@ -337,9 +337,9 @@ public class JournalActivity extends AppCompatActivity
 	{
 		private final String key;
 
-		private MapComparator(String key)
+		private MapComparator()
 		{
-			this.key = key;
+			this.key = "timestamp";
 		}
 
 		public int compare(Map<String, Object> first,

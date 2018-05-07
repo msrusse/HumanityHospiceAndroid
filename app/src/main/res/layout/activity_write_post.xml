@@ -22,8 +22,10 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginLeft="16dp"
                 android:background="@drawable/rounded_button"
-                android:text="x"
+                android:text="@string/x"
                 android:textColor="@color/primaryWhite" />
 
             <android.support.v7.widget.Toolbar

@@ -36,7 +36,6 @@ public class CreateAccountActivity extends AppCompatActivity
 	EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, verifyPasswordEditText;
 	TextView loginView;
 	private FirebaseAuth mAuth;
-	private FirebaseDatabase mDatabase;
 	String password, email, firstName, lastName, patientAccessCode;
 	private FirebaseUser user;
 	private static final String TAG = "CreateAccountActivity";
@@ -60,7 +59,7 @@ public class CreateAccountActivity extends AppCompatActivity
 		loginView = findViewById(R.id.loginView);
 		createAccountButton = findViewById(R.id.createAccountButton);
 		mAuth = FirebaseAuth.getInstance();
-		mDatabase = FirebaseDatabase.getInstance();
+		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 		final DatabaseReference patients = mDatabase.getReference("Patients");
 		patients.addListenerForSingleValueEvent(new ValueEventListener()
 		{

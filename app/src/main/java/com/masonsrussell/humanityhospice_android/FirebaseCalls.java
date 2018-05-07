@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class FirebaseCalls
 {
-	private static FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-	private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+	private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+	private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 	private static StorageReference storageReference;
 
 	public static void createPost(String post)

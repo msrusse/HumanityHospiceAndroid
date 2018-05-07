@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class PhotoAlbumActivity extends AppCompatActivity
 {
 
-	Button addPhotoButton;
 	private Uri filePath;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseAuth mAuth;
@@ -29,7 +28,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo_album);
-		addPhotoButton = findViewById(R.id.addPhotoButton);
+		Button addPhotoButton = findViewById(R.id.addPhotoButton);
 		mAuth = FirebaseAuth.getInstance();
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 		Toolbar toolbar = findViewById(R.id.toolbar);

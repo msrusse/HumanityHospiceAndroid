@@ -20,7 +20,6 @@ import java.util.HashMap;
 
 public class CheckAccountTypeActivity extends AppCompatActivity
 {
-	private ProgressBar progressBar;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	private FirebaseUser user;
@@ -31,7 +30,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_check_account_type);
-		progressBar = findViewById(R.id.progressBar);
+		ProgressBar progressBar = findViewById(R.id.progressBar);
 		progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.primaryPurple), PorterDuff.Mode.MULTIPLY);
 		mDatabase = FirebaseDatabase.getInstance();
 		mAuth = FirebaseAuth.getInstance();

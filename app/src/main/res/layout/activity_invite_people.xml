@@ -81,7 +81,7 @@
                 android:layout_marginBottom="64dp"
                 android:background="@drawable/textview_border"
                 android:gravity="center"
-                android:text="https://www.HPPatientPortal.com/John-Smith/583693"
+                android:text="@string/patient_url"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
 

@@ -22,7 +22,6 @@ public class LoginActivity extends AppCompatActivity
 	Button signInButton;
 	EditText passwordEditText, emailEditText;
 	TextView createAccountView;
-	private FirebaseAuth mAuth;
 	private static final String TAG = "LoginActivity";
 
 	@Override
@@ -63,7 +62,7 @@ public class LoginActivity extends AppCompatActivity
 
 	public void login(String email, String password)
 	{
-		mAuth = FirebaseAuth.getInstance();
+		FirebaseAuth mAuth = FirebaseAuth.getInstance();
 		mAuth.signInWithEmailAndPassword(email, password)
 				.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 					@Override

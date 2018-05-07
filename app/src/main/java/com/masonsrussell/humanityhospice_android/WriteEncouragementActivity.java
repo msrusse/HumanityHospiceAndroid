@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class WriteEncouragementActivity extends AppCompatActivity
 {
-	private Button writePostButton;
 	private EditText postBox;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
@@ -31,7 +30,7 @@ public class WriteEncouragementActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_write_post);
-		writePostButton = findViewById(R.id.writePostButton);
+		Button writePostButton = findViewById(R.id.writePostButton);
 		postBox = findViewById(R.id.postEditText);
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
