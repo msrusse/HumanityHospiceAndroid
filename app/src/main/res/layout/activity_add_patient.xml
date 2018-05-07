@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -73,13 +74,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif"
             android:backgroundTint="@color/colorPrimary"
             android:gravity="center"
             android:hint="@string/private_access_code"
             android:inputType="text|textCapCharacters|textShortMessage"
             android:textColorLink="@color/colorPrimary"
-            android:textCursorDrawable="@color/primaryPurple" />
+            android:textCursorDrawable="@color/primaryPurple"
+            tools:ignore="UnusedAttribute" />
 
         <LinearLayout
             android:layout_width="match_parent"

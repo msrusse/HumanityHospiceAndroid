@@ -2,7 +2,6 @@ package com.masonsrussell.humanityhospice_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -118,7 +116,9 @@ public class JournalActivity extends AppCompatActivity
 								finish();
 								break;
 							case "My Photo Album":
-
+								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent1);
+								 finish();
 								break;
 							case "Create Family Account":
 								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
@@ -337,7 +337,7 @@ public class JournalActivity extends AppCompatActivity
 	{
 		private final String key;
 
-		public MapComparator(String key)
+		private MapComparator(String key)
 		{
 			this.key = key;
 		}
@@ -360,7 +360,7 @@ public class JournalActivity extends AppCompatActivity
 		private List<String> items;
 		private List<String> posters;
 
-		public CustomListAdapter(Context context, int textViewResourceId, List<String> postList, List<String> posterList, List<Long> timestampList)
+		private CustomListAdapter(Context context, int textViewResourceId, List<String> postList, List<String> posterList, List<Long> timestampList)
 		{
 			super(context, textViewResourceId, postList);
 			mContext = context;

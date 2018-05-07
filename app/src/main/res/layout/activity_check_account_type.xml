@@ -13,10 +13,12 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp">
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/logo"
+            android:contentDescription="@string/app_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="64dp"

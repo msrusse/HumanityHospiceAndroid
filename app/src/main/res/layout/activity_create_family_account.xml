@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,6 +50,7 @@
 
             <ImageView
                 android:id="@+id/logo"
+                android:contentDescription="@string/app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -60,12 +62,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="First Name"
+                android:hint="@string/first_name"
                 android:inputType="textCapSentences|textPersonName"
                 android:singleLine="true"
                 android:textCursorDrawable="@color/colorPrimary"
                 android:textColorLink="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:backgroundTint="@color/colorPrimary"
+                tools:ignore="UnusedAttribute" />
 
             <EditText
                 android:id="@+id/lastNameEditText"
@@ -73,11 +76,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Last Name"
+                android:hint="@string/last_name"
                 android:inputType="textCapSentences|textPersonName"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:backgroundTint="@color/colorPrimary"
+                tools:ignore="UnusedAttribute" />
 
             <EditText
                 android:id="@+id/emailEditText"
@@ -85,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Enter Email"
+                android:hint="@string/enter_email"
                 android:inputType="textEmailAddress"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
@@ -97,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Enter Password"
+                android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
@@ -109,11 +113,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
-                android:hint="Verify Password"
+                android:hint="@string/verify_password"
                 android:inputType="textPassword"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"/>
+                android:backgroundTint="@color/colorPrimary"
+                tools:ignore="UnusedAttribute" />
 
             <Button
                 android:id="@+id/createAccountButton"

@@ -1,16 +1,10 @@
 package com.masonsrussell.humanityhospice_android;
 
-import android.provider.ContactsContract;
-
+import android.net.Uri;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.time.Instant;
-import java.util.ArrayList;
+import com.google.firebase.storage.StorageReference;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +13,7 @@ public class FirebaseCalls
 {
 	private static FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+	private static StorageReference storageReference;
 
 	public static void createPost(String post)
 	{
@@ -47,7 +42,7 @@ public class FirebaseCalls
 		newPost.updateChildren(posterInfo);
 	}
 
-	public static void createFirstPost(String fName, String lName)
+	private static void createFirstPost(String fName, String lName)
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
@@ -137,5 +132,19 @@ public class FirebaseCalls
 		DatabaseReference individualReader = readers.child(mAuth.getCurrentUser().getUid());
 		DatabaseReference readingFromRef = individualReader.child("ReadingFrom");
 		readingFromRef.setValue(patientID);
+	}
+
+	public static void addProfilePictures(Uri file)
+	{
+		StorageReference profilePicturesRef = storageReference.child("ProfilePictures");
+		StorageReference currentUserProfileRef = profilePicturesRef.child(mAuth.getCurrentUser().getUid());
+		StorageReference imageRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/" + file.getLastPathSegment());
+
+	}
+
+	public static void addAlbumPictures(Uri file)
+	{
+		StorageReference albumPicturesRef = storageReference.child("PhotoAlbum");
+		StorageReference patientAlbumsRef = albumPicturesRef.child(AccountInformation.patientID);
 	}
 }

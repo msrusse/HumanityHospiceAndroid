@@ -36,7 +36,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif"
         android:gravity="center"
         android:hint="@string/private_access_code"
         android:inputType="text|textCapCharacters|textShortMessage" />
@@ -52,10 +51,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginRight="8dp"
             android:layout_weight=".5"
             android:background="@drawable/rounded_button"
-            android:text="Enter"
+            android:text="@string/enter"
             android:textAllCaps="false"
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />
@@ -65,9 +66,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight=".5"
             android:background="@drawable/rounded_button"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />

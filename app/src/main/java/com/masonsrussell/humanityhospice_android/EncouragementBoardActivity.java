@@ -48,6 +48,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 
+		//noinspection IfCanBeSwitch
 		if (AccountInformation.accountType.equals("Patient"))
 		{
 			setContentView(R.layout.activity_encouragement_board);

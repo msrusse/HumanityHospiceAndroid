@@ -71,6 +71,7 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
+                    android:contentDescription="@string/app_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight=".2"
@@ -87,7 +88,8 @@
                     android:inputType="textMultiLine"
                     android:textColorHighlight="@color/colorPrimary"
                     android:textColorLink="@color/colorPrimary"
-                    android:textCursorDrawable="@color/colorPrimary" />
+                    android:textCursorDrawable="@color/colorPrimary"
+                    tools:ignore="UnusedAttribute" />
             </LinearLayout>
         </LinearLayout>
 
