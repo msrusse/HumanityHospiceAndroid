@@ -1,19 +1,30 @@
 package com.masonsrussell.humanityhospice_android;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.UUID;
 
 public class FirebaseCalls
 {
 	private static final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 	private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 	private static StorageReference storageReference;
+	private static FirebaseStorage storage;
 
 	public static void createPost(String post)
 	{
@@ -136,15 +147,19 @@ public class FirebaseCalls
 
 	public static void addProfilePictures(Uri file)
 	{
-		StorageReference profilePicturesRef = storageReference.child("ProfilePictures");
-		StorageReference currentUserProfileRef = profilePicturesRef.child(mAuth.getCurrentUser().getUid());
-		StorageReference imageRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/" + file.getLastPathSegment());
+		storage = FirebaseStorage.getInstance();
+		storageReference = storage.getReference();
 
+		StorageReference profileImageRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/ProfilePicture");
+		profileImageRef.putFile(file);
 	}
 
 	public static void addAlbumPictures(Uri file)
 	{
-		StorageReference albumPicturesRef = storageReference.child("PhotoAlbum");
-		StorageReference patientAlbumsRef = albumPicturesRef.child(AccountInformation.patientID);
+		storage = FirebaseStorage.getInstance();
+		storageReference = storage.getReference();
+
+		StorageReference albumImageRef = storageReference.child("Journals/" + AccountInformation.patientID + "/postImages/post-" + Calendar.getInstance().getTime().getTime());
+		albumImageRef.putFile(file);
 	}
 }

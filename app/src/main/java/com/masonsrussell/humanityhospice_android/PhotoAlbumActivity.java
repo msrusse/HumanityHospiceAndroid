@@ -1,18 +1,24 @@
 package com.masonsrussell.humanityhospice_android;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.IOException;
 
 public class PhotoAlbumActivity extends AppCompatActivity
 {
@@ -134,5 +140,22 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					}
 				}
 		);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+				&& data != null && data.getData() != null )
+		{
+			filePath = data.getData();
+			try {
+				FirebaseCalls.addAlbumPictures(filePath);
+			}
+			catch (Exception ex)
+			{
+				Log.d("PhotoAlbumActivity", ex.getMessage());
+			}
+		}
 	}
 }
