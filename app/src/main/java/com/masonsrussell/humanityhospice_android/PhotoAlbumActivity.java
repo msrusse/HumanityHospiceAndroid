@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +60,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 {
 
 	private DrawerLayout mDrawerLayout;
+	TextView navHeaderName, navHeaderEmail;
 	private FirebaseDatabase mDatabase;
 	private FirebaseAuth mAuth;
 	private GridView photoGridView;
@@ -70,19 +72,16 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_photo_album);
-		Button addPhotoButton = findViewById(R.id.addPhotoButton);
-		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
-		screenWidth = metrics.widthPixels;
-		screenHeight = metrics.heightPixels;
-		photoGridView = findViewById(R.id.photo_gridview);
-		mDatabase = FirebaseDatabase.getInstance();
-		mAuth = FirebaseAuth.getInstance();
-		mDrawerLayout = findViewById(R.id.drawer_layout);
 		if (AccountInformation.accountType.equals("Reader"))
 		{
-			addPhotoButton.setVisibility(View.INVISIBLE);
-			getPhotoAlbumImages();
+			setContentView(R.layout.activity_reader_photo_album);
+			DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+			screenWidth = metrics.widthPixels;
+			screenHeight = metrics.heightPixels;
+			photoGridView = findViewById(R.id.photo_gridview);
+			mDatabase = FirebaseDatabase.getInstance();
+			mAuth = FirebaseAuth.getInstance();
+			mDrawerLayout = findViewById(R.id.drawer_layout);
 			Toolbar toolbar = findViewById(R.id.toolbar);
 			setSupportActionBar(toolbar);
 			ActionBar actionbar = getSupportActionBar();
@@ -90,10 +89,19 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			actionbar.setDisplayHomeAsUpEnabled(true);
 			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setReaderNavMenu();
+			getPhotoAlbumImages();
 		}
 		else
 		{
-			getPhotoAlbumImages();
+			setContentView(R.layout.activity_photo_album);
+			Button addPhotoButton = findViewById(R.id.addPhotoButton);
+			DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+			screenWidth = metrics.widthPixels;
+			screenHeight = metrics.heightPixels;
+			photoGridView = findViewById(R.id.photo_gridview);
+			mDatabase = FirebaseDatabase.getInstance();
+			mAuth = FirebaseAuth.getInstance();
+			mDrawerLayout = findViewById(R.id.drawer_layout);
 			Toolbar toolbar = findViewById(R.id.toolbar);
 			setSupportActionBar(toolbar);
 			ActionBar actionbar = getSupportActionBar();
@@ -101,6 +109,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			actionbar.setDisplayHomeAsUpEnabled(true);
 			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setFamilyPatientNavMenu();
+			getPhotoAlbumImages();
 
 			addPhotoButton.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -313,6 +322,21 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					}
 				}
 		);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				mDrawerLayout.openDrawer(GravityCompat.START);
+				navHeaderName = findViewById(R.id.navHeaderName);
+				navHeaderEmail = findViewById(R.id.navHeaderEmail);
+				navHeaderEmail.setText(AccountInformation.email);
+				navHeaderName.setText(AccountInformation.username);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void getPhotoAlbumImages()
