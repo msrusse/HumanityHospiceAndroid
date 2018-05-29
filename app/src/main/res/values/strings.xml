@@ -45,4 +45,6 @@
     <string name="reader">Friend</string>
     <string name="patient_url">https://www.HPPatientPortal.com/John-Smith/583693</string>
     <string name="x">x</string>
+    <string name="choose_picture">Choose Picture</string>
+    <string name="take_picture">Take Picture</string>
 </resources>

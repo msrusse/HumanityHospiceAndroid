@@ -75,7 +75,9 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 								finish();
 								break;
 							case "My Photo Album":
-
+								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "Create Family Account":
 								mDrawerLayout.closeDrawers();

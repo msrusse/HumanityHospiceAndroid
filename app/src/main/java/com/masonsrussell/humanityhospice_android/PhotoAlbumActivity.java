@@ -1,27 +1,36 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,26 +41,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class PhotoAlbumActivity extends AppCompatActivity
 {
 
-	private Uri filePath;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	private GridView photoGridView;
 	private List<Map<String, Object>> imageURLs = new ArrayList<>();
 	int screenWidth;
-
-	private final int PICK_IMAGE_REQUEST = 71;
+	int screenHeight;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +74,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		Button addPhotoButton = findViewById(R.id.addPhotoButton);
 		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 		screenWidth = metrics.widthPixels;
+		screenHeight = metrics.heightPixels;
 		photoGridView = findViewById(R.id.photo_gridview);
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
@@ -78,7 +92,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				chooseImage();
+				displayPictureDialog();
 			}
 		});
 	}
@@ -120,10 +134,43 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	}
 
 	private void chooseImage() {
-		Intent intent = new Intent();
-		intent.setType("image/*");
-		intent.setAction(Intent.ACTION_GET_CONTENT);
-		startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+		Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(pickPhoto , 1);
+	}
+
+	private void takePicture()
+	{
+		Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(takePhoto, 0);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+		switch(requestCode) {
+			case 0:
+				if(resultCode == RESULT_OK){
+					Bundle bundle = imageReturnedIntent.getExtras();
+					Uri uri = (Uri)bundle.get(Intent.EXTRA_STREAM);
+					FirebaseCalls.addAlbumPictures(uri, "new post");
+				}
+
+				break;
+			case 1:
+				if(resultCode == RESULT_OK){
+					Uri selectedImage = imageReturnedIntent.getData();
+					FirebaseCalls.addAlbumPictures(selectedImage, "new post");
+				}
+				break;
+		}
+	}
+
+	public Uri getImageUri(Context inContext, Bitmap inImage) {
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+		String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+		return Uri.parse(path);
 	}
 
 	private void setFamilyPatientNavMenu()
@@ -209,23 +256,6 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-				&& data != null && data.getData() != null )
-		{
-			filePath = data.getData();
-			try {
-				FirebaseCalls.addAlbumPictures(filePath, "new post");
-			}
-			catch (Exception ex)
-			{
-				Log.d("PhotoAlbumActivity", ex.getMessage());
-			}
-		}
-	}
-
 	private void getPhotoAlbumImages()
 	{
 		DatabaseReference photoRef = mDatabase.getReference("PhotoAlbum");
@@ -271,7 +301,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent,
 			                        View v, int position, long id) {
-				Toast.makeText(getBaseContext(), "Grid Item " + (position + 1) + " Selected", Toast.LENGTH_LONG).show();
+				displayDialog(position);
 			}
 		});
 	}
@@ -292,5 +322,60 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			Long secondValue =  (Long) second.get(key);
 			return firstValue.compareTo(secondValue);
 		}
+	}
+
+	private void displayDialog(int index)
+	{
+		final Dialog dialog = new Dialog(PhotoAlbumActivity.this);
+
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_display_photo_with_caption);
+
+		ImageView photo = dialog.findViewById(R.id.photoView);
+		photo.getLayoutParams().height = (int)(screenHeight / 1.5);
+		photo.getLayoutParams().width = (int)(screenWidth/1.5);
+		TextView captionView = dialog.findViewById(R.id.photoTextView);
+		captionView.setText(imageURLs.get(index).get("caption").toString());
+		Glide.with(this).load(imageURLs.get(index).get("url")).into(photo);
+		dialog.show();
+	}
+
+	private void displayPictureDialog()
+	{
+		final Dialog dialog = new Dialog(PhotoAlbumActivity.this);
+
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_choose_take_photo);
+
+		Button takePhoto = dialog.findViewById(R.id.takePictureButton);
+		Button choosePhoto = dialog.findViewById(R.id.choosePictureButton);
+		Button cancel = dialog.findViewById(R.id.cancelButton);
+		dialog.show();
+
+		takePhoto.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				takePicture();
+				dialog.hide();
+			}
+		});
+
+		choosePhoto.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				chooseImage();
+				dialog.hide();
+			}
+		});
+
+		cancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				dialog.hide();
+			}
+		});
 	}
 }
