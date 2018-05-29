@@ -1,9 +1,11 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -13,12 +15,26 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhotoAlbumActivity extends AppCompatActivity
 {
@@ -26,6 +42,9 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	private Uri filePath;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseAuth mAuth;
+	private FirebaseDatabase mDatabase;
+	private GridView photoGridView;
+	private ArrayList<String> imageURLs = new ArrayList<>();
 
 	private final int PICK_IMAGE_REQUEST = 71;
 
@@ -35,8 +54,11 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo_album);
 		Button addPhotoButton = findViewById(R.id.addPhotoButton);
+		photoGridView = findViewById(R.id.photo_gridview);
 		mAuth = FirebaseAuth.getInstance();
+		mDatabase = FirebaseDatabase.getInstance();
 		mDrawerLayout = findViewById(R.id.drawer_layout);
+		getPhotoAlbumImages();
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ActionBar actionbar = getSupportActionBar();
@@ -44,6 +66,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 		setFamilyPatientNavMenu();
+
 		addPhotoButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -53,12 +76,49 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		});
 	}
 
+	public class ImageAdapterGridView extends BaseAdapter
+	{
+		private Context mContext;
+
+		public ImageAdapterGridView(Context c) {
+			mContext = c;
+		}
+
+		public int getCount() {
+			return imageURLs.size();
+		}
+
+		public Object getItem(int position) {
+			return null;
+		}
+
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView mImageView;
+
+			if (convertView == null) {
+				mImageView = new ImageView(mContext);
+				mImageView.setLayoutParams(new GridView.LayoutParams(360, 360));
+				mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+				mImageView.setPadding(16, 16, 16, 16);
+			} else {
+				mImageView = (ImageView) convertView;
+			}
+			Glide.with(getApplicationContext()).load(imageURLs.get(position)).into(mImageView);
+			return mImageView;
+		}
+	}
+
 	private void chooseImage() {
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
 	}
+
 	private void setFamilyPatientNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
@@ -150,12 +210,51 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		{
 			filePath = data.getData();
 			try {
-				FirebaseCalls.addAlbumPictures(filePath);
+				FirebaseCalls.addAlbumPictures(filePath, "new post");
 			}
 			catch (Exception ex)
 			{
 				Log.d("PhotoAlbumActivity", ex.getMessage());
 			}
 		}
+	}
+
+	private void getPhotoAlbumImages()
+	{
+		DatabaseReference photoRef = mDatabase.getReference("PhotoAlbum");
+		photoRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+			{
+				try
+				{
+					imageURLs.clear();
+					dataSnapshot.getValue();
+					Map<Object, Map> postsMap = (HashMap) dataSnapshot.getValue();
+					for (Object post : postsMap.keySet())
+					{
+						imageURLs.add(postsMap.get(post).get("url").toString());
+					}
+					photoGridView.setAdapter(new ImageAdapterGridView(getApplication()));
+
+					photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+						public void onItemClick(AdapterView<?> parent,
+						                        View v, int position, long id) {
+							Toast.makeText(getBaseContext(), "Grid Item " + (position + 1) + " Selected", Toast.LENGTH_LONG).show();
+						}
+					});
+				}
+				catch (Exception ex)
+				{
+					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError)
+			{
+
+			}
+		});
 	}
 }

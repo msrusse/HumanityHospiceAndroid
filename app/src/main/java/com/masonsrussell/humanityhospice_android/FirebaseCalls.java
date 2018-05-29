@@ -3,9 +3,13 @@ package com.masonsrussell.humanityhospice_android;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -154,12 +158,45 @@ public class FirebaseCalls
 		profileImageRef.putFile(file);
 	}
 
-	public static void addAlbumPictures(Uri file)
+	public static void addAlbumPictures(Uri file, final String post)
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		StorageReference albumImageRef = storageReference.child("Journals/" + AccountInformation.patientID + "/postImages/post-" + Calendar.getInstance().getTime().getTime());
-		albumImageRef.putFile(file);
+		final StorageReference albumImageRef = storageReference.child("PhotoAlbum/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
+		albumImageRef.putFile(file)
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+					{
+						albumImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+							@Override
+							public void onSuccess(Uri uri)
+							{
+								createAlbumPost(post, uri.toString());
+							}
+						});
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e)
+					{
+						Log.d("addAlbumPicture", e.getMessage());
+					}
+				});
+	}
+
+	private static void createAlbumPost(String post, Object imageURL)
+	{
+		DatabaseReference posts = mDatabase.getReference("PhotoAlbum");
+		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
+		DatabaseReference newPost = patientsPosts.push();
+
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("caption", post);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("url", imageURL);
+		newPost.updateChildren(posterInfo);
 	}
 }
