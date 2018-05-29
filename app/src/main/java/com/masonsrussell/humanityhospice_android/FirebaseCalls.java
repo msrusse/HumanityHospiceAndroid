@@ -158,12 +158,12 @@ public class FirebaseCalls
 		profileImageRef.putFile(file);
 	}
 
-	public static void addAlbumPictures(Uri file, final String post)
+	public static void addAlbumPictures(Uri file, final String post, String activity)
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		final StorageReference albumImageRef = storageReference.child("PhotoAlbum/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
+		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
 		albumImageRef.putFile(file)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 					@Override
@@ -198,5 +198,31 @@ public class FirebaseCalls
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
 		posterInfo.put("url", imageURL);
 		newPost.updateChildren(posterInfo);
+	}
+
+	public static void createPhotoRefFromCamera(byte[] data, final String post, String activity)
+	{
+		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
+		albumImageRef.putBytes(data)
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+					{
+						albumImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+							@Override
+							public void onSuccess(Uri uri)
+							{
+								createAlbumPost(post, uri.toString());
+							}
+						});
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e)
+					{
+						Log.d("addAlbumPicture", e.getMessage());
+					}
+				});
 	}
 }

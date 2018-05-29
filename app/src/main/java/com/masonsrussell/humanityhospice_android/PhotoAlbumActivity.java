@@ -141,8 +141,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 
 	private void takePicture()
 	{
-		Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(takePhoto, 0);
+		Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(intent, 0);
 	}
 
 	@Override
@@ -150,27 +150,22 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 		switch(requestCode) {
 			case 0:
-				if(resultCode == RESULT_OK){
-					Bundle bundle = imageReturnedIntent.getExtras();
-					Uri uri = (Uri)bundle.get(Intent.EXTRA_STREAM);
-					FirebaseCalls.addAlbumPictures(uri, "new post");
+				if(resultCode == RESULT_OK && imageReturnedIntent != null){
+					Bitmap bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+					byte[] data = baos.toByteArray();
+					FirebaseCalls.createPhotoRefFromCamera(data, "new post", "PhotoAlbum");
 				}
 
 				break;
 			case 1:
 				if(resultCode == RESULT_OK){
 					Uri selectedImage = imageReturnedIntent.getData();
-					FirebaseCalls.addAlbumPictures(selectedImage, "new post");
+					FirebaseCalls.addAlbumPictures(selectedImage, "new post", "PhotoAlbum");
 				}
 				break;
 		}
-	}
-
-	public Uri getImageUri(Context inContext, Bitmap inImage) {
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-		String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-		return Uri.parse(path);
 	}
 
 	private void setFamilyPatientNavMenu()
