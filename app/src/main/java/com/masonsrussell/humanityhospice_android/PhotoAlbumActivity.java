@@ -252,10 +252,12 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Encouragement Board":
-								mDrawerLayout.closeDrawers();
+								Intent intent1 = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "Photo Album":
-
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Sign Out":
 								mAuth.signOut();
@@ -402,5 +404,13 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		captionView.setText(imageURLs.get(index).get("caption").toString());
 		Glide.with(this).load(imageURLs.get(index).get("url")).into(photo);
 		dialog.show();
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+		startActivity(intent);
+		finish();
 	}
 }

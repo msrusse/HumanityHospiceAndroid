@@ -247,7 +247,7 @@ public class CreateAccountActivity extends AppCompatActivity
 						if (task.isSuccessful())
 						{
 							Log.d(TAG, "User profile updated.");
-							Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+							Intent intent = new Intent(getApplicationContext(), CheckAccountTypeActivity.class);
 							startActivity(intent);
 							finish();
 						}

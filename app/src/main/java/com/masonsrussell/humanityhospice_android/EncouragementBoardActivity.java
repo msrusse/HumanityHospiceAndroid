@@ -142,7 +142,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								mDrawerLayout.closeDrawers();
 								break;
 							case "Photo Album":
-
+								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "Sign Out":
 								mAuth.signOut();

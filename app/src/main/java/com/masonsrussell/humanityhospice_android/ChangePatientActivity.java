@@ -135,7 +135,9 @@ public class ChangePatientActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Photo Album":
-
+								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "Sign Out":
 								mAuth.signOut();
