@@ -59,8 +59,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 {
 
 	private DrawerLayout mDrawerLayout;
-	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
+	private FirebaseAuth mAuth;
 	private GridView photoGridView;
 	private List<Map<String, Object>> imageURLs = new ArrayList<>();
 	int screenWidth;
@@ -76,25 +76,42 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		screenWidth = metrics.widthPixels;
 		screenHeight = metrics.heightPixels;
 		photoGridView = findViewById(R.id.photo_gridview);
-		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
+		mAuth = FirebaseAuth.getInstance();
 		mDrawerLayout = findViewById(R.id.drawer_layout);
-		getPhotoAlbumImages();
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		ActionBar actionbar = getSupportActionBar();
-		getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		actionbar.setDisplayHomeAsUpEnabled(true);
-		actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-		setFamilyPatientNavMenu();
+		if (AccountInformation.accountType.equals("Reader"))
+		{
+			addPhotoButton.setVisibility(View.INVISIBLE);
+			getPhotoAlbumImages();
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+			setReaderNavMenu();
+		}
+		else
+		{
+			getPhotoAlbumImages();
+			Toolbar toolbar = findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			ActionBar actionbar = getSupportActionBar();
+			getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+			actionbar.setDisplayHomeAsUpEnabled(true);
+			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+			setFamilyPatientNavMenu();
 
-		addPhotoButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				displayPictureDialog();
-			}
-		});
+			addPhotoButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v)
+				{
+					Intent intent = new Intent(getApplicationContext(), AddPhotoActivity.class);
+					startActivity(intent);
+					finish();
+				}
+			});
+		}
 	}
 
 	public class ImageAdapterGridView extends BaseAdapter
@@ -130,41 +147,6 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			}
 			Glide.with(getApplicationContext()).load(imageURLs.get(position).get("url")).into(mImageView);
 			return mImageView;
-		}
-	}
-
-	private void chooseImage() {
-		Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		startActivityForResult(pickPhoto , 1);
-	}
-
-	private void takePicture()
-	{
-		Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(intent, 0);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-		switch(requestCode) {
-			case 0:
-				if(resultCode == RESULT_OK && imageReturnedIntent != null){
-					Bitmap bitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-					byte[] data = baos.toByteArray();
-					FirebaseCalls.createPhotoRefFromCamera(data, "new post", "PhotoAlbum");
-				}
-
-				break;
-			case 1:
-				if(resultCode == RESULT_OK){
-					Uri selectedImage = imageReturnedIntent.getData();
-					FirebaseCalls.addAlbumPictures(selectedImage, "new post", "PhotoAlbum");
-				}
-				break;
 		}
 	}
 
@@ -251,9 +233,89 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		);
 	}
 
+	private void setReaderNavMenu()
+	{
+		NavigationView navigationView = findViewById(R.id.nav_view);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		navigationView.setNavigationItemSelectedListener(
+				new NavigationView.OnNavigationItemSelectedListener()
+				{
+					@Override
+					public boolean onNavigationItemSelected(MenuItem menuItem)
+					{
+						// set item as selected to persist highlight
+						switch(menuItem.toString())
+						{
+							case "Journal":
+								Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+								startActivity(intent);
+								finish();
+								break;
+							case "Encouragement Board":
+								mDrawerLayout.closeDrawers();
+								break;
+							case "Photo Album":
+
+								break;
+							case "Sign Out":
+								mAuth.signOut();
+								finish();
+								break;
+							case "About Humanity Hospice":
+								Intent intent2 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
+								startActivity(intent2);
+								finish();
+								break;
+							case "Add Patient":
+								Intent intent3 = new Intent(getApplicationContext(), AddPatientActivity.class);
+								startActivity(intent3);
+								finish();
+								break;
+							case "Change Patient":
+								Intent intent4 = new Intent(getApplicationContext(), ChangePatientActivity.class);
+								startActivity(intent4);
+								finish();
+								break;
+						}
+						// close drawer when item is tapped
+						mDrawerLayout.closeDrawers();
+
+						// Add code here to update the UI based on the item selected
+						// For example, swap UI fragments here
+
+						return true;
+					}
+				});
+
+		mDrawerLayout.addDrawerListener(
+				new DrawerLayout.DrawerListener() {
+					@Override
+					public void onDrawerSlide(View drawerView, float slideOffset) {
+						// Respond when the drawer's position changes
+					}
+
+					@Override
+					public void onDrawerOpened(View drawerView) {
+						// Respond when the drawer is opened
+
+					}
+
+					@Override
+					public void onDrawerClosed(View drawerView) {
+						// Respond when the drawer is closed
+					}
+
+					@Override
+					public void onDrawerStateChanged(int newState) {
+						// Respond when the drawer motion state changes
+					}
+				}
+		);
+	}
+
 	private void getPhotoAlbumImages()
 	{
-		DatabaseReference photoRef = mDatabase.getReference("PhotoAlbum");
+		final DatabaseReference photoRef = mDatabase.getReference("PhotoAlbum");
 		photoRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -266,7 +328,14 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addImage = new HashMap<>();
-						addImage.put("caption", postsMap.get(post).get("caption").toString());
+						try
+						{
+							addImage.put("caption", postsMap.get(post).get("caption").toString());
+						}
+						catch (Exception ex)
+						{
+							addImage.put("caption", "");
+						}
 						addImage.put("timestamp", postsMap.get(post).get("timestamp"));
 						addImage.put("url", postsMap.get(post).get("url").toString());
 						imageURLs.add(addImage);
@@ -333,44 +402,5 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		captionView.setText(imageURLs.get(index).get("caption").toString());
 		Glide.with(this).load(imageURLs.get(index).get("url")).into(photo);
 		dialog.show();
-	}
-
-	private void displayPictureDialog()
-	{
-		final Dialog dialog = new Dialog(PhotoAlbumActivity.this);
-
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.dialog_choose_take_photo);
-
-		Button takePhoto = dialog.findViewById(R.id.takePictureButton);
-		Button choosePhoto = dialog.findViewById(R.id.choosePictureButton);
-		Button cancel = dialog.findViewById(R.id.cancelButton);
-		dialog.show();
-
-		takePhoto.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				takePicture();
-				dialog.hide();
-			}
-		});
-
-		choosePhoto.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				chooseImage();
-				dialog.hide();
-			}
-		});
-
-		cancel.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v)
-			{
-				dialog.hide();
-			}
-		});
 	}
 }

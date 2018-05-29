@@ -193,15 +193,28 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("caption", post);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
-		posterInfo.put("url", imageURL);
-		newPost.updateChildren(posterInfo);
+		if (post == null)
+		{
+			Map<String, Object> posterInfo = new HashMap<>();
+			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+			posterInfo.put("url", imageURL);
+			newPost.updateChildren(posterInfo);
+		}
+		else
+		{
+			Map<String, Object> posterInfo = new HashMap<>();
+			posterInfo.put("caption", post);
+			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+			posterInfo.put("url", imageURL);
+			newPost.updateChildren(posterInfo);
+		}
 	}
 
 	public static void createPhotoRefFromCamera(byte[] data, final String post, String activity)
 	{
+		storage = FirebaseStorage.getInstance();
+		storageReference = storage.getReference();
+
 		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
 		albumImageRef.putBytes(data)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
