@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +34,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PhotoAlbumActivity extends AppCompatActivity
@@ -44,7 +48,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	private GridView photoGridView;
-	private ArrayList<String> imageURLs = new ArrayList<>();
+	private List<Map<String, Object>> imageURLs = new ArrayList<>();
+	int screenWidth;
 
 	private final int PICK_IMAGE_REQUEST = 71;
 
@@ -54,6 +59,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo_album);
 		Button addPhotoButton = findViewById(R.id.addPhotoButton);
+		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+		screenWidth = metrics.widthPixels;
 		photoGridView = findViewById(R.id.photo_gridview);
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
@@ -101,13 +108,13 @@ public class PhotoAlbumActivity extends AppCompatActivity
 
 			if (convertView == null) {
 				mImageView = new ImageView(mContext);
-				mImageView.setLayoutParams(new GridView.LayoutParams(360, 360));
+				mImageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenWidth/3));
 				mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				mImageView.setPadding(16, 16, 16, 16);
 			} else {
 				mImageView = (ImageView) convertView;
 			}
-			Glide.with(getApplicationContext()).load(imageURLs.get(position)).into(mImageView);
+			Glide.with(getApplicationContext()).load(imageURLs.get(position).get("url")).into(mImageView);
 			return mImageView;
 		}
 	}
@@ -233,16 +240,13 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					Map<Object, Map> postsMap = (HashMap) dataSnapshot.getValue();
 					for (Object post : postsMap.keySet())
 					{
-						imageURLs.add(postsMap.get(post).get("url").toString());
+						Map<String, Object> addImage = new HashMap<>();
+						addImage.put("caption", postsMap.get(post).get("caption").toString());
+						addImage.put("timestamp", postsMap.get(post).get("timestamp"));
+						addImage.put("url", postsMap.get(post).get("url").toString());
+						imageURLs.add(addImage);
 					}
-					photoGridView.setAdapter(new ImageAdapterGridView(getApplication()));
-
-					photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-						public void onItemClick(AdapterView<?> parent,
-						                        View v, int position, long id) {
-							Toast.makeText(getBaseContext(), "Grid Item " + (position + 1) + " Selected", Toast.LENGTH_LONG).show();
-						}
-					});
+					setAdapter();
 				}
 				catch (Exception ex)
 				{
@@ -256,5 +260,37 @@ public class PhotoAlbumActivity extends AppCompatActivity
 
 			}
 		});
+	}
+
+	private void setAdapter()
+	{
+		Collections.sort(imageURLs, new MapComparator());
+		Collections.reverse(imageURLs);
+		photoGridView.setAdapter(new ImageAdapterGridView(getApplication()));
+
+		photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent,
+			                        View v, int position, long id) {
+				Toast.makeText(getBaseContext(), "Grid Item " + (position + 1) + " Selected", Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
+	class MapComparator implements Comparator<Map<String, Object>>
+	{
+		private final String key;
+
+		private MapComparator()
+		{
+			this.key = "timestamp";
+		}
+
+		public int compare(Map<String, Object> first,
+		                   Map<String, Object> second)
+		{
+			Long firstValue = (Long)first.get(key);
+			Long secondValue =  (Long) second.get(key);
+			return firstValue.compareTo(secondValue);
+		}
 	}
 }
