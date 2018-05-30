@@ -354,11 +354,11 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addImage = new HashMap<>();
-						try
+						if (postsMap.get(post).containsKey("caption"))
 						{
 							addImage.put("caption", postsMap.get(post).get("caption").toString());
 						}
-						catch (Exception ex)
+						else
 						{
 							addImage.put("caption", "");
 						}

@@ -16,11 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -290,6 +292,10 @@ public class JournalActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
+						if (postsMap.get(post).containsKey("url"))
+						{
+							addPost.put("url", postsMap.get(post).get("url").toString());
+						}
 						addPost.put("Post", postsMap.get(post).get("post").toString());
 						addPost.put("Poster", postsMap.get(post).get("poster").toString());
 						addPost.put("timestamp", postsMap.get(post).get("timestamp"));
@@ -317,16 +323,12 @@ public class JournalActivity extends AppCompatActivity
 		{
 			Collections.sort(posts, new MapComparator());
 			ArrayList<String> postsArrayList = new ArrayList<>();
-			ArrayList<String> posterArrayList = new ArrayList<>();
-			ArrayList<Long> timestampArrayList = new ArrayList<>();
 			Collections.reverse(posts);
 			for (Map post : posts)
 			{
 				postsArrayList.add(post.get("Post").toString());
-				posterArrayList.add(post.get("Poster").toString());
-				timestampArrayList.add((Long) post.get("timestamp"));
 			}
-			ListAdapter listAdapter = new CustomListAdapter(JournalActivity.this, R.layout.journal_listview_adapter, postsArrayList, posterArrayList, timestampArrayList);
+			ListAdapter listAdapter = new CustomListAdapter(JournalActivity.this, R.layout.journal_listview_adapter, postsArrayList);
 			postsListView.setAdapter(listAdapter);
 		}
 		catch (Exception ex)
@@ -359,16 +361,12 @@ public class JournalActivity extends AppCompatActivity
 
 		private Context mContext;
 		private int id;
-		private List<String> items;
-		private List<String> posters;
 
-		private CustomListAdapter(Context context, int textViewResourceId, List<String> postList, List<String> posterList, List<Long> timestampList)
+		private CustomListAdapter(Context context, int textViewResourceId, List<String> postList)
 		{
 			super(context, textViewResourceId, postList);
 			mContext = context;
 			id = textViewResourceId;
-			items = postList;
-			posters = posterList;
 		}
 
 		@Override
@@ -381,13 +379,22 @@ public class JournalActivity extends AppCompatActivity
 				mView = vi.inflate(id, null);
 			}
 
+			ImageView postImageView = mView.findViewById(R.id.postImageView);
 			TextView postBody = mView.findViewById(R.id.postBodyTextView);
 			TextView poster = mView.findViewById(R.id.usernameTextView);
 
-			if (items.get(position) != null)
+			if (posts.get(position).containsKey("url"))
 			{
-				postBody.setText(items.get(position));
-				poster.setText(posters.get(position));
+				Glide.with(getApplicationContext()).load(posts.get(position).get("url")).into(postImageView);
+				postBody.setText(posts.get(position).get("Post").toString());
+				poster.setText(posts.get(position).get("Poster").toString());
+			}
+			else
+			{
+				postImageView.setVisibility(View.INVISIBLE);
+				postImageView.getLayoutParams().height = 0;
+				postBody.setText(posts.get(position).get("Post").toString());
+				poster.setText(posts.get(position).get("Poster").toString());
 			}
 
 			return mView;

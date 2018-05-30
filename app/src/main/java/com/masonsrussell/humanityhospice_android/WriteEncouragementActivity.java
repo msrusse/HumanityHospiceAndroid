@@ -23,7 +23,6 @@ public class WriteEncouragementActivity extends AppCompatActivity
 	private EditText postBox;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
-	int totalPosts = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -60,15 +59,7 @@ public class WriteEncouragementActivity extends AppCompatActivity
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
-				if (dataSnapshot.getValue() != null)
-				{
-					Map<Object, Object> snapshot = (HashMap) dataSnapshot.getValue();
-					for (Object key : snapshot.keySet())
-					{
-						totalPosts++;
-					}
-				}
-				FirebaseCalls.createEncouragementPost(post, totalPosts);
+				FirebaseCalls.createEncouragementPost(post);
 			}
 
 			@Override

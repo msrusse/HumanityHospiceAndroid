@@ -30,7 +30,7 @@ public class FirebaseCalls
 	private static StorageReference storageReference;
 	private static FirebaseStorage storage;
 
-	public static void createPost(String post)
+	public static void createJournalPostWithoutPhoto(String post)
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
@@ -43,7 +43,22 @@ public class FirebaseCalls
 		newPost.updateChildren(posterInfo);
 	}
 
-	public static void createEncouragementPost(String post, int totalPosts)
+	public static void createJournalPostWithPhoto(String post, Object imageURl)
+	{
+		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
+		DatabaseReference newPost = patientsPosts.push();
+
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("poster", AccountInformation.username);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("url", imageURl);
+		posterInfo.put("post", post);
+		newPost.updateChildren(posterInfo);
+		createAlbumPost(post, imageURl);
+	}
+
+	public static void createEncouragementPost(String post)
 	{
 		DatabaseReference posts = mDatabase.getReference("EncouragementBoard");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
@@ -158,7 +173,7 @@ public class FirebaseCalls
 		profileImageRef.putFile(file);
 	}
 
-	public static void addAlbumPictures(Uri file, final String post, String activity)
+	public static void addAlbumPictures(Uri file, final String post, final String activity)
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
@@ -173,7 +188,14 @@ public class FirebaseCalls
 							@Override
 							public void onSuccess(Uri uri)
 							{
-								createAlbumPost(post, uri.toString());
+								if (activity.equals("Journals"))
+								{
+									createJournalPostWithPhoto(post, uri.toString());
+								}
+								else
+								{
+									createAlbumPost(post, uri.toString());
+								}
 							}
 						});
 					}
@@ -210,7 +232,7 @@ public class FirebaseCalls
 		}
 	}
 
-	public static void createPhotoRefFromCamera(byte[] data, final String post, String activity)
+	public static void createPhotoRefFromCamera(byte[] data, final String post, final String activity)
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
@@ -225,7 +247,14 @@ public class FirebaseCalls
 							@Override
 							public void onSuccess(Uri uri)
 							{
-								createAlbumPost(post, uri.toString());
+								if (activity.equals("Journal"))
+								{
+									createJournalPostWithPhoto(post, uri.toString());
+								}
+								else
+								{
+									createAlbumPost(post, uri.toString());
+								}
 							}
 						});
 					}
