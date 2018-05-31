@@ -8,12 +8,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,7 +44,8 @@ public class JournalActivity extends AppCompatActivity
 {
 	TextView navHeaderName, navHeaderEmail;
 	Button writePostButton;
-	ListView postsListView;
+	RecyclerView postsListView;
+	JournalListAdapter mAdapter;
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
@@ -328,8 +332,14 @@ public class JournalActivity extends AppCompatActivity
 			{
 				postsArrayList.add(post.get("Post").toString());
 			}
-			ListAdapter listAdapter = new CustomListAdapter(JournalActivity.this, R.layout.journal_listview_adapter, postsArrayList);
-			postsListView.setAdapter(listAdapter);
+			mAdapter = new JournalListAdapter(this, posts);
+			postsListView.setAdapter(mAdapter);
+			postsListView.setLayoutManager(new LinearLayoutManager(this));
+			postsListView.getRecycledViewPool().setMaxRecycledViews(0,0);
+			postsListView.setNestedScrollingEnabled(false);
+			postsListView.smoothScrollBy(1,1);
+			//ListAdapter listAdapter = new CustomListAdapter(JournalActivity.this, R.layout.journal_listview_adapter, postsArrayList);
+			//postsListView.setAdapter(listAdapter);
 		}
 		catch (Exception ex)
 		{
