@@ -48,4 +48,6 @@
     <string name="choose_picture">Choose Picture</string>
     <string name="take_picture">Take Picture</string>
     <string name="attach_photo">Attach Photo</string>
+    <string name="add_comment">Add Comment...</string>
+    <string name="add_post">Post</string>
 </resources>

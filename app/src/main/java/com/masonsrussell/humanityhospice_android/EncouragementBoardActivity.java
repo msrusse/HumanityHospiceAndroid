@@ -224,7 +224,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								mDrawerLayout.closeDrawers();
 								break;
 							case "My Photo Album":
-
+								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "Create Family Account":
 								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);

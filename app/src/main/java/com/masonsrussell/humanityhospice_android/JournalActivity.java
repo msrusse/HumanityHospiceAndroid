@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -46,10 +47,10 @@ public class JournalActivity extends AppCompatActivity
 	Button writePostButton;
 	RecyclerView postsListView;
 	JournalListAdapter mAdapter;
+	List<Map<String, Object>> posts = new ArrayList<>();
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
-	List<Map<String, Object>> posts = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -70,8 +71,7 @@ public class JournalActivity extends AppCompatActivity
 			actionbar.setDisplayHomeAsUpEnabled(true);
 			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setReaderNavMenu();
-		}
-		else
+		} else
 		{
 			setContentView(R.layout.activity_journal);
 			mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -87,7 +87,8 @@ public class JournalActivity extends AppCompatActivity
 			actionbar.setDisplayHomeAsUpEnabled(true);
 			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setFamilyPatientNavMenu();
-			writePostButton.setOnClickListener(new View.OnClickListener() {
+			writePostButton.setOnClickListener(new View.OnClickListener()
+			{
 				@Override
 				public void onClick(View v)
 				{
@@ -111,7 +112,7 @@ public class JournalActivity extends AppCompatActivity
 					{
 
 						// set item as selected to persist highlight
-						switch(menuItem.toString())
+						switch (menuItem.toString())
 						{
 							case "My Journal":
 								mDrawerLayout.closeDrawers();
@@ -124,7 +125,7 @@ public class JournalActivity extends AppCompatActivity
 							case "My Photo Album":
 								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
 								startActivity(intent1);
-								 finish();
+								finish();
 								break;
 							case "Create Family Account":
 								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
@@ -157,25 +158,30 @@ public class JournalActivity extends AppCompatActivity
 				});
 
 		mDrawerLayout.addDrawerListener(
-				new DrawerLayout.DrawerListener() {
+				new DrawerLayout.DrawerListener()
+				{
 					@Override
-					public void onDrawerSlide(View drawerView, float slideOffset) {
+					public void onDrawerSlide(View drawerView, float slideOffset)
+					{
 						// Respond when the drawer's position changes
 					}
 
 					@Override
-					public void onDrawerOpened(View drawerView) {
+					public void onDrawerOpened(View drawerView)
+					{
 						// Respond when the drawer is opened
 
 					}
 
 					@Override
-					public void onDrawerClosed(View drawerView) {
+					public void onDrawerClosed(View drawerView)
+					{
 						// Respond when the drawer is closed
 					}
 
 					@Override
-					public void onDrawerStateChanged(int newState) {
+					public void onDrawerStateChanged(int newState)
+					{
 						// Respond when the drawer motion state changes
 					}
 				}
@@ -194,7 +200,7 @@ public class JournalActivity extends AppCompatActivity
 					{
 
 						// set item as selected to persist highlight
-						switch(menuItem.toString())
+						switch (menuItem.toString())
 						{
 							case "Journal":
 								mDrawerLayout.closeDrawers();
@@ -240,26 +246,31 @@ public class JournalActivity extends AppCompatActivity
 				});
 
 		mDrawerLayout.addDrawerListener(
-				new DrawerLayout.DrawerListener() {
+				new DrawerLayout.DrawerListener()
+				{
 					@Override
-					public void onDrawerSlide(View drawerView, float slideOffset) {
+					public void onDrawerSlide(View drawerView, float slideOffset)
+					{
 						// Respond when the drawer's position changes
 
 					}
 
 					@Override
-					public void onDrawerOpened(View drawerView) {
+					public void onDrawerOpened(View drawerView)
+					{
 						// Respond when the drawer is opened
 
 					}
 
 					@Override
-					public void onDrawerClosed(View drawerView) {
+					public void onDrawerClosed(View drawerView)
+					{
 						// Respond when the drawer is closed
 					}
 
 					@Override
-					public void onDrawerStateChanged(int newState) {
+					public void onDrawerStateChanged(int newState)
+					{
 						// Respond when the drawer motion state changes
 					}
 				}
@@ -267,7 +278,8 @@ public class JournalActivity extends AppCompatActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
@@ -284,7 +296,8 @@ public class JournalActivity extends AppCompatActivity
 	private void getJournalPosts()
 	{
 		DatabaseReference journalPostsRef = mDatabase.getReference("Journals");
-		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
+		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener()
+		{
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
@@ -306,8 +319,7 @@ public class JournalActivity extends AppCompatActivity
 						posts.add(addPost);
 					}
 					setListView();
-				}
-				catch (Exception ex)
+				} catch (Exception ex)
 				{
 					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
 				}
@@ -326,24 +338,42 @@ public class JournalActivity extends AppCompatActivity
 		try
 		{
 			Collections.sort(posts, new MapComparator());
-			ArrayList<String> postsArrayList = new ArrayList<>();
 			Collections.reverse(posts);
-			for (Map post : posts)
-			{
-				postsArrayList.add(post.get("Post").toString());
-			}
 			mAdapter = new JournalListAdapter(this, posts);
 			postsListView.setAdapter(mAdapter);
 			postsListView.setLayoutManager(new LinearLayoutManager(this));
-			postsListView.getRecycledViewPool().setMaxRecycledViews(0,0);
-			postsListView.setNestedScrollingEnabled(false);
-			postsListView.smoothScrollBy(1,1);
-			//ListAdapter listAdapter = new CustomListAdapter(JournalActivity.this, R.layout.journal_listview_adapter, postsArrayList);
-			//postsListView.setAdapter(listAdapter);
-		}
-		catch (Exception ex)
+			postsListView.getRecycledViewPool().setMaxRecycledViews(0, 0);
+			postsListView.setNestedScrollingEnabled(true);
+			postsListView.smoothScrollBy(1, 1);
+			postsListView.addOnItemTouchListener(
+					new RecyclerItemClickListener(JournalActivity.this, new RecyclerItemClickListener.OnItemClickListener()
+					{
+						@Override
+						public void onItemClick(View v, int position)
+						{
+							Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
+							intent.putExtra("username", posts.get(position).get("Poster").toString());
+							intent.putExtra("post", posts.get(position).get("Post").toString());
+							intent.putExtra("timestamp", posts.get(position).get("timestamp").toString());
+							startActivity(intent);
+						}
+					})
+			);
+		} catch (Exception ex)
 		{
 			Log.d("JournalActivity", ex.getMessage());
+		}
+	}
+
+	public void onBackPressed()
+	{
+		if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+		{
+			mDrawerLayout.closeDrawer(GravityCompat.START);
+		} else
+		{
+			mAuth.signOut();
+			finish();
 		}
 	}
 
@@ -360,63 +390,9 @@ public class JournalActivity extends AppCompatActivity
 		                   Map<String, Object> second)
 		{
 			// TODO: Null checking, both for maps and values
-			Long firstValue = (Long)first.get(key);
-			Long secondValue =  (Long) second.get(key);
+			Long firstValue = (Long) first.get(key);
+			Long secondValue = (Long) second.get(key);
 			return firstValue.compareTo(secondValue);
-		}
-	}
-
-	private class CustomListAdapter extends ArrayAdapter<String>
-	{
-
-		private Context mContext;
-		private int id;
-
-		private CustomListAdapter(Context context, int textViewResourceId, List<String> postList)
-		{
-			super(context, textViewResourceId, postList);
-			mContext = context;
-			id = textViewResourceId;
-		}
-
-		@Override
-		public View getView(int position, View v, ViewGroup parent)
-		{
-			View mView = v;
-			if (mView == null)
-			{
-				LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				mView = vi.inflate(id, null);
-			}
-
-			ImageView postImageView = mView.findViewById(R.id.postImageView);
-			TextView postBody = mView.findViewById(R.id.postBodyTextView);
-			TextView poster = mView.findViewById(R.id.usernameTextView);
-
-			if (posts.get(position).containsKey("url"))
-			{
-				Glide.with(getApplicationContext()).load(posts.get(position).get("url")).into(postImageView);
-				postBody.setText(posts.get(position).get("Post").toString());
-				poster.setText(posts.get(position).get("Poster").toString());
-			}
-			else
-			{
-				postImageView.setVisibility(View.INVISIBLE);
-				postImageView.getLayoutParams().height = 0;
-				postBody.setText(posts.get(position).get("Post").toString());
-				poster.setText(posts.get(position).get("Poster").toString());
-			}
-
-			return mView;
-		}
-	}
-
-	public void onBackPressed() {
-		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-			mDrawerLayout.closeDrawer(GravityCompat.START);
-		} else {
-			mAuth.signOut();
-			finish();
 		}
 	}
 }
