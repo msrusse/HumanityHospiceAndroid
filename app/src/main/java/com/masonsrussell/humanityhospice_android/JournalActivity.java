@@ -313,6 +313,12 @@ public class JournalActivity extends AppCompatActivity
 						{
 							addPost.put("url", postsMap.get(post).get("url").toString());
 						}
+						if (postsMap.get(post).containsKey("comments"))
+						{
+
+							addPost.put("comments", postsMap.get(post).get("comments"));
+						}
+						addPost.put("postID", post);
 						addPost.put("Post", postsMap.get(post).get("post").toString());
 						addPost.put("Poster", postsMap.get(post).get("poster").toString());
 						addPost.put("timestamp", postsMap.get(post).get("timestamp"));
@@ -352,6 +358,7 @@ public class JournalActivity extends AppCompatActivity
 						public void onItemClick(View v, int position)
 						{
 							Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
+							intent.putExtra("postID", posts.get(position).get("postID").toString());
 							intent.putExtra("username", posts.get(position).get("Poster").toString());
 							intent.putExtra("post", posts.get(position).get("Post").toString());
 							intent.putExtra("timestamp", posts.get(position).get("timestamp").toString());
@@ -389,7 +396,6 @@ public class JournalActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			// TODO: Null checking, both for maps and values
 			Long firstValue = (Long) first.get(key);
 			Long secondValue = (Long) second.get(key);
 			return firstValue.compareTo(secondValue);

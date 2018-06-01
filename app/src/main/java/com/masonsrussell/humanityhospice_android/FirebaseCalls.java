@@ -267,4 +267,20 @@ public class FirebaseCalls
 					}
 				});
 	}
+
+	public static void addCommentToJournalPost(String commentToAdd, String postID)
+	{
+		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
+		DatabaseReference currentPost = patientsPosts.child(postID);
+		DatabaseReference commentsRef = currentPost.child("comments");
+		DatabaseReference newComment = commentsRef.push();
+
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("poster", AccountInformation.username);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("post", commentToAdd);
+		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
+		newComment.updateChildren(posterInfo);
+	}
 }

@@ -115,7 +115,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/enterCommentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -129,7 +129,7 @@
                 android:inputType="textPersonName" />
 
             <Button
-                android:id="@+id/cancelButton"
+                android:id="@+id/addCommentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"

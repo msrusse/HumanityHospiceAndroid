@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,17 +43,41 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		//holder.bindData();
 		holder.setIsRecyclable(false);
-		if (postsList.get(position).size() == 4)
+		if (postsList.get(position).containsKey("url") && postsList.get(position).containsKey("comments"))
 		{
+			List<Object> commentsList = new ArrayList<>();
+			commentsList.add(postsList.get(position).get("comments"));
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
+			String commentsTotal = "Comments (" + String.valueOf(commentsList.size()) + ") v";
+			holder.commentsView.setText(commentsTotal);
 			holder.postImageView.setVisibility(View.VISIBLE);
 			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
 		}
-		else if (postsList.get(position).size() == 3)
+		else if (postsList.get(position).containsKey("url"))
 		{
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
+			String commentsTotal = "Comments (0) v";
+			holder.commentsView.setText(commentsTotal);
+			holder.postImageView.setVisibility(View.VISIBLE);
+			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
+		}
+		else if (postsList.get(position).containsKey("comments"))
+		{
+			List<Object> commentsList = new ArrayList<>();
+			commentsList.add(postsList.get(position).get("comments"));
+			holder.postBody.setText(postsList.get(position).get("Post").toString());
+			holder.poster.setText(postsList.get(position).get("Poster").toString());
+			String commentsTotal = "Comments (" + String.valueOf(commentsList.size()) + ") v";
+			holder.commentsView.setText(commentsTotal);
+		}
+		else
+		{
+			holder.postBody.setText(postsList.get(position).get("Post").toString());
+			holder.poster.setText(postsList.get(position).get("Poster").toString());
+			String commentsTotal = "Comments (0) v";
+			holder.commentsView.setText(commentsTotal);
 		}
 	}
 
@@ -63,7 +88,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 
 	class MainViewHolder extends RecyclerView.ViewHolder {
 
-		TextView postBody, timestamp, poster;
+		TextView postBody, timestamp, poster, commentsView;
 		ImageView postImageView;
 
 		public MainViewHolder(View itemView) {
@@ -72,6 +97,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			timestamp = itemView.findViewById(R.id.posterTextView);
 			poster = itemView.findViewById(R.id.usernameTextView);
 			postImageView = itemView.findViewById(R.id.postImageView);
+			commentsView = itemView.findViewById(R.id.commentsView);
 		}
 
 	}
