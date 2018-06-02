@@ -65,38 +65,38 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		});
 	}
 
-	private void isReader(String patientID)
+	private void isReader(String patientID, String profilePictureURL)
 	{
-		AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail());
+		AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), profilePictureURL);
 		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 		startActivity(intent);
 		finish();
 	}
 
-	private void isPatient()
+	private void isPatient(String profilePictureURL)
 	{
-		AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail());
+		AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), profilePictureURL);
 		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 		startActivity(intent);
 		finish();
 	}
 
-	private void isFamily(String patientID)
+	private void isFamily(String patientID, String profilePictureURL)
 	{
 		if (mAuth.getCurrentUser().getDisplayName() == null)
 		{
-			getFamilyName(patientID);
+			getFamilyName(patientID, profilePictureURL);
 		}
 		else
 		{
-			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail());
+			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), profilePictureURL);
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
 		}
 	}
 
-	private void getFamilyName(final String patientID)
+	private void getFamilyName(final String patientID, final String profilePictureURL)
 	{
 		DatabaseReference familyRef = mDatabase.getReference("Family");
 		familyRef.child(mAuth.getCurrentUser().getUid()).child("MetaData").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -107,7 +107,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				String firstName = metaDataValues.get("firstName").toString();
 				String lastName = metaDataValues.get("lastName").toString();
 				user = mAuth.getCurrentUser();
-				addPersonalData(firstName, lastName, patientID);
+				addPersonalData(firstName, lastName, patientID, profilePictureURL);
 			}
 
 			@Override
@@ -118,7 +118,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		});
 	}
 
-	private void addPersonalData(String firstName, String lastName, final String patientID)
+	private void addPersonalData(String firstName, String lastName, final String patientID, final String profilePictureURL)
 	{
 		UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
 				.setDisplayName(firstName + " " + lastName)
@@ -131,7 +131,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 					public void onComplete(@NonNull Task<Void> task)
 					{
 						if (task.isSuccessful())
-						{isFamily(patientID);
+						{isFamily(patientID, profilePictureURL);
 						}
 					}
 				});
@@ -148,7 +148,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
 				if (allPatients.containsKey(mAuth.getCurrentUser().getUid()))
 				{
-					isPatient();
+					getPatientProfilePic();
 				}
 				else
 				{
@@ -200,11 +200,32 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> familyInfo = (HashMap) dataSnapshot.getValue();
-				isFamily(familyInfo.get("PatientID").toString());
+				if (familyInfo.keySet().contains("profilePictureURL")) isFamily(familyInfo.get("PatientID").toString(), familyInfo.get("profilePictureURL").toString());
+				else isFamily(familyInfo.get("PatientID").toString(), null);
 			}
 
 			@Override
 			public void onCancelled(DatabaseError databaseError)
+			{
+
+			}
+		});
+	}
+
+	private void getPatientProfilePic()
+	{
+		DatabaseReference patientref = mDatabase.getReference("Patients").child(mAuth.getCurrentUser().getUid());
+		patientref.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+			{
+				HashMap<String, Object> patientInfo = (HashMap) dataSnapshot.getValue();
+				if (patientInfo.keySet().contains("profilePictureURL")) isPatient(patientInfo.get("profilePictureURL").toString());
+				else isPatient(null);
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError)
 			{
 
 			}
@@ -220,7 +241,8 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> readerInfo = (HashMap) dataSnapshot.getValue();
-				isReader(readerInfo.get("ReadingFrom").toString());
+				if (readerInfo.keySet().contains("profilePictureURL")) isReader(readerInfo.get("ReadingFrom").toString(), readerInfo.get("profilePictureURL").toString());
+				else isReader(readerInfo.get("ReadingFrom").toString(), null);
 			}
 
 			@Override
@@ -229,6 +251,13 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 			}
 		});
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		mAuth.signOut();
+		finish();
 	}
 
 }

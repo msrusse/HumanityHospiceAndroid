@@ -74,7 +74,6 @@ public class JournalCommentActivity extends AppCompatActivity
 		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra("timestamp")));
 		if (getIntent().getStringExtra("photoURL") != null)
 		{
-			// TODO: fix size of the images so that it does not take the whole screen
 			Glide.with(this).load(getIntent().getStringExtra("photoURL")).into(postImageView);
 			postImageView.getLayoutParams().height = screenHeight/3;
 		}
@@ -168,8 +167,10 @@ public class JournalCommentActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Long firstValue = (Long) first.get(key);
-			Long secondValue = (Long) second.get(key);
+			Double firstDoub = (double) first.get(key);
+			Double secondDoub = (double) second.get(key);
+			Long firstValue = Double.valueOf(firstDoub).longValue();
+			Long secondValue = Double.valueOf(secondDoub).longValue();
 			return firstValue.compareTo(secondValue);
 		}
 	}

@@ -309,9 +309,9 @@ public class JournalActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						if (postsMap.get(post).containsKey("url"))
+						if (postsMap.get(post).containsKey("postImageURL"))
 						{
-							addPost.put("url", postsMap.get(post).get("url").toString());
+							addPost.put("postImageURL", postsMap.get(post).get("postImageURL").toString());
 						}
 						if (postsMap.get(post).containsKey("comments"))
 						{
@@ -357,9 +357,9 @@ public class JournalActivity extends AppCompatActivity
 						public void onItemClick(View v, int position)
 						{
 							Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
-							if (posts.get(position).containsKey("url"))
+							if (posts.get(position).containsKey("postImageURL"))
 							{
-								intent.putExtra("photoURL", posts.get(position).get("url").toString());
+								intent.putExtra("photoURL", posts.get(position).get("postImageURL").toString());
 							}
 							intent.putExtra("postID", posts.get(position).get("postID").toString());
 							intent.putExtra("username", posts.get(position).get("Poster").toString());
@@ -399,8 +399,10 @@ public class JournalActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Long firstValue = (Long) first.get(key);
-			Long secondValue = (Long) second.get(key);
+			Double firstDoub = (double) first.get(key);
+			Double secondDoub = (double) second.get(key);
+			Long firstValue = Double.valueOf(firstDoub).longValue();
+			Long secondValue = Double.valueOf(secondDoub).longValue();
 			return firstValue.compareTo(secondValue);
 		}
 	}

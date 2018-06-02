@@ -39,7 +39,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
 	}
@@ -53,7 +53,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 		posterInfo.put("postImageURL", imageURl);
 		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
@@ -69,7 +69,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 		posterInfo.put("post", post);
 		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
 		newPost.updateChildren(posterInfo);
@@ -79,12 +79,12 @@ public class FirebaseCalls
 	{
 		DatabaseReference posts = mDatabase.getReference("Journals");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
-		DatabaseReference newPost = patientsPosts.child("post0");
+		DatabaseReference newPost = patientsPosts.push();
 
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", fName + " " + lName);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 		posterInfo.put("post", "Joined Humanity Hospice");
 		newPost.updateChildren(posterInfo);
 	}
@@ -97,7 +97,6 @@ public class FirebaseCalls
 
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> patientInfo = new HashMap<>();
-		patientInfo.put("FamilyID", "");
 		patientInfo.put("InviteCode", inviteCode);
 		individualPatient.updateChildren(patientInfo);
 
@@ -183,7 +182,7 @@ public class FirebaseCalls
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
+		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime()/1000);
 		albumImageRef.putFile(file)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 					@Override
@@ -223,7 +222,7 @@ public class FirebaseCalls
 		if (post == null)
 		{
 			Map<String, Object> posterInfo = new HashMap<>();
-			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
 		}
@@ -231,7 +230,7 @@ public class FirebaseCalls
 		{
 			Map<String, Object> posterInfo = new HashMap<>();
 			posterInfo.put("caption", post);
-			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
 		}
@@ -242,7 +241,7 @@ public class FirebaseCalls
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime());
+		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime()/1000);
 		albumImageRef.putBytes(data)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 					@Override
@@ -283,7 +282,7 @@ public class FirebaseCalls
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
 		posterInfo.put("post", commentToAdd);
 		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
 		newComment.updateChildren(posterInfo);

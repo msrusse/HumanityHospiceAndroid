@@ -43,6 +43,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		//holder.bindData();
 		holder.setIsRecyclable(false);
+		if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		holder.postBody.setText(postsList.get(position).get("Post").toString());
 		holder.timestamp.setText(date);
@@ -58,12 +59,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	class MainViewHolder extends RecyclerView.ViewHolder {
 
 		TextView postBody, timestamp, poster;
+		ImageView profilePictureImageView;
 
 		public MainViewHolder(View itemView) {
 			super(itemView);
 			postBody = itemView.findViewById(R.id.postBodyTextView);
 			timestamp = itemView.findViewById(R.id.posterTextView);
 			poster = itemView.findViewById(R.id.usernameTextView);
+			profilePictureImageView = itemView.findViewById(R.id.profilePicImageView);
 		}
 
 	}

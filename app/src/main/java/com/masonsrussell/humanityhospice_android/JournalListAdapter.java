@@ -45,8 +45,9 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		//holder.bindData();
 		holder.setIsRecyclable(false);
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
-		if (postsList.get(position).containsKey("url") && postsList.get(position).containsKey("comments"))
+		if (postsList.get(position).containsKey("postImageURL") && postsList.get(position).containsKey("comments"))
 		{
+			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get("comments"));
@@ -54,20 +55,22 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			holder.commentsView.setText(commentsTotal);
 			holder.postImageView.setVisibility(View.VISIBLE);
 			holder.timestamp.setText(date);
-			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
+			Glide.with(context).load(postsList.get(position).get("postImageURL")).into(holder.postImageView);
 		}
-		else if (postsList.get(position).containsKey("url"))
+		else if (postsList.get(position).containsKey("postImageURL"))
 		{
+			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			String commentsTotal = "Comments (0) v";
 			holder.commentsView.setText(commentsTotal);
 			holder.timestamp.setText(date);
 			holder.postImageView.setVisibility(View.VISIBLE);
-			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
+			Glide.with(context).load(postsList.get(position).get("postImageURL")).into(holder.postImageView);
 		}
 		else if (postsList.get(position).containsKey("comments"))
 		{
+			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			holder.timestamp.setText(date);
@@ -77,6 +80,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else
 		{
+			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			holder.timestamp.setText(date);
@@ -93,7 +97,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	class MainViewHolder extends RecyclerView.ViewHolder {
 
 		TextView postBody, timestamp, poster, commentsView;
-		ImageView postImageView;
+		ImageView postImageView, profilePictureImageView;
 
 		public MainViewHolder(View itemView) {
 			super(itemView);
@@ -102,6 +106,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			poster = itemView.findViewById(R.id.usernameTextView);
 			postImageView = itemView.findViewById(R.id.postImageView);
 			commentsView = itemView.findViewById(R.id.commentsView);
+			profilePictureImageView = itemView.findViewById(R.id.profilePicImageView);
 		}
 
 	}

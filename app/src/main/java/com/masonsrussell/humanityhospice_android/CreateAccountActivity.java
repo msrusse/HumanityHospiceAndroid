@@ -218,6 +218,7 @@ public class CreateAccountActivity extends AppCompatActivity
 		selectedAccountType = findViewById(accountTypeSelected);
 		if (selectedAccountType.getText().equals("Patient"))
 		{
+			AccountInformation.patientID = mAuth.getCurrentUser().getUid();
 			FirebaseCalls.createPatient(generateRandom(), firstName, lastName);
 		} else
 		{

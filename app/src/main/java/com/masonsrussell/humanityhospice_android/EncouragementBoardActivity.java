@@ -408,9 +408,10 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			// TODO: Null checking, both for maps and values
-			Long firstValue = (Long)first.get(key);
-			Long secondValue =  (Long) second.get(key);
+			Double firstDoub = (double) first.get(key);
+			Double secondDoub = (double) second.get(key);
+			Long firstValue = Double.valueOf(firstDoub).longValue();
+			Long secondValue = Double.valueOf(secondDoub).longValue();
 			return firstValue.compareTo(secondValue);
 		}
 	}
