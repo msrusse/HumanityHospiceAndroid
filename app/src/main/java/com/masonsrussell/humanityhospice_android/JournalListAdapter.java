@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -45,11 +46,10 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		holder.setIsRecyclable(false);
 		if (postsList.get(position).containsKey("url") && postsList.get(position).containsKey("comments"))
 		{
-			List<Object> commentsList = new ArrayList<>();
-			commentsList.add(postsList.get(position).get("comments"));
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
-			String commentsTotal = "Comments (" + String.valueOf(commentsList.size()) + ") v";
+			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get("comments"));
+			String commentsTotal = "Comments (" + commentsMap.size() + ") v";
 			holder.commentsView.setText(commentsTotal);
 			holder.postImageView.setVisibility(View.VISIBLE);
 			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
@@ -65,11 +65,10 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else if (postsList.get(position).containsKey("comments"))
 		{
-			List<Object> commentsList = new ArrayList<>();
-			commentsList.add(postsList.get(position).get("comments"));
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
-			String commentsTotal = "Comments (" + String.valueOf(commentsList.size()) + ") v";
+			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get("comments"));
+			String commentsTotal = "Comments (" + commentsMap.size() + ") v";
 			holder.commentsView.setText(commentsTotal);
 		}
 		else

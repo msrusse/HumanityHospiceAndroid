@@ -315,7 +315,6 @@ public class JournalActivity extends AppCompatActivity
 						}
 						if (postsMap.get(post).containsKey("comments"))
 						{
-
 							addPost.put("comments", postsMap.get(post).get("comments"));
 						}
 						addPost.put("postID", post);
@@ -358,6 +357,10 @@ public class JournalActivity extends AppCompatActivity
 						public void onItemClick(View v, int position)
 						{
 							Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
+							if (posts.get(position).containsKey("url"))
+							{
+								intent.putExtra("photoURL", posts.get(position).get("url").toString());
+							}
 							intent.putExtra("postID", posts.get(position).get("postID").toString());
 							intent.putExtra("username", posts.get(position).get("Poster").toString());
 							intent.putExtra("post", posts.get(position).get("Post").toString());
