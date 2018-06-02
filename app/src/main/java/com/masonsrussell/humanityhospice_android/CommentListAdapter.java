@@ -43,7 +43,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		//holder.bindData();
 		holder.setIsRecyclable(false);
+		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		holder.postBody.setText(postsList.get(position).get("Post").toString());
+		holder.timestamp.setText(date);
 		holder.poster.setText(postsList.get(position).get("Poster").toString());
 
 	}

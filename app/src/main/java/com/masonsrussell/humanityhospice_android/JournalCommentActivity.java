@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,6 +45,7 @@ public class JournalCommentActivity extends AppCompatActivity
 	EditText enterCommentText;
 	CommentListAdapter mAdapter;
 	String postID;
+	int screenWidth, screenHeight;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	List<Map<String, Object>> comments = new ArrayList<>();
@@ -54,6 +56,9 @@ public class JournalCommentActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_journal_comment);
+		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+		screenWidth = metrics.widthPixels;
+		screenHeight = metrics.heightPixels;
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
 		commentsRecyclerView = findViewById(R.id.commentsRecyclerView);
@@ -66,10 +71,12 @@ public class JournalCommentActivity extends AppCompatActivity
 		postID = getIntent().getStringExtra("postID");
 		usernameView.setText(getIntent().getStringExtra("username"));
 		captionView.setText(getIntent().getStringExtra("post"));
+		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra("timestamp")));
 		if (getIntent().getStringExtra("photoURL") != null)
 		{
 			// TODO: fix size of the images so that it does not take the whole screen
 			Glide.with(this).load(getIntent().getStringExtra("photoURL")).into(postImageView);
+			postImageView.getLayoutParams().height = screenHeight/3;
 		}
 		getComments();
 

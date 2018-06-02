@@ -44,6 +44,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		//holder.bindData();
 		holder.setIsRecyclable(false);
+		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		if (postsList.get(position).containsKey("url") && postsList.get(position).containsKey("comments"))
 		{
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
@@ -52,6 +53,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			String commentsTotal = "Comments (" + commentsMap.size() + ") v";
 			holder.commentsView.setText(commentsTotal);
 			holder.postImageView.setVisibility(View.VISIBLE);
+			holder.timestamp.setText(date);
 			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
 		}
 		else if (postsList.get(position).containsKey("url"))
@@ -60,6 +62,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			String commentsTotal = "Comments (0) v";
 			holder.commentsView.setText(commentsTotal);
+			holder.timestamp.setText(date);
 			holder.postImageView.setVisibility(View.VISIBLE);
 			Glide.with(context).load(postsList.get(position).get("url")).into(holder.postImageView);
 		}
@@ -67,6 +70,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		{
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
+			holder.timestamp.setText(date);
 			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get("comments"));
 			String commentsTotal = "Comments (" + commentsMap.size() + ") v";
 			holder.commentsView.setText(commentsTotal);
@@ -75,6 +79,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		{
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
+			holder.timestamp.setText(date);
 			String commentsTotal = "Comments (0) v";
 			holder.commentsView.setText(commentsTotal);
 		}
