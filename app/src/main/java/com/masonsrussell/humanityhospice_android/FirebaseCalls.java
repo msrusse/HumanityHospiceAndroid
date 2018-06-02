@@ -36,6 +36,7 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
@@ -49,10 +50,11 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
-		posterInfo.put("url", imageURl);
+		posterInfo.put("postImageURL", imageURl);
 		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
 		createAlbumPost(post, imageURl);
@@ -64,6 +66,7 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
@@ -78,6 +81,7 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.child("post0");
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", fName + " " + lName);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
@@ -91,13 +95,13 @@ public class FirebaseCalls
 		DatabaseReference individualPatient = patients.child(AccountInformation.patientID);
 		DatabaseReference patientMetaData = individualPatient.child("MetaData");
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> patientInfo = new HashMap<>();
 		patientInfo.put("FamilyID", "");
 		patientInfo.put("InviteCode", inviteCode);
 		individualPatient.updateChildren(patientInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();
-		metaDataMap.put("DOB", 0);
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
 		patientMetaData.updateChildren(metaDataMap);
@@ -111,6 +115,7 @@ public class FirebaseCalls
 		DatabaseReference readerMetaData = individualReader.child("MetaData");
 		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> readerInfo = new HashMap<>();
 		readerInfo.put("ReadingFrom", patientID);
 		individualReader.updateChildren(readerInfo);
@@ -131,12 +136,12 @@ public class FirebaseCalls
 		DatabaseReference individualFamily = family.child(familyID);
 		DatabaseReference familyMetaData = individualFamily.child("MetaData");
 
+		// TODO: Add profilePictureURL field in post
 		Map<String, Object> patientInfo = new HashMap<>();
 		patientInfo.put("PatientID", AccountInformation.patientID);
 		individualFamily.updateChildren(patientInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();
-		metaDataMap.put("DOB", 0);
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
 		familyMetaData.updateChildren(metaDataMap);
@@ -219,7 +224,7 @@ public class FirebaseCalls
 		{
 			Map<String, Object> posterInfo = new HashMap<>();
 			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
-			posterInfo.put("url", imageURL);
+			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
 		}
 		else
@@ -227,7 +232,7 @@ public class FirebaseCalls
 			Map<String, Object> posterInfo = new HashMap<>();
 			posterInfo.put("caption", post);
 			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime());
-			posterInfo.put("url", imageURL);
+			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
 		}
 	}

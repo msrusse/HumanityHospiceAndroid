@@ -16,6 +16,7 @@ public class AccountInformation
 	public static String username;
 	public static String patientID;
 	public static String email;
+	public static String profilePictureURL;
 
 	public static void setAccountInfo(String passedAccountType, String passedUsername, String patient, String userEmail)
 	{
