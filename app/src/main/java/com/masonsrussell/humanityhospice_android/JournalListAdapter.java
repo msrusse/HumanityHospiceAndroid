@@ -2,6 +2,7 @@ package com.masonsrussell.humanityhospice_android;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,9 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	LayoutInflater inflater;
 	List<Map<String,Object>> postsList;
 	Context context;
+	int screenWidth;
+	int screenHeight;
+
 
 	public JournalListAdapter(Context context, List<Map<String,Object>> postsList) {
 		this.inflater = LayoutInflater.from(context);
@@ -47,7 +51,12 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		if (postsList.get(position).containsKey("postImageURL") && postsList.get(position).containsKey("comments"))
 		{
-			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+			if (AccountInformation.profilePictureURL != null)
+			{
+				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 250;
+				holder.profilePictureImageView.getLayoutParams().height = 250;
+			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get("comments"));
@@ -59,7 +68,12 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else if (postsList.get(position).containsKey("postImageURL"))
 		{
-			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+			if (AccountInformation.profilePictureURL != null)
+			{
+				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 250;
+				holder.profilePictureImageView.getLayoutParams().height = 250;
+			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			String commentsTotal = "Comments (0) v";
@@ -70,7 +84,12 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else if (postsList.get(position).containsKey("comments"))
 		{
-			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+			if (AccountInformation.profilePictureURL != null)
+			{
+				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 250;
+				holder.profilePictureImageView.getLayoutParams().height = 250;
+			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			holder.timestamp.setText(date);
@@ -80,7 +99,12 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else
 		{
-			if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+			if (AccountInformation.profilePictureURL != null)
+			{
+				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 250;
+				holder.profilePictureImageView.getLayoutParams().height = 250;
+			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
 			holder.timestamp.setText(date);

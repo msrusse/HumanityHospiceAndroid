@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,7 +40,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
 	}
@@ -53,7 +54,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("postImageURL", imageURl);
 		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
@@ -69,7 +70,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", post);
 		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
 		newPost.updateChildren(posterInfo);
@@ -84,7 +85,7 @@ public class FirebaseCalls
 		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", fName + " " + lName);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", "Joined Humanity Hospice");
 		newPost.updateChildren(posterInfo);
 	}
@@ -182,21 +183,22 @@ public class FirebaseCalls
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime()/1000);
+		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime() / 1000);
 		albumImageRef.putFile(file)
-				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+				{
 					@Override
 					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
 					{
-						albumImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+						albumImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+						{
 							@Override
 							public void onSuccess(Uri uri)
 							{
 								if (activity.equals("Journals"))
 								{
 									createJournalPostWithPhoto(post, uri.toString());
-								}
-								else
+								} else
 								{
 									createAlbumPost(post, uri.toString());
 								}
@@ -204,7 +206,8 @@ public class FirebaseCalls
 						});
 					}
 				})
-				.addOnFailureListener(new OnFailureListener() {
+				.addOnFailureListener(new OnFailureListener()
+				{
 					@Override
 					public void onFailure(@NonNull Exception e)
 					{
@@ -222,15 +225,14 @@ public class FirebaseCalls
 		if (post == null)
 		{
 			Map<String, Object> posterInfo = new HashMap<>();
-			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
-		}
-		else
+		} else
 		{
 			Map<String, Object> posterInfo = new HashMap<>();
 			posterInfo.put("caption", post);
-			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
 		}
@@ -241,21 +243,22 @@ public class FirebaseCalls
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime()/1000);
+		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime() / 1000);
 		albumImageRef.putBytes(data)
-				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+				{
 					@Override
 					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
 					{
-						albumImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+						albumImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+						{
 							@Override
 							public void onSuccess(Uri uri)
 							{
 								if (activity.equals("Journal"))
 								{
 									createJournalPostWithPhoto(post, uri.toString());
-								}
-								else
+								} else
 								{
 									createAlbumPost(post, uri.toString());
 								}
@@ -263,7 +266,8 @@ public class FirebaseCalls
 						});
 					}
 				})
-				.addOnFailureListener(new OnFailureListener() {
+				.addOnFailureListener(new OnFailureListener()
+				{
 					@Override
 					public void onFailure(@NonNull Exception e)
 					{
@@ -282,9 +286,95 @@ public class FirebaseCalls
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime()/1000);
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", commentToAdd);
 		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
 		newComment.updateChildren(posterInfo);
+	}
+
+	public static void addProfilePictureFromCamera(byte[] data)
+	{
+		storage = FirebaseStorage.getInstance();
+		storageReference = storage.getReference();
+
+		final StorageReference profilePictureRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/ProfilePicture");
+		profilePictureRef.putBytes(data)
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+				{
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+					{
+						profilePictureRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+						{
+							@Override
+							public void onSuccess(Uri uri)
+							{
+								AccountInformation.profilePictureURL = uri.toString();
+								UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+										.setPhotoUri(uri)
+										.build();
+
+								mAuth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+									@Override
+									public void onComplete(@NonNull Task<Void> task)
+									{
+										Log.d("addProfilePicFromCam", "User Profile Updated");
+									}
+								});
+							}
+						});
+					}
+				})
+				.addOnFailureListener(new OnFailureListener()
+				{
+					@Override
+					public void onFailure(@NonNull Exception e)
+					{
+						Log.d("addAlbumPicture", e.getMessage());
+					}
+				});
+	}
+
+	public static void addProfilePictureFromGallery(Uri file)
+	{
+		storage = FirebaseStorage.getInstance();
+		storageReference = storage.getReference();
+
+		final StorageReference profilePictureRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/ProfilePicture");
+		profilePictureRef.putFile(file)
+				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+				{
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+					{
+						profilePictureRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+						{
+							@Override
+							public void onSuccess(Uri uri)
+							{
+								AccountInformation.profilePictureURL = uri.toString();
+								UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+										.setPhotoUri(uri)
+										.build();
+
+								mAuth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+									@Override
+									public void onComplete(@NonNull Task<Void> task)
+									{
+										Log.d("addProfilePicFromGal", "User Profile Updated");
+									}
+								});
+							}
+						});
+					}
+				})
+				.addOnFailureListener(new OnFailureListener()
+				{
+					@Override
+					public void onFailure(@NonNull Exception e)
+					{
+						Log.d("addAlbumPicture", e.getMessage());
+					}
+				});
 	}
 }

@@ -67,7 +67,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void isReader(String patientID, String profilePictureURL)
 	{
-		AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), profilePictureURL);
+		AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 		startActivity(intent);
 		finish();
@@ -75,7 +75,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void isPatient(String profilePictureURL)
 	{
-		AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), profilePictureURL);
+		AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 		startActivity(intent);
 		finish();
@@ -89,7 +89,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		}
 		else
 		{
-			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), profilePictureURL);
+			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
