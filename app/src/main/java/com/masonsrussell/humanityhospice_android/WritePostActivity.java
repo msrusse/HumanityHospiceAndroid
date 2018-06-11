@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 
 public class WritePostActivity extends AppCompatActivity
@@ -42,7 +41,6 @@ public class WritePostActivity extends AppCompatActivity
 		Button attachPhotoButton = findViewById(R.id.attachPhotoButton);
 		postImageView = findViewById(R.id.postImageView);
 		postBox = findViewById(R.id.postEditText);
-
 		closeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -57,7 +55,6 @@ public class WritePostActivity extends AppCompatActivity
 				finish();
 			}
 		});
-
 		attachPhotoButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -65,7 +62,6 @@ public class WritePostActivity extends AppCompatActivity
 				displayDialog();
 			}
 		});
-
 		writePostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -97,14 +93,11 @@ public class WritePostActivity extends AppCompatActivity
 	private void displayDialog()
 	{
 		final Dialog dialog = new Dialog(WritePostActivity.this);
-
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.dialog_choose_take_photo);
-
 		Button takePictureButton = dialog.findViewById(R.id.takePictureButton);
 		Button choosePictureButton = dialog.findViewById(R.id.choosePictureButton);
 		Button cancelButton = dialog.findViewById(R.id.cancelButton);
-
 		takePictureButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -113,7 +106,6 @@ public class WritePostActivity extends AppCompatActivity
 				dialog.hide();
 			}
 		});
-
 		choosePictureButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -122,7 +114,6 @@ public class WritePostActivity extends AppCompatActivity
 				dialog.hide();
 			}
 		});
-
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -130,9 +121,7 @@ public class WritePostActivity extends AppCompatActivity
 				dialog.hide();
 			}
 		});
-
 		dialog.show();
-
 	}
 
 	private void chooseImage() {
@@ -162,7 +151,6 @@ public class WritePostActivity extends AppCompatActivity
 					postImageView.getLayoutParams().width = (int) (screenWidth *.75);
 					postImageView.getLayoutParams().height = (int) (screenHeight*.2);
 				}
-
 				break;
 			case 1:
 				if(resultCode == RESULT_OK){

@@ -2,35 +2,20 @@ package com.masonsrussell.humanityhospice_android;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.MainViewHolder> {
 	LayoutInflater inflater;
 	List<Map<String,Object>> postsList;
 	Context context;
-	int screenWidth;
-	int screenHeight;
-
 
 	public JournalListAdapter(Context context, List<Map<String,Object>> postsList) {
 		this.inflater = LayoutInflater.from(context);
@@ -46,7 +31,6 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 
 	@Override
 	public void onBindViewHolder(MainViewHolder holder, int position) {
-		//holder.bindData();
 		holder.setIsRecyclable(false);
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		if (postsList.get(position).containsKey("postImageURL") && postsList.get(position).containsKey("comments"))
@@ -119,7 +103,6 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	}
 
 	class MainViewHolder extends RecyclerView.ViewHolder {
-
 		TextView postBody, timestamp, poster, commentsView;
 		ImageView postImageView, profilePictureImageView;
 
@@ -132,6 +115,5 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			commentsView = itemView.findViewById(R.id.commentsView);
 			profilePictureImageView = itemView.findViewById(R.id.profilePicImageView);
 		}
-
 	}
 }

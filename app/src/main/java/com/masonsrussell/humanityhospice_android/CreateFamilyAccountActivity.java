@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +30,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.io.ByteArrayOutputStream;
 
 public class CreateFamilyAccountActivity extends AppCompatActivity
@@ -74,7 +72,6 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 					@Override
 					public boolean onNavigationItemSelected(MenuItem menuItem)
 					{
-						// set item as selected to persist highlight
 						switch(menuItem.toString())
 						{
 							case "My Journal":
@@ -110,12 +107,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 								finish();
 								break;
 						}
-						// close drawer when item is tapped
 						mDrawerLayout.closeDrawers();
-
-						// Add code here to update the UI based on the item selected
-						// For example, swap UI fragments here
-
 						return true;
 					}
 				});
@@ -124,23 +116,19 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				new DrawerLayout.DrawerListener() {
 					@Override
 					public void onDrawerSlide(View drawerView, float slideOffset) {
-						// Respond when the drawer's position changes
 					}
 
 					@Override
 					public void onDrawerOpened(View drawerView) {
-						// Respond when the drawer is opened
 
 					}
 
 					@Override
 					public void onDrawerClosed(View drawerView) {
-						// Respond when the drawer is closed
 					}
 
 					@Override
 					public void onDrawerStateChanged(int newState) {
-						// Respond when the drawer motion state changes
 					}
 				}
 		);
@@ -225,8 +213,6 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
-
-
 						if (!task.isSuccessful()) {
 							String ex = task.getException().toString();
 							Toast.makeText(CreateFamilyAccountActivity.this, "Registration Failed"+ex,
@@ -238,7 +224,6 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 						}
 					}
 				});
-
 	}
 
 	private void createAccountInDatabase(String familyID)
@@ -260,20 +245,15 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 	public void profileImagePicker()
 	{
 		AlertDialog alertDialog = new AlertDialog.Builder(this)
-				//set icon
 				.setIcon(android.R.drawable.ic_menu_camera)
-				//set title
 				.setTitle("Update Profile Picture")
-				//set message
 				.setMessage("Either select an image from the gallery or take a new photo")
-				//set positive button
 				.setPositiveButton("Choose Photo", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						chooseImage();
 					}
 				})
-				//set negative button
 				.setNegativeButton("Take Photo", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {

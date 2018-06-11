@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.ByteArrayOutputStream;
 
 public class InvitePeopleActivity extends AppCompatActivity
@@ -110,12 +108,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 								finish();
 								break;
 						}
-						// close drawer when item is tapped
 						mDrawerLayout.closeDrawers();
-
-						// Add code here to update the UI based on the item selected
-						// For example, swap UI fragments here
-
 						return true;
 					}
 				});
@@ -124,23 +117,19 @@ public class InvitePeopleActivity extends AppCompatActivity
 				new DrawerLayout.DrawerListener() {
 					@Override
 					public void onDrawerSlide(View drawerView, float slideOffset) {
-						// Respond when the drawer's position changes
 					}
 
 					@Override
 					public void onDrawerOpened(View drawerView) {
-						// Respond when the drawer is opened
 
 					}
 
 					@Override
 					public void onDrawerClosed(View drawerView) {
-						// Respond when the drawer is closed
 					}
 
 					@Override
 					public void onDrawerStateChanged(int newState) {
-						// Respond when the drawer motion state changes
 					}
 				}
 		);
@@ -155,7 +144,6 @@ public class InvitePeopleActivity extends AppCompatActivity
 				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "View my Humanity Hospice Profile using the following access code:");
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 				startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
 			}
 		});
 	}
@@ -218,20 +206,15 @@ public class InvitePeopleActivity extends AppCompatActivity
 	public void profileImagePicker()
 	{
 		AlertDialog alertDialog = new AlertDialog.Builder(this)
-				//set icon
 				.setIcon(android.R.drawable.ic_menu_camera)
-				//set title
 				.setTitle("Update Profile Picture")
-				//set message
 				.setMessage("Either select an image from the gallery or take a new photo")
-				//set positive button
 				.setPositiveButton("Choose Photo", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						chooseImage();
 					}
 				})
-				//set negative button
 				.setNegativeButton("Take Photo", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {

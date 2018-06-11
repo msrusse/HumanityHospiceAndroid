@@ -8,19 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MainViewHolder> {
 	LayoutInflater inflater;
@@ -41,7 +30,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
 	@Override
 	public void onBindViewHolder(MainViewHolder holder, int position) {
-		//holder.bindData();
 		holder.setIsRecyclable(false);
 		if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
@@ -57,7 +45,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	}
 
 	class MainViewHolder extends RecyclerView.ViewHolder {
-
 		TextView postBody, timestamp, poster;
 		ImageView profilePictureImageView;
 

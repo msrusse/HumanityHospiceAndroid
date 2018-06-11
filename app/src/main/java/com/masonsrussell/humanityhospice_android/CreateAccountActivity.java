@@ -140,10 +140,8 @@ public class CreateAccountActivity extends AppCompatActivity
 	private void displayDialog()
 	{
 		final Dialog dialog = new Dialog(CreateAccountActivity.this);
-
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.dialog_enter_patient_code);
-
 		Button enter = dialog.findViewById(R.id.enterButton);
 		Button cancel = dialog.findViewById(R.id.cancelButton);
 		final EditText accessCode = dialog.findViewById(R.id.accessCode);
@@ -181,7 +179,6 @@ public class CreateAccountActivity extends AppCompatActivity
 			public void onClick(View v)
 			{
 				verifiedAccess = false;
-
 				dialog.hide();
 			}
 		});
@@ -197,13 +194,11 @@ public class CreateAccountActivity extends AppCompatActivity
 					{
 						if (task.isSuccessful())
 						{
-							// Sign in success, update UI with the signed-in user's information
 							Log.d(TAG, "createUserWithEmail:success");
 							user = mAuth.getCurrentUser();
 							createAccountInDatabase();
 						} else
 						{
-							// If sign in fails, display a message to the user.
 							Log.w(TAG, "createUserWithEmail:failure", task.getException());
 							Toast.makeText(CreateAccountActivity.this, "Authentication failed.",
 									Toast.LENGTH_SHORT).show();

@@ -3,9 +3,6 @@ package com.masonsrussell.humanityhospice_android;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,12 +14,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.UUID;
 
 public class FirebaseCalls
 {
@@ -169,15 +163,6 @@ public class FirebaseCalls
 		readingFromRef.setValue(patientID);
 	}
 
-	public static void addProfilePictures(Uri file)
-	{
-		storage = FirebaseStorage.getInstance();
-		storageReference = storage.getReference();
-
-		StorageReference profileImageRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/ProfilePicture");
-		profileImageRef.putFile(file);
-	}
-
 	public static void addAlbumPictures(Uri file, final String post, final String activity)
 	{
 		storage = FirebaseStorage.getInstance();
@@ -242,7 +227,6 @@ public class FirebaseCalls
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
-
 		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime() / 1000);
 		albumImageRef.putBytes(data)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
@@ -296,7 +280,6 @@ public class FirebaseCalls
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
-
 		final StorageReference profilePictureRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/ProfilePicture");
 		profilePictureRef.putBytes(data)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
@@ -339,7 +322,6 @@ public class FirebaseCalls
 	{
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
-
 		final StorageReference profilePictureRef = storageReference.child("ProfilePictures/" + mAuth.getCurrentUser().getUid() + "/ProfilePicture");
 		profilePictureRef.putFile(file)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()

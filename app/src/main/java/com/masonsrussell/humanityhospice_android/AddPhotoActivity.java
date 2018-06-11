@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 
 public class AddPhotoActivity extends AppCompatActivity
@@ -41,7 +40,6 @@ public class AddPhotoActivity extends AppCompatActivity
 		postBox = findViewById(R.id.postEditText);
 		takePictureButton = findViewById(R.id.takePhotoButton);
 		choosePictureButton = findViewById(R.id.choosePhotoButton);
-
 		takePictureButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
@@ -49,7 +47,6 @@ public class AddPhotoActivity extends AppCompatActivity
 				takePicture();
 			}
 		});
-
 		choosePictureButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)

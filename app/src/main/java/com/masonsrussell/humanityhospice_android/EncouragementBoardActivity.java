@@ -27,7 +27,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +34,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,8 +59,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		//noinspection IfCanBeSwitch
 		if (AccountInformation.accountType.equals("Patient"))
 		{
 			setContentView(R.layout.activity_encouragement_board);
@@ -144,7 +140,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					@Override
 					public boolean onNavigationItemSelected(MenuItem menuItem)
 					{
-						// set item as selected to persist highlight
 						switch(menuItem.toString())
 						{
 							case "Journal":
@@ -180,12 +175,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								finish();
 								break;
 						}
-						// close drawer when item is tapped
 						mDrawerLayout.closeDrawers();
-
-						// Add code here to update the UI based on the item selected
-						// For example, swap UI fragments here
-
 						return true;
 					}
 				});
@@ -194,23 +184,18 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				new DrawerLayout.DrawerListener() {
 					@Override
 					public void onDrawerSlide(View drawerView, float slideOffset) {
-						// Respond when the drawer's position changes
 					}
 
 					@Override
 					public void onDrawerOpened(View drawerView) {
-						// Respond when the drawer is opened
-
 					}
 
 					@Override
 					public void onDrawerClosed(View drawerView) {
-						// Respond when the drawer is closed
 					}
 
 					@Override
 					public void onDrawerStateChanged(int newState) {
-						// Respond when the drawer motion state changes
 					}
 				}
 		);
@@ -226,7 +211,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					@Override
 					public boolean onNavigationItemSelected(MenuItem menuItem)
 					{
-						// set item as selected to persist highlight
 						switch(menuItem.toString())
 						{
 							case "My Journal":
@@ -262,12 +246,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								finish();
 								break;
 						}
-						// close drawer when item is tapped
 						mDrawerLayout.closeDrawers();
-
-						// Add code here to update the UI based on the item selected
-						// For example, swap UI fragments here
-
 						return true;
 					}
 				});
@@ -276,23 +255,18 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				new DrawerLayout.DrawerListener() {
 					@Override
 					public void onDrawerSlide(View drawerView, float slideOffset) {
-						// Respond when the drawer's position changes
 					}
 
 					@Override
 					public void onDrawerOpened(View drawerView) {
-						// Respond when the drawer is opened
-
 					}
 
 					@Override
 					public void onDrawerClosed(View drawerView) {
-						// Respond when the drawer is closed
 					}
 
 					@Override
 					public void onDrawerStateChanged(int newState) {
-						// Respond when the drawer motion state changes
 					}
 				}
 		);
@@ -395,7 +369,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 			@Override
 			public void onCancelled(DatabaseError databaseError)
 			{
-
 			}
 		});
 	}
@@ -525,20 +498,15 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	public void profileImagePicker()
 	{
 		AlertDialog alertDialog = new AlertDialog.Builder(this)
-				//set icon
 				.setIcon(android.R.drawable.ic_menu_camera)
-				//set title
 				.setTitle("Update Profile Picture")
-				//set message
 				.setMessage("Either select an image from the gallery or take a new photo")
-				//set positive button
 				.setPositiveButton("Choose Photo", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
 						chooseImage();
 					}
 				})
-				//set negative button
 				.setNegativeButton("Take Photo", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
