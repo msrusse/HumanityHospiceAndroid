@@ -355,6 +355,7 @@ public class JournalActivity extends AppCompatActivity
 							intent.putExtra("post", posts.get(position).get("Post").toString());
 							intent.putExtra("timestamp", posts.get(position).get("timestamp").toString());
 							startActivity(intent);
+							finish();
 						}
 					})
 			);

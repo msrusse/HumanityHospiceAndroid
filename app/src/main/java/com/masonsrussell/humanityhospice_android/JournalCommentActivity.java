@@ -176,6 +176,8 @@ public class JournalCommentActivity extends AppCompatActivity
 
 	public void onBackPressed()
 	{
+		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+		startActivity(intent);
 		finish();
 	}
 }
