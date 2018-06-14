@@ -70,8 +70,6 @@ public class AddPhotoActivity extends AppCompatActivity
 			public void onClick(View v)
 			{
 				Intent restartPhotoAlbumIntent = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
-				if (TextUtils.isEmpty(postBox.getText()))
-				{
 					if (data != null)
 					{
 						FirebaseCalls.createPhotoRefFromCamera(data, null, "PhotoAlbum");
@@ -88,26 +86,6 @@ public class AddPhotoActivity extends AppCompatActivity
 					{
 						Toast.makeText(getApplicationContext(), "A photo must be added before posting", Toast.LENGTH_LONG).show();
 					}
-				}
-				else if (!TextUtils.isEmpty(postBox.getText()))
-				{
-					if (data != null)
-					{
-						FirebaseCalls.createPhotoRefFromCamera(data, postBox.getText().toString(), "PhotoAlbum");
-						startActivity(restartPhotoAlbumIntent);
-						finish();
-					}
-					else if (selectedImage != null)
-					{
-						FirebaseCalls.addAlbumPictures(selectedImage, postBox.getText().toString(), "PhotoAlbum");
-						startActivity(restartPhotoAlbumIntent);
-						finish();
-					}
-					else
-					{
-						Toast.makeText(getApplicationContext(), "A photo must be added before posting", Toast.LENGTH_LONG).show();
-					}
-				}
 			}
 		});
 	}

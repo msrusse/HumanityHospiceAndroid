@@ -324,7 +324,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				}
 				catch (Exception ex)
 				{
-					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+					Log.d("Encouragement", ex.getMessage());
 				}
 			}
 

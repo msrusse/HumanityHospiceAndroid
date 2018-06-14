@@ -1,6 +1,8 @@
 package com.masonsrussell.humanityhospice_android;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -85,6 +87,13 @@ public class JournalCommentActivity extends AppCompatActivity
 						InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 						imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 					}
+					Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
+					intent.putExtra("postID", getIntent().getStringExtra("postID"));
+					intent.putExtra("username", getIntent().getStringExtra("username"));
+					intent.putExtra("post", getIntent().getStringExtra("post"));
+					intent.putExtra("timestamp", getIntent().getStringExtra("timestamp"));
+					startActivity(intent);
+					finish();
 				}
 				else
 				{
@@ -165,5 +174,10 @@ public class JournalCommentActivity extends AppCompatActivity
 			Long secondValue = Double.valueOf(secondDoub).longValue();
 			return firstValue.compareTo(secondValue);
 		}
+	}
+
+	public void onBackPressed()
+	{
+		finish();
 	}
 }

@@ -67,18 +67,38 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void isReader(String patientID, String profilePictureURL)
 	{
-		AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
-		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
-		startActivity(intent);
-		finish();
+		if (profilePictureURL != null)
+		{
+			AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
+			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		else
+		{
+			AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), null);
+			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+			startActivity(intent);
+			finish();
+		}
 	}
 
 	private void isPatient(String profilePictureURL)
 	{
-		AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
-		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
-		startActivity(intent);
-		finish();
+		if (profilePictureURL != null)
+		{
+			AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
+			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		else
+		{
+			AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), null);
+			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+			startActivity(intent);
+			finish();
+		}
 	}
 
 	private void isFamily(String patientID, String profilePictureURL)
@@ -87,9 +107,16 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		{
 			getFamilyName(patientID, profilePictureURL);
 		}
-		else
+		else if (profilePictureURL != null)
 		{
 			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
+			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		else
+		{
+			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), null);
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();

@@ -66,9 +66,16 @@ public class CreateAccountActivity extends AppCompatActivity
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
-				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
-				patientIds.addAll(allPatients.keySet());
-				getInviteCodes(patients);
+				try
+				{
+					HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
+					patientIds.addAll(allPatients.keySet());
+					getInviteCodes(patients);
+				}
+				catch(Exception ex)
+				{
+					Log.d("CreateAccount", ex.getMessage());
+				}
 			}
 
 			@Override

@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -352,23 +353,15 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addImage = new HashMap<>();
-						if (postsMap.get(post).containsKey("caption"))
-						{
-							addImage.put("caption", postsMap.get(post).get("caption").toString());
-						}
-						else
-						{
-							addImage.put("caption", "");
-						}
 						addImage.put("timestamp", postsMap.get(post).get("timestamp"));
-						addImage.put("url", postsMap.get(post).get("url").toString());
+						addImage.put("url", postsMap.get(post).get("postImageURL").toString());
 						imageURLs.add(addImage);
 					}
 					setAdapter();
 				}
 				catch (Exception ex)
 				{
-					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+					Log.d("PhotoAlbum", ex.getMessage());
 				}
 			}
 
@@ -406,10 +399,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Double firstDoub = (double) first.get(key);
-			Double secondDoub = (double) second.get(key);
-			Long firstValue = Double.valueOf(firstDoub).longValue();
-			Long secondValue = Double.valueOf(secondDoub).longValue();
+			Long firstValue = ((Long) first.get(key));
+			Long secondValue = ((Long) second.get(key));
 			return firstValue.compareTo(secondValue);
 		}
 	}
@@ -424,8 +415,6 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		ImageView photo = dialog.findViewById(R.id.photoView);
 		photo.getLayoutParams().height = (int)(screenHeight / 1.5);
 		photo.getLayoutParams().width = (int)(screenWidth/1.5);
-		TextView captionView = dialog.findViewById(R.id.photoTextView);
-		captionView.setText(imageURLs.get(index).get("caption").toString());
 		Glide.with(this).load(imageURLs.get(index).get("url")).into(photo);
 		dialog.show();
 	}

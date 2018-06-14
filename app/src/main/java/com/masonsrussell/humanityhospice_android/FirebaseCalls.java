@@ -31,11 +31,14 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", post);
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -45,14 +48,17 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("postImageURL", imageURl);
-		posterInfo.put("post", post);
+		posterInfo.put("caption", post);
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		newPost.updateChildren(posterInfo);
-		createAlbumPost(post, imageURl);
+		createAlbumPost(imageURl);
 	}
 
 	public static void createEncouragementPost(String post)
@@ -61,12 +67,15 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", post);
 		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -76,11 +85,14 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", fName + " " + lName);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", "Joined Humanity Hospice");
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -90,7 +102,6 @@ public class FirebaseCalls
 		DatabaseReference individualPatient = patients.child(AccountInformation.patientID);
 		DatabaseReference patientMetaData = individualPatient.child("MetaData");
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> patientInfo = new HashMap<>();
 		patientInfo.put("InviteCode", inviteCode);
 		individualPatient.updateChildren(patientInfo);
@@ -98,6 +109,10 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			metaDataMap.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		patientMetaData.updateChildren(metaDataMap);
 		createFirstPost(fName, lName);
 	}
@@ -109,7 +124,6 @@ public class FirebaseCalls
 		DatabaseReference readerMetaData = individualReader.child("MetaData");
 		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> readerInfo = new HashMap<>();
 		readerInfo.put("ReadingFrom", patientID);
 		individualReader.updateChildren(readerInfo);
@@ -117,6 +131,10 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			metaDataMap.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		readerMetaData.updateChildren(metaDataMap);
 
 		Map<String, Object> patientsReadingMap = new HashMap<>();
@@ -130,7 +148,6 @@ public class FirebaseCalls
 		DatabaseReference individualFamily = family.child(familyID);
 		DatabaseReference familyMetaData = individualFamily.child("MetaData");
 
-		// TODO: Add profilePictureURL field in post
 		Map<String, Object> patientInfo = new HashMap<>();
 		patientInfo.put("PatientID", AccountInformation.patientID);
 		individualFamily.updateChildren(patientInfo);
@@ -138,6 +155,10 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		{
+			metaDataMap.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+		}
 		familyMetaData.updateChildren(metaDataMap);
 	}
 
@@ -185,7 +206,7 @@ public class FirebaseCalls
 									createJournalPostWithPhoto(post, uri.toString());
 								} else
 								{
-									createAlbumPost(post, uri.toString());
+									createAlbumPost(uri.toString());
 								}
 							}
 						});
@@ -201,26 +222,16 @@ public class FirebaseCalls
 				});
 	}
 
-	private static void createAlbumPost(String post, Object imageURL)
+	private static void createAlbumPost(Object imageURL)
 	{
 		DatabaseReference posts = mDatabase.getReference("PhotoAlbum");
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-		if (post == null)
-		{
 			Map<String, Object> posterInfo = new HashMap<>();
 			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 			posterInfo.put("postImageURL", imageURL);
 			newPost.updateChildren(posterInfo);
-		} else
-		{
-			Map<String, Object> posterInfo = new HashMap<>();
-			posterInfo.put("caption", post);
-			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-			posterInfo.put("postImageURL", imageURL);
-			newPost.updateChildren(posterInfo);
-		}
 	}
 
 	public static void createPhotoRefFromCamera(byte[] data, final String post, final String activity)
@@ -244,7 +255,7 @@ public class FirebaseCalls
 									createJournalPostWithPhoto(post, uri.toString());
 								} else
 								{
-									createAlbumPost(post, uri.toString());
+									createAlbumPost(uri.toString());
 								}
 							}
 						});
