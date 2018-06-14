@@ -388,10 +388,8 @@ public class JournalActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Double firstDoub = (double) first.get(key);
-			Double secondDoub = (double) second.get(key);
-			Long firstValue = Double.valueOf(firstDoub).longValue();
-			Long secondValue = Double.valueOf(secondDoub).longValue();
+			Long firstValue = (Long) first.get(key);
+			Long secondValue = (Long) second.get(key);
 			return firstValue.compareTo(secondValue);
 		}
 	}
