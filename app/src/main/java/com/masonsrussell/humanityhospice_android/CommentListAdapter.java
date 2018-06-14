@@ -2,6 +2,7 @@ package com.masonsrussell.humanityhospice_android;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,11 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	@Override
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		holder.setIsRecyclable(false);
-		if (AccountInformation.profilePictureURL != null) Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+		if (AccountInformation.profilePictureURL != null)
+		{
+			Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+			holder.profilePictureImageView.getLayoutParams().height = 200;
+		}
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		holder.postBody.setText(postsList.get(position).get("Post").toString());
 		holder.timestamp.setText(date);

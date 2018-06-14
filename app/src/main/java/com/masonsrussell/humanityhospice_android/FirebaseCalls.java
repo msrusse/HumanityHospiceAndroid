@@ -155,10 +155,6 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
-		{
-			metaDataMap.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
-		}
 		familyMetaData.updateChildren(metaDataMap);
 	}
 
@@ -279,7 +275,9 @@ public class FirebaseCalls
 		DatabaseReference commentsRef = currentPost.child("comments");
 		DatabaseReference newComment = commentsRef.push();
 
+		// TODO: add functionality for including commenter profile picture
 		Map<String, Object> posterInfo = new HashMap<>();
+		//if(mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put()
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", commentToAdd);

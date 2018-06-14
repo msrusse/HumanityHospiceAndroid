@@ -41,7 +41,7 @@ public class JournalCommentActivity extends AppCompatActivity
 	EditText enterCommentText;
 	CommentListAdapter mAdapter;
 	String postID;
-	int screenWidth, screenHeight;
+	public int screenWidth, screenHeight;
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	List<Map<String, Object>> comments = new ArrayList<>();
@@ -168,10 +168,8 @@ public class JournalCommentActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Double firstDoub = (double) first.get(key);
-			Double secondDoub = (double) second.get(key);
-			Long firstValue = Double.valueOf(firstDoub).longValue();
-			Long secondValue = Double.valueOf(secondDoub).longValue();
+			Long firstValue = (Long) first.get(key);
+			Long secondValue = (Long) second.get(key);
 			return firstValue.compareTo(secondValue);
 		}
 	}

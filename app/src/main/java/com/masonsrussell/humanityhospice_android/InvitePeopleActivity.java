@@ -189,7 +189,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 
 	public void getAccessCode()
 	{
-		DatabaseReference userRef = mDatabase.getReference().child("Patients").child(mAuth.getCurrentUser().getUid()).child("InviteCode");
+		DatabaseReference userRef = mDatabase.getReference().child("Patients").child(AccountInformation.patientID).child("InviteCode");
 		userRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
