@@ -52,7 +52,7 @@ public class FirebaseCalls
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("postImageURL", imageURl);
-		posterInfo.put("caption", post);
+		posterInfo.put("post", post);
 		if (mAuth.getCurrentUser().getPhotoUrl() != null)
 		{
 			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
