@@ -88,7 +88,9 @@ public class InvitePeopleActivity extends AppCompatActivity
 								finish();
 								break;
 							case "My Photo Album":
-
+								Intent intent2 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent2);
+								finish();
 								break;
 							case "Create Family Account":
 								Intent intent3 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
