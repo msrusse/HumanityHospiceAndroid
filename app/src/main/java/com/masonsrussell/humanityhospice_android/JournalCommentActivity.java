@@ -37,7 +37,7 @@ public class JournalCommentActivity extends AppCompatActivity
 	TextView usernameView, timestampView, captionView;
 	Button addCommentButton;
 	RecyclerView commentsRecyclerView;
-	ImageView postImageView;
+	ImageView postImageView, postPorfilePicture;
 	EditText enterCommentText;
 	CommentListAdapter mAdapter;
 	String postID;
@@ -61,6 +61,7 @@ public class JournalCommentActivity extends AppCompatActivity
 		addCommentButton = findViewById(R.id.addCommentButton);
 		usernameView = findViewById(R.id.usernameTextView);
 		timestampView = findViewById(R.id.posterTextView);
+		postPorfilePicture = findViewById(R.id.profilePicImageView);
 		captionView = findViewById(R.id.postBodyTextView);
 		postImageView = findViewById(R.id.postImageView);
 		postID = getIntent().getStringExtra("postID");
@@ -71,6 +72,10 @@ public class JournalCommentActivity extends AppCompatActivity
 		{
 			Glide.with(this).load(getIntent().getStringExtra("photoURL")).into(postImageView);
 			postImageView.getLayoutParams().height = screenHeight/3;
+		}
+		if (getIntent().getStringExtra("posterProfilePicture") != null)
+		{
+			Glide.with(this).load(getIntent().getStringExtra("posterProfilePicture")).into(postPorfilePicture);
 		}
 		getComments();
 

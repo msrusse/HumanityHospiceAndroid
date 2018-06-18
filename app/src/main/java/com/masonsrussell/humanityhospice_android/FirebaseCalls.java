@@ -34,11 +34,16 @@ public class FirebaseCalls
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put("post", post);
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		if (AccountInformation.accountType.equals("Family"))
 		{
-			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+
 		}
+		else {
+			if (mAuth.getCurrentUser().getPhotoUrl() != null) {
+				posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
+			}
+		}
+		posterInfo.put("post", post);
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -51,12 +56,15 @@ public class FirebaseCalls
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
+		if (AccountInformation.accountType.equals("family"))
+		{
+
+		}
+		else {
+			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
+		}
 		posterInfo.put("postImageURL", imageURl);
 		posterInfo.put("post", post);
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
-		{
-			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
-		}
 		newPost.updateChildren(posterInfo);
 		createAlbumPost(imageURl);
 	}
@@ -72,9 +80,12 @@ public class FirebaseCalls
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", post);
 		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		if (AccountInformation.accountType.equals("family"))
 		{
-			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+
+		}
+		else {
+			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
 		}
 		newPost.updateChildren(posterInfo);
 	}
@@ -89,9 +100,12 @@ public class FirebaseCalls
 		posterInfo.put("poster", fName + " " + lName);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", "Joined Humanity Hospice");
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
+		if (AccountInformation.accountType.equals("family"))
 		{
-			posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
+
+		}
+		else {
+			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
 		}
 		newPost.updateChildren(posterInfo);
 	}
@@ -114,10 +128,6 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
-		{
-			metaDataMap.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
-		}
 		patientMetaData.updateChildren(metaDataMap);
 		createFirstPost(fName, lName);
 	}
@@ -136,10 +146,6 @@ public class FirebaseCalls
 		Map<String, Object> metaDataMap = new HashMap<>();
 		metaDataMap.put("firstName", fName);
 		metaDataMap.put("lastName", lName);
-		if (mAuth.getCurrentUser().getPhotoUrl() != null)
-		{
-			metaDataMap.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl());
-		}
 		readerMetaData.updateChildren(metaDataMap);
 
 		Map<String, Object> patientsReadingMap = new HashMap<>();
@@ -229,10 +235,17 @@ public class FirebaseCalls
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
-			Map<String, Object> posterInfo = new HashMap<>();
-			posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-			posterInfo.put("postImageURL", imageURL);
-			newPost.updateChildren(posterInfo);
+		Map<String, Object> posterInfo = new HashMap<>();
+		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put("postImageURL", imageURL);
+		if (AccountInformation.accountType.equals("family"))
+		{
+
+		}
+		else {
+			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
+		}
+		newPost.updateChildren(posterInfo);
 	}
 
 	public static void createPhotoRefFromCamera(byte[] data, final String post, final String activity)
@@ -282,7 +295,13 @@ public class FirebaseCalls
 
 		// TODO: add functionality for including commenter profile picture
 		Map<String, Object> posterInfo = new HashMap<>();
-		//if(mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put()
+		if (AccountInformation.accountType.equals("family"))
+		{
+
+		}
+		else {
+			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("posterImageURL", mAuth.getCurrentUser().getPhotoUrl().toString());
+		}
 		posterInfo.put("poster", AccountInformation.username);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", commentToAdd);

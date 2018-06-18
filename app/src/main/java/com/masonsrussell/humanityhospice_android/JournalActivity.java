@@ -309,6 +309,10 @@ public class JournalActivity extends AppCompatActivity
 						{
 							addPost.put("comments", postsMap.get(post).get("comments"));
 						}
+						if (postsMap.get(post).containsKey("profilePictureURL"))
+						{
+							addPost.put("posterProfilePicture", postsMap.get(post).get("profilePictureURL").toString());
+						}
 						addPost.put("postID", post);
 						addPost.put("Post", postsMap.get(post).get("post").toString());
 						addPost.put("Poster", postsMap.get(post).get("poster").toString());
@@ -352,6 +356,10 @@ public class JournalActivity extends AppCompatActivity
 							if (posts.get(position).containsKey("postImageURL"))
 							{
 								intent.putExtra("photoURL", posts.get(position).get("postImageURL").toString());
+							}
+							if (posts.get(position).containsKey("posterProfilePicture"))
+							{
+								intent.putExtra("posterProfilePicture", posts.get(position).get("posterProfilePicture").toString());
 							}
 							intent.putExtra("postID", posts.get(position).get("postID").toString());
 							intent.putExtra("username", posts.get(position).get("Poster").toString());
