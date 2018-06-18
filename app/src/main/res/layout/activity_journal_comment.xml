@@ -22,17 +22,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profilePicImageView"
                     android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:src="@mipmap/logo_small"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
+                    android:src="@mipmap/logo_small"
                     app:civ_border_color="@color/primaryPurple"
                     app:civ_border_width="3dp" />
 
@@ -102,6 +101,7 @@
                 android:id="@+id/commentsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="64dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp" />
         </LinearLayout>

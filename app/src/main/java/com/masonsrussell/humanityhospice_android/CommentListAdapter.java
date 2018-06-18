@@ -35,8 +35,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 		if (AccountInformation.profilePictureURL != null)
 		{
 			Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
-			holder.profilePictureImageView.getLayoutParams().width = 180;
-			holder.profilePictureImageView.getLayoutParams().height = 180;
+			holder.profilePictureImageView.getLayoutParams().width = 250;
+			holder.profilePictureImageView.getLayoutParams().height = 250;
 		}
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		holder.postBody.setText(postsList.get(position).get("Post").toString());
