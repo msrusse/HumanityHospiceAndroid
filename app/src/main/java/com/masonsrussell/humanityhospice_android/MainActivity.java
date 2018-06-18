@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity
 		{
 			Intent intent = new Intent(this, CheckAccountTypeActivity.class);
 			startActivity(intent);
+			finish();
 		}
 		else
 		{
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity
 			{
 				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity
 			{
 				Intent intent = new Intent(getApplicationContext(), CreateAccountActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 	}
