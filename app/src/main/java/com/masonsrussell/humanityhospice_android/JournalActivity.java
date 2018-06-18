@@ -367,14 +367,10 @@ public class JournalActivity extends AppCompatActivity
 
 	public void onBackPressed()
 	{
-		if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-		{
-			mDrawerLayout.closeDrawer(GravityCompat.START);
-		} else
-		{
-			mAuth.signOut();
-			finish();
-		}
+		Intent a = new Intent(Intent.ACTION_MAIN);
+		a.addCategory(Intent.CATEGORY_HOME);
+		a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(a);
 	}
 
 	class MapComparator implements Comparator<Map<String, Object>>
@@ -389,8 +385,18 @@ public class JournalActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Long firstValue = (Long) first.get(key);
-			Long secondValue = (Long) second.get(key);
+			Long firstValue, secondValue;
+			try {
+				firstValue = (Long) first.get(key);
+				secondValue = (Long) second.get(key);
+			}
+			catch (Exception ex)
+			{
+				Double firstDoub = (Double) first.get(key);
+				Double secondDoub = (Double) second.get(key);
+				firstValue = Math.round(firstDoub);
+				secondValue = Math.round(secondDoub);
+			}
 			return firstValue.compareTo(secondValue);
 		}
 	}

@@ -409,10 +409,18 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Double firstDoub = (double) first.get(key);
-			Double secondDoub = (double) second.get(key);
-			Long firstValue = Double.valueOf(firstDoub).longValue();
-			Long secondValue = Double.valueOf(secondDoub).longValue();
+			Long firstValue, secondValue;
+			try {
+				firstValue = (Long) first.get(key);
+				secondValue = (Long) second.get(key);
+			}
+			catch (Exception ex)
+			{
+				Double firstDoub = (Double) first.get(key);
+				Double secondDoub = (Double) second.get(key);
+				firstValue = Math.round(firstDoub);
+				secondValue = Math.round(secondDoub);
+			}
 			return firstValue.compareTo(secondValue);
 		}
 	}

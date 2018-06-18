@@ -399,8 +399,18 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Long firstValue = ((Long) first.get(key));
-			Long secondValue = ((Long) second.get(key));
+			Long firstValue, secondValue;
+			try {
+				firstValue = (Long) first.get(key);
+				secondValue = (Long) second.get(key);
+			}
+			catch (Exception ex)
+			{
+				Double firstDoub = (Double) first.get(key);
+				Double secondDoub = (Double) second.get(key);
+				firstValue = Math.round(firstDoub);
+				secondValue = Math.round(secondDoub);
+			}
 			return firstValue.compareTo(secondValue);
 		}
 	}
