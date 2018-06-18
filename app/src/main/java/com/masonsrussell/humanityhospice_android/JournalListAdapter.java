@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +87,10 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		{
 			if (postsList.get(position).containsKey("posterProfilePicture"))
 			{
-				Glide.with(context).load(postsList.get(position).get("posterProfilePicture")).into(holder.profilePictureImageView);
+				Glide.with(context)
+						.load(postsList.get(position).get("posterProfilePicture"))
+                        .apply(new RequestOptions().override(180,180).fitCenter())
+						.into(holder.profilePictureImageView);
 				holder.profilePictureImageView.getLayoutParams().width = 180;
 				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}

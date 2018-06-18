@@ -237,7 +237,7 @@ public class FirebaseCalls
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put("postImageURL", imageURL);
+		posterInfo.put("url", imageURL);
 		if (AccountInformation.accountType.equals("family"))
 		{
 
