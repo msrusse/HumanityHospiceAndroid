@@ -101,6 +101,11 @@ public class FirebaseCalls
 		DatabaseReference patients = mDatabase.getReference("Patients");
 		DatabaseReference individualPatient = patients.child(AccountInformation.patientID);
 		DatabaseReference patientMetaData = individualPatient.child("MetaData");
+		DatabaseReference inviteCodesRef = mDatabase.getReference("InviteCodes");
+
+		Map<String, Object> inviteCodeMap = new HashMap<>();
+		inviteCodeMap.put("patient", AccountInformation.patientID);
+		inviteCodesRef.child(inviteCode).updateChildren(inviteCodeMap);
 
 		Map<String, Object> patientInfo = new HashMap<>();
 		patientInfo.put("InviteCode", inviteCode);

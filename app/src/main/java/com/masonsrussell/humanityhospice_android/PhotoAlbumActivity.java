@@ -183,6 +183,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":
@@ -255,6 +257,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":
