@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +37,11 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
 		if (postsList.get(position).containsKey("postImageURL") && postsList.get(position).containsKey("comments"))
 		{
-			if (AccountInformation.profilePictureURL != null)
+			if (postsList.get(position).containsKey("posterProfilePicture"))
 			{
-				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
-				holder.profilePictureImageView.getLayoutParams().width = 250;
-				holder.profilePictureImageView.getLayoutParams().height = 250;
+				Glide.with(context).load(postsList.get(position).get("posterProfilePicture")).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 180;
+				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
@@ -52,11 +54,11 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else if (postsList.get(position).containsKey("postImageURL"))
 		{
-			if (AccountInformation.profilePictureURL != null)
+			if (postsList.get(position).containsKey("posterProfilePicture"))
 			{
-				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
-				holder.profilePictureImageView.getLayoutParams().width = 250;
-				holder.profilePictureImageView.getLayoutParams().height = 250;
+				Glide.with(context).load(postsList.get(position).get("posterProfilePicture")).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 180;
+				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
@@ -68,11 +70,11 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else if (postsList.get(position).containsKey("comments"))
 		{
-			if (AccountInformation.profilePictureURL != null)
+			if (postsList.get(position).containsKey("posterProfilePicture"))
 			{
-				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
-				holder.profilePictureImageView.getLayoutParams().width = 250;
-				holder.profilePictureImageView.getLayoutParams().height = 250;
+				Glide.with(context).load(postsList.get(position).get("posterProfilePicture")).into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 180;
+				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());
@@ -83,11 +85,14 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else
 		{
-			if (AccountInformation.profilePictureURL != null)
+			if (postsList.get(position).containsKey("posterProfilePicture"))
 			{
-				Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
-				holder.profilePictureImageView.getLayoutParams().width = 250;
-				holder.profilePictureImageView.getLayoutParams().height = 250;
+				Glide.with(context)
+						.load(postsList.get(position).get("posterProfilePicture"))
+                        .apply(new RequestOptions().override(180,180).fitCenter())
+						.into(holder.profilePictureImageView);
+				holder.profilePictureImageView.getLayoutParams().width = 180;
+				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}
 			holder.postBody.setText(postsList.get(position).get("Post").toString());
 			holder.poster.setText(postsList.get(position).get("Poster").toString());

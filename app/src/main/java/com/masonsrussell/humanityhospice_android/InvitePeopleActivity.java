@@ -102,6 +102,8 @@ public class InvitePeopleActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":
@@ -182,7 +184,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 			mDrawerLayout.closeDrawer(GravityCompat.START);
 		} else {
-			mAuth.signOut();
+			startActivity(new Intent(getApplicationContext(), JournalActivity.class));
 			finish();
 		}
 	}

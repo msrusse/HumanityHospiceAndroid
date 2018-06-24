@@ -16,11 +16,11 @@
         <item
             android:id="@+id/nav_add_patient"
             android:title="@string/add_patient"
-            android:icon="@mipmap/ic_assignment_ind_black_24dp"/>
+            android:icon="@drawable/ic_person_add_black_24dp" />
         <item
             android:id="@+id/nav_change_patient"
             android:title="@string/change_patient"
-            android:icon="@mipmap/ic_cached_black_24dp"/>
+            android:icon="@drawable/ic_autorenew_black_24dp"/>
         <item
             android:id="@+id/nav_sign_out"
             android:icon="@mipmap/sign_out"
