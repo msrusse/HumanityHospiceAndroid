@@ -84,6 +84,8 @@ public class WritePostActivity extends AppCompatActivity
 					{
 						FirebaseCalls.createJournalPostWithoutPhoto(postBox.getText().toString());
 					}
+                    Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+                    startActivity(intent);
 					finish();
 				}
 			}
@@ -167,6 +169,8 @@ public class WritePostActivity extends AppCompatActivity
 	@Override
 	public void onBackPressed()
 	{
+		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+		startActivity(intent);
 		finish();
 	}
 }
