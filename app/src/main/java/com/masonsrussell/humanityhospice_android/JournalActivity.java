@@ -94,6 +94,7 @@ public class JournalActivity extends AppCompatActivity
 				{
 					Intent intent = new Intent(getApplicationContext(), WritePostActivity.class);
 					startActivity(intent);
+					finish();
 				}
 			});
 		}
@@ -388,11 +389,19 @@ public class JournalActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Double firstDoub = (double) first.get(key);
-			Double secondDoub = (double) second.get(key);
-			Long firstValue = Double.valueOf(firstDoub).longValue();
-			Long secondValue = Double.valueOf(secondDoub).longValue();
-			return firstValue.compareTo(secondValue);
+			long firstValue, secondValue;
+			try {
+				firstValue = (long) first.get(key);
+				secondValue = (long) second.get(key);
+			}
+			catch (Exception ex)
+			{
+				double firstDoub = (double) first.get(key);
+				double secondDoub = (double) second.get(key);
+				firstValue = (long) firstDoub;
+				secondValue = (long) secondDoub;
+			}
+			return Long.compare(firstValue, secondValue);
 		}
 	}
 

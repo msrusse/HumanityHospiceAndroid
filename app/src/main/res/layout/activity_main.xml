@@ -21,18 +21,9 @@
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:contentDescription="@string/app_name"
-            app:srcCompat="@mipmap/logo" />
-
-        <TextView
-            android:id="@+id/appNameView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="64dp"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textSize="24sp" />
+            app:srcCompat="@mipmap/logo2" />
 
         <Button
             android:id="@+id/signInButton"

@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:contentDescription="@string/app_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            app:srcCompat="@mipmap/logo" />
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@mipmap/logo2" />
 
         <EditText
             android:id="@+id/firstNameEditText"

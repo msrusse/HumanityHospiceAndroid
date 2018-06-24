@@ -168,14 +168,26 @@ public class JournalCommentActivity extends AppCompatActivity
 		public int compare(Map<String, Object> first,
 		                   Map<String, Object> second)
 		{
-			Long firstValue = (Long) first.get(key);
-			Long secondValue = (Long) second.get(key);
-			return firstValue.compareTo(secondValue);
+			long firstValue, secondValue;
+			try {
+				firstValue = (long) first.get(key);
+				secondValue = (long) second.get(key);
+			}
+			catch (Exception ex)
+			{
+				double firstDoub = (double) first.get(key);
+				double secondDoub = (double) second.get(key);
+				firstValue = (long) firstDoub;
+				secondValue = (long) secondDoub;
+			}
+			return Long.compare(firstValue, secondValue);
 		}
 	}
 
 	public void onBackPressed()
 	{
+		Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+		startActivity(intent);
 		finish();
 	}
 }
