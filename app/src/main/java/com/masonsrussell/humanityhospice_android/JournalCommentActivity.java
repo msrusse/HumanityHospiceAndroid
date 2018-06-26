@@ -87,13 +87,6 @@ public class JournalCommentActivity extends AppCompatActivity
 						InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 						imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 					}
-					Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
-					intent.putExtra("postID", getIntent().getStringExtra("postID"));
-					intent.putExtra("username", getIntent().getStringExtra("username"));
-					intent.putExtra("post", getIntent().getStringExtra("post"));
-					intent.putExtra("timestamp", getIntent().getStringExtra("timestamp"));
-					startActivity(intent);
-					finish();
 				}
 				else
 				{
