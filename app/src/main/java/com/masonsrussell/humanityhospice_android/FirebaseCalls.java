@@ -100,13 +100,7 @@ public class FirebaseCalls
 		posterInfo.put("poster", fName + " " + lName);
 		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put("post", "Joined Humanity Hospice");
-		if (AccountInformation.accountType.equals("family"))
-		{
-
-		}
-		else {
-			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
-		}
+		if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
 		newPost.updateChildren(posterInfo);
 	}
 
