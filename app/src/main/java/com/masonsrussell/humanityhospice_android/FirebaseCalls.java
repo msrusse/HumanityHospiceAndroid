@@ -319,10 +319,10 @@ public class FirebaseCalls
 							@Override
 							public void onSuccess(Uri uri)
 							{
-								AccountInformation.profilePictureURL = uri.toString();
 								UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
 										.setPhotoUri(uri)
 										.build();
+								AccountInformation.UpdateProfilePicture(uri.toString());
 
 								mAuth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
 									@Override
@@ -361,11 +361,10 @@ public class FirebaseCalls
 							@Override
 							public void onSuccess(Uri uri)
 							{
-								AccountInformation.profilePictureURL = uri.toString();
 								UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
 										.setPhotoUri(uri)
 										.build();
-
+								AccountInformation.UpdateProfilePicture(uri.toString());
 								mAuth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
 									@Override
 									public void onComplete(@NonNull Task<Void> task)

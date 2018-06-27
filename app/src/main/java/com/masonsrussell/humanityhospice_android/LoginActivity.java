@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity
 {
 	Button signInButton;
 	EditText passwordEditText, emailEditText;
-	TextView createAccountView;
+	TextView createAccountView, resetPasswordView;
 	private static final String TAG = "LoginActivity";
 
 	@Override
@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity
 		passwordEditText = findViewById(R.id.passwordEditText);
 		emailEditText = findViewById(R.id.emailEditText);
 		createAccountView = findViewById(R.id.createAccountView);
+		resetPasswordView = findViewById(R.id.resetPasswordView);
 
 		signInButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -55,6 +56,32 @@ public class LoginActivity extends AppCompatActivity
 				Intent intent = new Intent(getApplicationContext(), CreateAccountActivity.class);
 				startActivity(intent);
 				finish();
+			}
+		});
+
+		resetPasswordView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FirebaseAuth mAuth = FirebaseAuth.getInstance();
+				if (!TextUtils.isEmpty(emailEditText.getText())) {
+					mAuth.sendPasswordResetEmail(emailEditText.getText().toString())
+							.addOnCompleteListener(new OnCompleteListener<Void>() {
+								@Override
+								public void onComplete(@NonNull Task<Void> task) {
+									if (task.isSuccessful()) {
+										// do something when mail was sent successfully.
+										Toast.makeText(getApplicationContext(), "Check your email for further instructions", Toast.LENGTH_LONG).show();
+									} else {
+										// ...
+
+									}
+								}
+							});
+				}
+				else if (TextUtils.isEmpty(emailEditText.getText()))
+				{
+					Toast.makeText(getApplicationContext(), "Enter a valid email to reset password", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 	}

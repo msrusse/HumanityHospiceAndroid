@@ -130,8 +130,8 @@ public class AddPhotoActivity extends AppCompatActivity
 				if(resultCode == RESULT_OK){
 					selectedImage = imageReturnedIntent.getData();
 					postImageView.setImageURI(selectedImage);
-					postImageView.getLayoutParams().width = 200;
-					postImageView.getLayoutParams().height = 150;
+					postImageView.getLayoutParams().width = (int) (screenWidth *.75);
+					postImageView.getLayoutParams().height = (int) (screenHeight*.5);
 				}
 				break;
 		}

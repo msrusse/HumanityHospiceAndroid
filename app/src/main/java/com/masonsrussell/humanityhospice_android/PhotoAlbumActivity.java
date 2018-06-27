@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -147,6 +149,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	private void setFamilyPatientNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -183,6 +186,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":
@@ -230,6 +235,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	private void setReaderNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -255,6 +261,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":

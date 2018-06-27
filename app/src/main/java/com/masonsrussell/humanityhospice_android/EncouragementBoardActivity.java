@@ -3,7 +3,9 @@ package com.masonsrussell.humanityhospice_android;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
@@ -133,6 +135,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	private void setReaderNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -157,6 +160,8 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":
@@ -204,6 +209,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	private void setFamilyPatientNavMenu()
 	{
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
@@ -238,6 +244,8 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								break;
 							case "Sign Out":
 								mAuth.signOut();
+                                Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":
@@ -495,12 +503,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	}
 
 	public void onBackPressed() {
-		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-			mDrawerLayout.closeDrawer(GravityCompat.START);
-		} else {
-			mAuth.signOut();
-			finish();
-		}
+		finish();
 	}
 
 	public void profileImagePicker()

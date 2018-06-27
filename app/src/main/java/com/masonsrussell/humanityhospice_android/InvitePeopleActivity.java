@@ -2,7 +2,9 @@ package com.masonsrussell.humanityhospice_android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
@@ -67,6 +69,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 		}
 
 		NavigationView navigationView = findViewById(R.id.nav_view);
+		navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		navigationView.setNavigationItemSelectedListener(
 				new NavigationView.OnNavigationItemSelectedListener()
