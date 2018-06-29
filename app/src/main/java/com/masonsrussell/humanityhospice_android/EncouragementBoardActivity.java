@@ -61,7 +61,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (AccountInformation.accountType.equals("Patient"))
+		if (AccountInformation.accountType.equals(FirebaseCalls.Patient))
 		{
 			setContentView(R.layout.activity_encouragement_board);
 			mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -323,9 +323,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						addPost.put("Post", postsMap.get(post).get("post").toString());
-						addPost.put("Poster", postsMap.get(post).get("poster").toString());
-						addPost.put("timestamp", postsMap.get(post).get("timestamp"));
+						addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Post).toString());
+						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
+						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 						posts.add(addPost);
 					}
 					setListView();
@@ -358,11 +358,11 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						if (postsMap.get(post).get("posterID").toString().equals(mAuth.getCurrentUser().getUid()))
+						if (postsMap.get(post).get(FirebaseCalls.PosterName).toString().equals(mAuth.getCurrentUser().getUid()))
 						{
-							addPost.put("Post", postsMap.get(post).get("post").toString());
-							addPost.put("Poster", postsMap.get(post).get("poster").toString());
-							addPost.put("timestamp", postsMap.get(post).get("timestamp"));
+							addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Post).toString());
+							addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
+							addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 							posts.add(addPost);
 						}
 					}
@@ -385,16 +385,16 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	{
 		try
 		{
-			Collections.sort(posts, new MapComparator("timestamp"));
+			Collections.sort(posts, new MapComparator(FirebaseCalls.Timestamp));
 			ArrayList<String> postsArrayList = new ArrayList<>();
 			ArrayList<String> posterArrayList = new ArrayList<>();
 			ArrayList<Long> timestampArrayList = new ArrayList<>();
 			Collections.reverse(posts);
 			for (Map post : posts)
 			{
-				postsArrayList.add(post.get("Post").toString());
-				posterArrayList.add(post.get("Poster").toString());
-				timestampArrayList.add((Long) post.get("timestamp"));
+				postsArrayList.add(post.get(FirebaseCalls.Post).toString());
+				posterArrayList.add(post.get(FirebaseCalls.PosterName).toString());
+				timestampArrayList.add((Long) post.get(FirebaseCalls.Timestamp));
 			}
 			ListAdapter listAdapter = new EncouragementBoardActivity.CustomListAdapter(EncouragementBoardActivity.this, R.layout.journal_listview_adapter, postsArrayList, posterArrayList);
 			encouragementBoardListView.setAdapter(listAdapter);

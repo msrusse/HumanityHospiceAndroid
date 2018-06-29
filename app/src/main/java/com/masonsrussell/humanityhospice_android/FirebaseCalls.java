@@ -2,7 +2,10 @@ package com.masonsrussell.humanityhospice_android;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,123 +27,124 @@ public class FirebaseCalls
 	private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 	private static StorageReference storageReference;
 	private static FirebaseStorage storage;
+	public static final String Journals = "Journals";
+	public static final String PosterUID = "PosterUID";
+	public static final String Timestamp = "Timestamp";
+	public static final String PosterName = "PosterName";
+	public static final String Post = "Post";
+	public static final String PostImageURL = "PostImageURL";
+	public static final String Message = "Message";
+	public static final String Comments = "Comments";
+	public static final String EncouragementBoards = "EncouragementBoards";
+	public static final String Patients = "Patients";
+	public static final String InviteCodes = "InviteCodes";
+	public static final String Patient = "Patient";
+	public static final String FirstName = "FirstName";
+	public static final String LastName = "LastName";
+	public static final String FullName = "FullName";
+	public static final String InviteCode = "InviteCode";
+	public static final String PatientUID = "PatientUID";
+	public static final String Readers = "Readers";
+	public static final String PatientsList = "PatientsList";
+	public static final String ReadingFrom = "ReadingFrom";
+	public static final String Family = "Family";
+	public static final String PhotoAlbum = "PhotoAlbum";
+	public static final String Comment = "Comment";
 
 	public static void createJournalPostWithoutPhoto(String post)
 	{
-		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference posts = mDatabase.getReference(Journals);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		if (AccountInformation.accountType.equals("Family"))
-		{
-
-		}
-		else {
-			if (mAuth.getCurrentUser().getPhotoUrl() != null) {
-				posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
-			}
-		}
-		posterInfo.put("post", post);
+		posterInfo.put(PosterUID, AccountInformation.username);
+		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put(Post, post);
 		newPost.updateChildren(posterInfo);
 	}
 
 	public static void createJournalPostWithPhoto(String post, Object imageURl)
 	{
-		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference posts = mDatabase.getReference(Journals);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		if (AccountInformation.accountType.equals("family"))
-		{
-
-		}
-		else {
-			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
-		}
-		posterInfo.put("postImageURL", imageURl);
-		posterInfo.put("post", post);
+		posterInfo.put(PosterUID, AccountInformation.patientID);
+		posterInfo.put(PosterName, AccountInformation.username);
+		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put(FirebaseCalls.PostImageURL, imageURl);
+		posterInfo.put(Post, post);
 		newPost.updateChildren(posterInfo);
 		createAlbumPost(imageURl);
 	}
 
 	public static void createEncouragementPost(String post)
 	{
-		DatabaseReference posts = mDatabase.getReference("EncouragementBoard");
+		DatabaseReference posts = mDatabase.getReference(EncouragementBoards);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put("post", post);
-		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
-		if (AccountInformation.accountType.equals("family"))
-		{
-
-		}
-		else {
-			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
-		}
+		posterInfo.put(PosterName, AccountInformation.username);
+		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put(FirebaseCalls.Message, post);
+		posterInfo.put(PosterUID, mAuth.getCurrentUser().getUid());
 		newPost.updateChildren(posterInfo);
 	}
 
 	private static void createFirstPost(String fName, String lName)
 	{
-		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference posts = mDatabase.getReference(Journals);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("poster", fName + " " + lName);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put("post", "Joined Humanity Hospice");
-		if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
+		posterInfo.put(PosterUID, AccountInformation.patientID);
+		posterInfo.put(PosterName, fName + " " + lName);
+		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put(Post, "Joined Humanity Hospice");
 		newPost.updateChildren(posterInfo);
 	}
 
 	public static void createPatient(String inviteCode, String fName, String lName)
 	{
-		DatabaseReference patients = mDatabase.getReference("Patients");
+		DatabaseReference patients = mDatabase.getReference(Patients);
 		DatabaseReference individualPatient = patients.child(AccountInformation.patientID);
-		DatabaseReference patientMetaData = individualPatient.child("MetaData");
-		DatabaseReference inviteCodesRef = mDatabase.getReference("InviteCodes");
+		DatabaseReference inviteCodesRef = mDatabase.getReference(InviteCodes);
 
 		Map<String, Object> inviteCodeMap = new HashMap<>();
-		inviteCodeMap.put("patient", AccountInformation.patientID);
+		inviteCodeMap.put(FirebaseCalls.Patient, AccountInformation.patientID);
 		inviteCodesRef.child(inviteCode).updateChildren(inviteCodeMap);
 
 		Map<String, Object> patientInfo = new HashMap<>();
-		patientInfo.put("InviteCode", inviteCode);
+		patientInfo.put(InviteCode, inviteCode);
 		individualPatient.updateChildren(patientInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();
-		metaDataMap.put("firstName", fName);
-		metaDataMap.put("lastName", lName);
-		patientMetaData.updateChildren(metaDataMap);
+		metaDataMap.put(FirstName, fName);
+		metaDataMap.put(LastName, lName);
+		metaDataMap.put(FullName, fName + " " + lName);
+		individualPatient.updateChildren(metaDataMap);
 		createFirstPost(fName, lName);
 	}
 
 	public static void createReader(String fName, String lName, String patientID)
 	{
-		DatabaseReference patients = mDatabase.getReference("Readers");
+		DatabaseReference patients = mDatabase.getReference(Readers);
 		DatabaseReference individualReader = patients.child(mAuth.getCurrentUser().getUid());
-		DatabaseReference readerMetaData = individualReader.child("MetaData");
-		DatabaseReference patientsToReadFrom = individualReader.child("Patients");
+		DatabaseReference patientsToReadFrom = individualReader.child(PatientsList);
 
 		Map<String, Object> readerInfo = new HashMap<>();
-		readerInfo.put("ReadingFrom", patientID);
+		readerInfo.put(ReadingFrom, patientID);
 		individualReader.updateChildren(readerInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();
-		metaDataMap.put("firstName", fName);
-		metaDataMap.put("lastName", lName);
-		readerMetaData.updateChildren(metaDataMap);
+		metaDataMap.put(FirstName, fName);
+		metaDataMap.put(LastName, lName);
+		metaDataMap.put(FullName, fName + " " + lName);
+		individualReader.updateChildren(metaDataMap);
 
 		Map<String, Object> patientsReadingMap = new HashMap<>();
 		patientsReadingMap.put(patientID, true);
@@ -149,26 +153,26 @@ public class FirebaseCalls
 
 	public static void createFamily(String fName, String lName, String familyID)
 	{
-		DatabaseReference family = mDatabase.getReference("Family");
+		DatabaseReference family = mDatabase.getReference(Family);
 		DatabaseReference individualFamily = family.child(familyID);
-		DatabaseReference familyMetaData = individualFamily.child("MetaData");
 
 		Map<String, Object> patientInfo = new HashMap<>();
-		patientInfo.put("PatientID", AccountInformation.patientID);
+		patientInfo.put(PatientUID, AccountInformation.patientID);
 		individualFamily.updateChildren(patientInfo);
 
 		Map<String, Object> metaDataMap = new HashMap<>();
-		metaDataMap.put("firstName", fName);
-		metaDataMap.put("lastName", lName);
-		familyMetaData.updateChildren(metaDataMap);
+		metaDataMap.put(FirstName, fName);
+		metaDataMap.put(LastName, lName);
+		metaDataMap.put(FullName, fName + " " + lName);
+		individualFamily.updateChildren(metaDataMap);
 	}
 
 	public static void addAdditionalPatientForReader(String patientID)
 	{
-		DatabaseReference readers = mDatabase.getReference("Readers");
+		DatabaseReference readers = mDatabase.getReference(Readers);
 		DatabaseReference individualReader = readers.child(mAuth.getCurrentUser().getUid());
-		DatabaseReference readersPatients = individualReader.child("Patients");
-		DatabaseReference readingFromRef = individualReader.child("ReadingFrom");
+		DatabaseReference readersPatients = individualReader.child(PatientsList);
+		DatabaseReference readingFromRef = individualReader.child(ReadingFrom);
 
 		Map<String, Object> readersPatientsMap = new HashMap<>();
 		readersPatientsMap.put(patientID, true);
@@ -179,9 +183,9 @@ public class FirebaseCalls
 
 	public static void updatePatientReadingFrom(String patientID)
 	{
-		DatabaseReference readers = mDatabase.getReference("Readers");
+		DatabaseReference readers = mDatabase.getReference(Readers);
 		DatabaseReference individualReader = readers.child(mAuth.getCurrentUser().getUid());
-		DatabaseReference readingFromRef = individualReader.child("ReadingFrom");
+		DatabaseReference readingFromRef = individualReader.child(ReadingFrom);
 		readingFromRef.setValue(patientID);
 	}
 
@@ -202,7 +206,7 @@ public class FirebaseCalls
 							@Override
 							public void onSuccess(Uri uri)
 							{
-								if (activity.equals("Journals"))
+								if (activity.equals(Journals))
 								{
 									createJournalPostWithPhoto(post, uri.toString());
 								} else
@@ -225,20 +229,13 @@ public class FirebaseCalls
 
 	private static void createAlbumPost(Object imageURL)
 	{
-		DatabaseReference posts = mDatabase.getReference("PhotoAlbum");
+		DatabaseReference posts = mDatabase.getReference(PhotoAlbum);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put("postImageURL", imageURL);
-		if (AccountInformation.accountType.equals("family"))
-		{
-
-		}
-		else {
-			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("profilePictureURL", mAuth.getCurrentUser().getPhotoUrl().toString());
-		}
+		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put(FirebaseCalls.PostImageURL, imageURL);
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -258,7 +255,7 @@ public class FirebaseCalls
 							@Override
 							public void onSuccess(Uri uri)
 							{
-								if (activity.equals("Journal"))
+								if (activity.equals(Journals))
 								{
 									createJournalPostWithPhoto(post, uri.toString());
 								} else
@@ -281,25 +278,17 @@ public class FirebaseCalls
 
 	public static void addCommentToJournalPost(String commentToAdd, String postID)
 	{
-		DatabaseReference posts = mDatabase.getReference("Journals");
+		DatabaseReference posts = mDatabase.getReference(Journals);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
 		DatabaseReference currentPost = patientsPosts.child(postID);
-		DatabaseReference commentsRef = currentPost.child("comments");
+		DatabaseReference commentsRef = currentPost.child(FirebaseCalls.Comments);
 		DatabaseReference newComment = commentsRef.push();
 
-		// TODO: add functionality for including commenter profile picture
 		Map<String, Object> posterInfo = new HashMap<>();
-		if (AccountInformation.accountType.equals("family"))
-		{
-
-		}
-		else {
-			if (mAuth.getCurrentUser().getPhotoUrl() != null) posterInfo.put("posterImageURL", mAuth.getCurrentUser().getPhotoUrl().toString());
-		}
-		posterInfo.put("poster", AccountInformation.username);
-		posterInfo.put("timestamp", Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put("post", commentToAdd);
-		posterInfo.put("posterID", mAuth.getCurrentUser().getUid());
+		posterInfo.put(PosterName, AccountInformation.username);
+		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
+		posterInfo.put(Comment, commentToAdd);
+		posterInfo.put(PosterUID, mAuth.getCurrentUser().getUid());
 		newComment.updateChildren(posterInfo);
 	}
 

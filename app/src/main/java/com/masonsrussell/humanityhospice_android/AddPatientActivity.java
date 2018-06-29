@@ -59,7 +59,7 @@ public class AddPatientActivity extends AppCompatActivity
 		Button enter = findViewById(R.id.enterButton);
 		final EditText accessCode = findViewById(R.id.accessCode);
 		mAuth = FirebaseAuth.getInstance();
-		final DatabaseReference patients = mDatabase.getReference("Patients");
+		final DatabaseReference patients = mDatabase.getReference(FirebaseCalls.PatientsList);
 		patients.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
@@ -130,7 +130,7 @@ public class AddPatientActivity extends AppCompatActivity
 		for (String id : patientIds)
 		{
 			final String finalId = id;
-			patients.child(id).child("InviteCode").addListenerForSingleValueEvent(new ValueEventListener()
+			patients.child(id).child(FirebaseCalls.InviteCode).addListenerForSingleValueEvent(new ValueEventListener()
 			{
 				@Override
 				public void onDataChange(DataSnapshot dataSnapshot)

@@ -38,10 +38,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 			holder.profilePictureImageView.getLayoutParams().width = 250;
 			holder.profilePictureImageView.getLayoutParams().height = 250;
 		}
-		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get("timestamp").toString());
-		holder.postBody.setText(postsList.get(position).get("Post").toString());
+		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get(FirebaseCalls.Timestamp).toString());
+		holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 		holder.timestamp.setText(date);
-		holder.poster.setText(postsList.get(position).get("Poster").toString());
+		holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 
 	}
 

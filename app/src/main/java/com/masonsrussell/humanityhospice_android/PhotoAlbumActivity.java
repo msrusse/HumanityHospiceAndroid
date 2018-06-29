@@ -348,7 +348,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 
 	private void getPhotoAlbumImages()
 	{
-		final DatabaseReference photoRef = mDatabase.getReference("PhotoAlbum");
+		final DatabaseReference photoRef = mDatabase.getReference(FirebaseCalls.PhotoAlbum);
 		photoRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -361,8 +361,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addImage = new HashMap<>();
-						addImage.put("timestamp", postsMap.get(post).get("timestamp"));
-						addImage.put("url", postsMap.get(post).get("postImageURL").toString());
+						addImage.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
+						addImage.put("url", postsMap.get(post).get(FirebaseCalls.PostImageURL).toString());
 						imageURLs.add(addImage);
 					}
 					setAdapter();
@@ -401,7 +401,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 
 		private MapComparator()
 		{
-			this.key = "timestamp";
+			this.key = FirebaseCalls.Timestamp;
 		}
 
 		public int compare(Map<String, Object> first,

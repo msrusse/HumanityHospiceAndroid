@@ -72,13 +72,13 @@ public class AddPhotoActivity extends AppCompatActivity
 				Intent restartPhotoAlbumIntent = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
 					if (data != null)
 					{
-						FirebaseCalls.createPhotoRefFromCamera(data, null, "PhotoAlbum");
+						FirebaseCalls.createPhotoRefFromCamera(data, null, FirebaseCalls.PhotoAlbum);
 						startActivity(restartPhotoAlbumIntent);
 						finish();
 					}
 					else if (selectedImage != null)
 					{
-						FirebaseCalls.addAlbumPictures(selectedImage, null, "PhotoAlbum");
+						FirebaseCalls.addAlbumPictures(selectedImage, null, FirebaseCalls.PhotoAlbum);
 						startActivity(restartPhotoAlbumIntent);
 						finish();
 					}

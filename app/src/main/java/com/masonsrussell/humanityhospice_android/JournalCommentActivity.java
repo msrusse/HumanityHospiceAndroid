@@ -65,11 +65,11 @@ public class JournalCommentActivity extends AppCompatActivity
 		postImageView = findViewById(R.id.postImageView);
 		postID = getIntent().getStringExtra("postID");
 		usernameView.setText(getIntent().getStringExtra("username"));
-		captionView.setText(getIntent().getStringExtra("post"));
-		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra("timestamp")));
-		if (getIntent().getStringExtra("photoURL") != null)
+		captionView.setText(getIntent().getStringExtra(FirebaseCalls.Post));
+		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra(FirebaseCalls.Timestamp)));
+		if (getIntent().getStringExtra(FirebaseCalls.PostImageURL) != null)
 		{
-			Glide.with(this).load(getIntent().getStringExtra("photoURL")).into(postImageView);
+			Glide.with(this).load(getIntent().getStringExtra(FirebaseCalls.PostImageURL)).into(postImageView);
 			postImageView.getLayoutParams().height = screenHeight/3;
 		}
 		getComments();
@@ -98,8 +98,8 @@ public class JournalCommentActivity extends AppCompatActivity
 
 	private void getComments()
 	{
-		DatabaseReference journalPostsRef = mDatabase.getReference("Journals");
-		journalPostsRef.child(AccountInformation.patientID).child(postID).child("comments").addValueEventListener(new ValueEventListener()
+		DatabaseReference journalPostsRef = mDatabase.getReference(FirebaseCalls.Journals);
+		journalPostsRef.child(AccountInformation.patientID).child(postID).child(FirebaseCalls.Comments).addValueEventListener(new ValueEventListener()
 		{
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
@@ -112,9 +112,9 @@ public class JournalCommentActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						addPost.put("Post", postsMap.get(post).get("post").toString());
-						addPost.put("Poster", postsMap.get(post).get("poster").toString());
-						addPost.put("timestamp", postsMap.get(post).get("timestamp"));
+						addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Comment).toString());
+						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
+						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 						comments.add(addPost);
 					}
 					setListView();
@@ -155,7 +155,7 @@ public class JournalCommentActivity extends AppCompatActivity
 
 		private MapComparator()
 		{
-			this.key = "timestamp";
+			this.key = FirebaseCalls.Timestamp;
 		}
 
 		public int compare(Map<String, Object> first,

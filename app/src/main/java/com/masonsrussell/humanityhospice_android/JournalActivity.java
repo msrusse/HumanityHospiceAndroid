@@ -293,7 +293,7 @@ public class JournalActivity extends AppCompatActivity
 
 	private void getJournalPosts()
 	{
-		DatabaseReference journalPostsRef = mDatabase.getReference("Journals");
+		DatabaseReference journalPostsRef = mDatabase.getReference(FirebaseCalls.Journals);
 		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener()
 		{
 			@Override
@@ -307,18 +307,18 @@ public class JournalActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						if (postsMap.get(post).containsKey("postImageURL"))
+						if (postsMap.get(post).containsKey(FirebaseCalls.PostImageURL))
 						{
-							addPost.put("postImageURL", postsMap.get(post).get("postImageURL").toString());
+							addPost.put(FirebaseCalls.PostImageURL, postsMap.get(post).get(FirebaseCalls.PostImageURL).toString());
 						}
-						if (postsMap.get(post).containsKey("comments"))
+						if (postsMap.get(post).containsKey(FirebaseCalls.Comments))
 						{
-							addPost.put("comments", postsMap.get(post).get("comments"));
+							addPost.put(FirebaseCalls.Comments, postsMap.get(post).get(FirebaseCalls.Comments));
 						}
 						addPost.put("postID", post);
-						addPost.put("Post", postsMap.get(post).get("post").toString());
-						addPost.put("Poster", postsMap.get(post).get("poster").toString());
-						addPost.put("timestamp", postsMap.get(post).get("timestamp"));
+						addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Post).toString());
+						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
+						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 						posts.add(addPost);
 					}
 					setListView();
@@ -355,14 +355,14 @@ public class JournalActivity extends AppCompatActivity
 						public void onItemClick(View v, int position)
 						{
 							Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
-							if (posts.get(position).containsKey("postImageURL"))
+							if (posts.get(position).containsKey(FirebaseCalls.PostImageURL))
 							{
-								intent.putExtra("photoURL", posts.get(position).get("postImageURL").toString());
+								intent.putExtra(FirebaseCalls.PostImageURL, posts.get(position).get(FirebaseCalls.PostImageURL).toString());
 							}
 							intent.putExtra("postID", posts.get(position).get("postID").toString());
-							intent.putExtra("username", posts.get(position).get("Poster").toString());
-							intent.putExtra("post", posts.get(position).get("Post").toString());
-							intent.putExtra("timestamp", posts.get(position).get("timestamp").toString());
+							intent.putExtra(FirebaseCalls.PosterName, posts.get(position).get(FirebaseCalls.PosterName).toString());
+							intent.putExtra(FirebaseCalls.Post, posts.get(position).get(FirebaseCalls.Post).toString());
+							intent.putExtra(FirebaseCalls.Timestamp, posts.get(position).get(FirebaseCalls.Timestamp).toString());
 							startActivity(intent);
 						}
 					})
@@ -384,7 +384,7 @@ public class JournalActivity extends AppCompatActivity
 
 		private MapComparator()
 		{
-			this.key = "timestamp";
+			this.key = FirebaseCalls.Timestamp;
 		}
 
 		public int compare(Map<String, Object> first,

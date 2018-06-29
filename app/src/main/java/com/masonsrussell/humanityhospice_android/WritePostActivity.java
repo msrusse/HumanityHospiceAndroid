@@ -74,11 +74,11 @@ public class WritePostActivity extends AppCompatActivity
 				{
 					if (data != null)
 					{
-						FirebaseCalls.createPhotoRefFromCamera(data, postBox.getText().toString(), "Journals");
+						FirebaseCalls.createPhotoRefFromCamera(data, postBox.getText().toString(), FirebaseCalls.Journals);
 					}
 					else if (selectedImage != null)
 					{
-						FirebaseCalls.addAlbumPictures(selectedImage, postBox.getText().toString(), "Journals");
+						FirebaseCalls.addAlbumPictures(selectedImage, postBox.getText().toString(), FirebaseCalls.Journals);
 					}
 					else if (data == null && selectedImage == null)
 					{

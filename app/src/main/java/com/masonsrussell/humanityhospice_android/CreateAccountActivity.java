@@ -60,7 +60,7 @@ public class CreateAccountActivity extends AppCompatActivity
 		createAccountButton = findViewById(R.id.createAccountButton);
 		mAuth = FirebaseAuth.getInstance();
 		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-		final DatabaseReference patients = mDatabase.getReference("Patients");
+		final DatabaseReference patients = mDatabase.getReference(FirebaseCalls.Patients);
 		patients.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
@@ -218,7 +218,7 @@ public class CreateAccountActivity extends AppCompatActivity
 	{
 		int accountTypeSelected = accountTypeSelector.getCheckedRadioButtonId();
 		selectedAccountType = findViewById(accountTypeSelected);
-		if (selectedAccountType.getText().equals("Patient"))
+		if (selectedAccountType.getText().equals(FirebaseCalls.Patient))
 		{
 			AccountInformation.patientID = mAuth.getCurrentUser().getUid();
 			FirebaseCalls.createPatient(generateRandom(), firstName, lastName);
@@ -289,7 +289,7 @@ public class CreateAccountActivity extends AppCompatActivity
 		for (String id : patientIds)
 		{
 			final String finalId = id;
-			patients.child(id).child("InviteCode").addListenerForSingleValueEvent(new ValueEventListener()
+			patients.child(id).child(FirebaseCalls.InviteCode).addListenerForSingleValueEvent(new ValueEventListener()
 			{
 				@Override
 				public void onDataChange(DataSnapshot dataSnapshot)

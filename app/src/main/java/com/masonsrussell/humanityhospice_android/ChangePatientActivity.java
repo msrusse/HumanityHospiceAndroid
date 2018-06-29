@@ -75,9 +75,9 @@ public class ChangePatientActivity extends AppCompatActivity
 
 	private void getPatients()
 	{
-		DatabaseReference readersRef = mDatabase.getReference("Readers");
+		DatabaseReference readersRef = mDatabase.getReference(FirebaseCalls.Readers);
 		DatabaseReference individualReadersRef = readersRef.child(mAuth.getCurrentUser().getUid());
-		DatabaseReference readersPatientsRef = individualReadersRef.child("Patients");
+		DatabaseReference readersPatientsRef = individualReadersRef.child(FirebaseCalls.PatientsList);
 
 		readersPatientsRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
@@ -101,16 +101,15 @@ public class ChangePatientActivity extends AppCompatActivity
 	private void firebasePatientNamesCall(String patient)
 	{
 		final String patientUID = patient;
-		DatabaseReference patientsRef = mDatabase.getReference("Patients");
+		DatabaseReference patientsRef = mDatabase.getReference(FirebaseCalls.PatientsList);
 		DatabaseReference individualPatientRef = patientsRef.child(patient);
-		DatabaseReference patientMetaDataRef = individualPatientRef.child("MetaData");
-		patientMetaDataRef.addListenerForSingleValueEvent(new ValueEventListener() {
+		individualPatientRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
-				patientInformation.put(allPatients.get("firstName").toString() + " " + allPatients.get("lastName").toString(), patientUID);
-				patientNames.add(allPatients.get("firstName").toString() + " " + allPatients.get("lastName").toString());
+				patientInformation.put(allPatients.get(FirebaseCalls.FirstName).toString() + " " + allPatients.get(FirebaseCalls.LastName).toString(), patientUID);
+				patientNames.add(allPatients.get(FirebaseCalls.FirstName).toString() + " " + allPatients.get(FirebaseCalls.LastName).toString());
 				setListView();
 			}
 

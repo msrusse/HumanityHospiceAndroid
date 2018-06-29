@@ -87,14 +87,14 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 	{
 		if (profilePictureURL != null)
 		{
-			AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
+			AccountInformation.setAccountInfo(FirebaseCalls.Patient, mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
 		}
 		else
 		{
-			AccountInformation.setAccountInfo("Patient", mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), null);
+			AccountInformation.setAccountInfo(FirebaseCalls.Patient, mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), null);
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
@@ -109,14 +109,14 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		}
 		else if (profilePictureURL != null)
 		{
-			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
+			AccountInformation.setAccountInfo(FirebaseCalls.Family, mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
 		}
 		else
 		{
-			AccountInformation.setAccountInfo("Family", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), null);
+			AccountInformation.setAccountInfo(FirebaseCalls.Family, mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), null);
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
@@ -125,14 +125,14 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getFamilyName(final String patientID, final String profilePictureURL)
 	{
-		DatabaseReference familyRef = mDatabase.getReference("Family");
-		familyRef.child(mAuth.getCurrentUser().getUid()).child("MetaData").addListenerForSingleValueEvent(new ValueEventListener() {
+		DatabaseReference familyRef = mDatabase.getReference(FirebaseCalls.Family);
+		familyRef.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> metaDataValues = (HashMap) dataSnapshot.getValue();
-				String firstName = metaDataValues.get("firstName").toString();
-				String lastName = metaDataValues.get("lastName").toString();
+				String firstName = metaDataValues.get(FirebaseCalls.FirstName).toString();
+				String lastName = metaDataValues.get(FirebaseCalls.LastName).toString();
 				user = mAuth.getCurrentUser();
 				addPersonalData(firstName, lastName, patientID, profilePictureURL);
 			}
@@ -166,7 +166,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getPatients()
 	{
-		DatabaseReference patientsRef = mDatabase.getReference("Patients");
+		DatabaseReference patientsRef = mDatabase.getReference(FirebaseCalls.Patients);
 		patientsRef.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
@@ -193,7 +193,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getFamily()
 	{
-		DatabaseReference familyRef = mDatabase.getReference("Family");
+		DatabaseReference familyRef = mDatabase.getReference(FirebaseCalls.Family);
 		familyRef.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
@@ -220,7 +220,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getFamilyPatientID()
 	{
-		DatabaseReference familyRef = mDatabase.getReference("Family");
+		DatabaseReference familyRef = mDatabase.getReference(FirebaseCalls.Family);
 		DatabaseReference individualFamilyRef = familyRef.child(mAuth.getCurrentUser().getUid());
 		individualFamilyRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
@@ -241,7 +241,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getPatientProfilePic()
 	{
-		DatabaseReference patientref = mDatabase.getReference("Patients").child(mAuth.getCurrentUser().getUid());
+		DatabaseReference patientref = mDatabase.getReference(FirebaseCalls.Patients).child(mAuth.getCurrentUser().getUid());
 		patientref.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -268,8 +268,8 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> readerInfo = (HashMap) dataSnapshot.getValue();
-				if (readerInfo.keySet().contains("profilePictureURL")) isReader(readerInfo.get("ReadingFrom").toString(), readerInfo.get("profilePictureURL").toString());
-				else isReader(readerInfo.get("ReadingFrom").toString(), null);
+				if (readerInfo.keySet().contains("profilePictureURL")) isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString(), readerInfo.get("profilePictureURL").toString());
+				else isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString(), null);
 			}
 
 			@Override
