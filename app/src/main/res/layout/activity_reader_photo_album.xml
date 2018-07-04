@@ -48,9 +48,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
                 android:columnWidth="100dp"
                 android:gravity="center"
+                android:horizontalSpacing="8px"
                 android:minHeight="90dp"
+                android:minWidth="80dp"
                 android:numColumns="auto_fit"
                 android:stretchMode="columnWidth" />
 

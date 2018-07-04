@@ -42,7 +42,6 @@ public class JournalCommentActivity extends AppCompatActivity
 	CommentListAdapter mAdapter;
 	String postID;
 	public int screenWidth, screenHeight;
-	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
 	List<Map<String, Object>> comments = new ArrayList<>();
 
@@ -54,7 +53,6 @@ public class JournalCommentActivity extends AppCompatActivity
 		DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 		screenWidth = metrics.widthPixels;
 		screenHeight = metrics.heightPixels;
-		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
 		commentsRecyclerView = findViewById(R.id.commentsRecyclerView);
 		enterCommentText = findViewById(R.id.enterCommentText);
@@ -64,7 +62,7 @@ public class JournalCommentActivity extends AppCompatActivity
 		captionView = findViewById(R.id.postBodyTextView);
 		postImageView = findViewById(R.id.postImageView);
 		postID = getIntent().getStringExtra("postID");
-		usernameView.setText(getIntent().getStringExtra("username"));
+		usernameView.setText(getIntent().getStringExtra(FirebaseCalls.PosterName));
 		captionView.setText(getIntent().getStringExtra(FirebaseCalls.Post));
 		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra(FirebaseCalls.Timestamp)));
 		if (getIntent().getStringExtra(FirebaseCalls.PostImageURL) != null)
@@ -115,6 +113,7 @@ public class JournalCommentActivity extends AppCompatActivity
 						addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Comment).toString());
 						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
+						addPost.put(FirebaseCalls.PosterUID, postsMap.get(post).get(FirebaseCalls.PosterUID));
 						comments.add(addPost);
 					}
 					setListView();

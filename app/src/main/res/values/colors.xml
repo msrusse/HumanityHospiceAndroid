@@ -6,4 +6,5 @@
     <color name="primaryWhite">#ffffff</color>
     <color name="lighterPurple">#E7EBFD</color>
     <color name="cancelRed">#FF1F00</color>
+    <color name="headerPurple">#56389C</color>
 </resources>

@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,10 +50,11 @@ public class EncouragementBoardActivity extends AppCompatActivity
 {
 	TextView navHeaderName, navHeaderEmail;
 	Button writePostButton;
-	ListView encouragementBoardListView;
+	RecyclerView encouragementBoardListView;
 	Bitmap bitmap = null;
 	byte[] data = null;
 	Uri selectedImage = null;
+	EncouragementListAdapter mAdapter;
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
@@ -360,9 +363,10 @@ public class EncouragementBoardActivity extends AppCompatActivity
 						Map<String, Object> addPost = new HashMap<>();
 						if (postsMap.get(post).get(FirebaseCalls.PosterName).toString().equals(mAuth.getCurrentUser().getUid()))
 						{
-							addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Post).toString());
+							addPost.put(FirebaseCalls.Message, postsMap.get(post).get(FirebaseCalls.Post).toString());
 							addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 							addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
+							addPost.put(FirebaseCalls.PosterUID, postsMap.get(post).get(FirebaseCalls.PosterUID));
 							posts.add(addPost);
 						}
 					}
@@ -386,18 +390,13 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		try
 		{
 			Collections.sort(posts, new MapComparator(FirebaseCalls.Timestamp));
-			ArrayList<String> postsArrayList = new ArrayList<>();
-			ArrayList<String> posterArrayList = new ArrayList<>();
-			ArrayList<Long> timestampArrayList = new ArrayList<>();
 			Collections.reverse(posts);
-			for (Map post : posts)
-			{
-				postsArrayList.add(post.get(FirebaseCalls.Post).toString());
-				posterArrayList.add(post.get(FirebaseCalls.PosterName).toString());
-				timestampArrayList.add((Long) post.get(FirebaseCalls.Timestamp));
-			}
-			ListAdapter listAdapter = new EncouragementBoardActivity.CustomListAdapter(EncouragementBoardActivity.this, R.layout.journal_listview_adapter, postsArrayList, posterArrayList);
-			encouragementBoardListView.setAdapter(listAdapter);
+			mAdapter = new EncouragementListAdapter(this, posts);
+			encouragementBoardListView.setAdapter(mAdapter);
+			encouragementBoardListView.setLayoutManager(new LinearLayoutManager(this));
+			encouragementBoardListView.getRecycledViewPool().setMaxRecycledViews(0, 0);
+			encouragementBoardListView.setNestedScrollingEnabled(true);
+			encouragementBoardListView.smoothScrollBy(1, 1);
 		}
 		catch (Exception ex)
 		{
@@ -430,75 +429,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				secondValue = (long) secondDoub;
 			}
 			return Long.compare(firstValue, secondValue);
-		}
-	}
-
-	private class CustomListAdapter extends ArrayAdapter<String>
-	{
-
-		private Context mContext;
-		private int id;
-		private List<String> items;
-		private List<String> posters;
-
-		public CustomListAdapter(Context context, int textViewResourceId, List<String> postList, List<String> posterList)
-		{
-			super(context, textViewResourceId, postList);
-			mContext = context;
-			id = textViewResourceId;
-			items = postList;
-			posters = posterList;
-		}
-
-		@Override
-		public View getView(int position, View v, ViewGroup parent)
-		{
-			View mView = v;
-			if (mView == null)
-			{
-				LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				mView = vi.inflate(id, null);
-			}
-
-			TextView postBody = mView.findViewById(R.id.postBodyTextView);
-			TextView poster = mView.findViewById(R.id.usernameTextView);
-			TextView posted = mView.findViewById(R.id.posterTextView);
-			ImageView profilePictureImageView = mView.findViewById(R.id.profilePicImageView);
-
-			if (AccountInformation.accountType.equals("Reader"))
-			{
-				if (AccountInformation.profilePictureURL != null)
-				{
-					Glide.with(getApplicationContext()).load(AccountInformation.profilePictureURL).into(profilePictureImageView);
-					profilePictureImageView.getLayoutParams().width = 250;
-					profilePictureImageView.getLayoutParams().height = 250;
-				}
-				if (items.get(position) != null)
-				{
-					String you = "You";
-					String posted1 = "posted";
-					postBody.setText(items.get(position));
-					poster.setText(you);
-					posted.setText(posted1);
-				}
-			}
-			else
-			{
-				if (AccountInformation.profilePictureURL != null)
-				{
-					Glide.with(getApplicationContext()).load(AccountInformation.profilePictureURL).into(profilePictureImageView);
-					profilePictureImageView.getLayoutParams().width = 250;
-					profilePictureImageView.getLayoutParams().height = 250;
-				}
-				if (items.get(position) != null)
-				{
-					postBody.setText(items.get(position));
-					poster.setText(posters.get(position));
-					posted.setText(R.string.posted_in_board);
-				}
-			}
-
-			return mView;
 		}
 	}
 

@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.MainViewHolder> {
-	LayoutInflater inflater;
-	List<Map<String,Object>> postsList;
-	Context context;
+	private LayoutInflater inflater;
+	private List<Map<String,Object>> postsList;
+	private Context context;
 
 	public CommentListAdapter(Context context, List<Map<String,Object>> postsList) {
 		this.inflater = LayoutInflater.from(context);
@@ -32,9 +32,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	@Override
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		holder.setIsRecyclable(false);
-		if (AccountInformation.profilePictureURL != null)
+		if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 		{
-			Glide.with(context).load(AccountInformation.profilePictureURL).into(holder.profilePictureImageView);
+			Glide.with(context).load(AccountInformation.profilePictures.get(FirebaseCalls.PosterUID)).into(holder.profilePictureImageView);
 			holder.profilePictureImageView.getLayoutParams().width = 250;
 			holder.profilePictureImageView.getLayoutParams().height = 250;
 		}

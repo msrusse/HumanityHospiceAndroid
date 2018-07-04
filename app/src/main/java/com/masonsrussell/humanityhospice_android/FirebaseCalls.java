@@ -33,6 +33,7 @@ public class FirebaseCalls
 	public static final String PosterName = "PosterName";
 	public static final String Post = "Post";
 	public static final String PostImageURL = "PostImageURL";
+	public static final String PatientName = "PatientName";
 	public static final String Message = "Message";
 	public static final String Comments = "Comments";
 	public static final String EncouragementBoards = "EncouragementBoards";
@@ -50,6 +51,8 @@ public class FirebaseCalls
 	public static final String Family = "Family";
 	public static final String PhotoAlbum = "PhotoAlbum";
 	public static final String Comment = "Comment";
+	public static final String ProfilePictures = "ProfilePictures";
+	public static final String URL = "URL";
 
 	public static void createJournalPostWithoutPhoto(String post)
 	{
@@ -58,7 +61,8 @@ public class FirebaseCalls
 		DatabaseReference newPost = patientsPosts.push();
 
 		Map<String, Object> posterInfo = new HashMap<>();
-		posterInfo.put(PosterUID, AccountInformation.username);
+		posterInfo.put(PosterUID, AccountInformation.patientID);
+		posterInfo.put(PatientName, AccountInformation.username);
 		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put(Post, post);
 		newPost.updateChildren(posterInfo);
@@ -72,7 +76,7 @@ public class FirebaseCalls
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put(PosterUID, AccountInformation.patientID);
-		posterInfo.put(PosterName, AccountInformation.username);
+		posterInfo.put(PatientName, AccountInformation.username);
 		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put(FirebaseCalls.PostImageURL, imageURl);
 		posterInfo.put(Post, post);
@@ -89,7 +93,7 @@ public class FirebaseCalls
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put(PosterName, AccountInformation.username);
 		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put(FirebaseCalls.Message, post);
+		posterInfo.put(Message, post);
 		posterInfo.put(PosterUID, mAuth.getCurrentUser().getUid());
 		newPost.updateChildren(posterInfo);
 	}
@@ -102,7 +106,7 @@ public class FirebaseCalls
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put(PosterUID, AccountInformation.patientID);
-		posterInfo.put(PosterName, fName + " " + lName);
+		posterInfo.put(PatientName, fName + " " + lName);
 		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put(Post, "Joined Humanity Hospice");
 		newPost.updateChildren(posterInfo);
@@ -235,7 +239,7 @@ public class FirebaseCalls
 
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
-		posterInfo.put(FirebaseCalls.PostImageURL, imageURL);
+		posterInfo.put(URL, imageURL);
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -332,6 +336,7 @@ public class FirebaseCalls
 						Log.d("addAlbumPicture", e.getMessage());
 					}
 				});
+		addProfilePictureToDatabse();
 	}
 
 	public static void addProfilePictureFromGallery(Uri file)
@@ -373,5 +378,16 @@ public class FirebaseCalls
 						Log.d("addAlbumPicture", e.getMessage());
 					}
 				});
+		addProfilePictureToDatabse();
 	}
+
+	private static void addProfilePictureToDatabse()
+    {
+        if (mAuth.getCurrentUser().getPhotoUrl() != null) {
+            DatabaseReference profilePictures = mDatabase.getReference(ProfilePictures);
+            Map<String, Object> profilePic = new HashMap<>();
+            profilePic.put(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getPhotoUrl());
+            profilePictures.updateChildren(profilePic);
+        }
+    }
 }

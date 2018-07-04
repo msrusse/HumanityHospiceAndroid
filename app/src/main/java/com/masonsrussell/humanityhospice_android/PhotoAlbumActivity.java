@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -135,7 +136,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			ImageView mImageView;
 			if (convertView == null) {
 				mImageView = new ImageView(mContext);
-				mImageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenWidth/3));
+				mImageView.setLayoutParams(new GridView.LayoutParams(screenWidth/3, screenHeight/5));
 				mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				mImageView.setPadding(16, 16, 16, 16);
 			} else {
@@ -362,7 +363,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					{
 						Map<String, Object> addImage = new HashMap<>();
 						addImage.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
-						addImage.put("url", postsMap.get(post).get(FirebaseCalls.PostImageURL).toString());
+						addImage.put("url", postsMap.get(post).get(FirebaseCalls.URL).toString());
 						imageURLs.add(addImage);
 					}
 					setAdapter();
@@ -431,9 +432,11 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		dialog.setContentView(R.layout.dialog_display_photo_with_caption);
 
 		ImageView photo = dialog.findViewById(R.id.photoView);
-		photo.getLayoutParams().height = (int)(screenHeight / 1.5);
-		photo.getLayoutParams().width = (int)(screenWidth/1.5);
-		Glide.with(this).load(imageURLs.get(index).get("url")).into(photo);
+		Glide.with(this)
+                .load(imageURLs.get(index).get("url"))
+                .apply(new RequestOptions().override(screenWidth, screenHeight))
+                .into(photo);
+		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 		dialog.show();
 	}
 

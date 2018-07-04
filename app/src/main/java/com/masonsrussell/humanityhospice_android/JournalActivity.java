@@ -317,14 +317,15 @@ public class JournalActivity extends AppCompatActivity
 						}
 						addPost.put("postID", post);
 						addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Post).toString());
-						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
+						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PatientName).toString());
 						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
+						addPost.put(FirebaseCalls.PosterUID, postsMap.get(post).get(FirebaseCalls.PosterUID));
 						posts.add(addPost);
 					}
 					setListView();
 				} catch (Exception ex)
 				{
-					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+				    Log.d("JournalActivity", ex.getMessage());
 				}
 			}
 

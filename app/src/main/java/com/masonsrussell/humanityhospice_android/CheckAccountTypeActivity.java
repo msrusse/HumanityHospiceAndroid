@@ -36,6 +36,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		mAuth = FirebaseAuth.getInstance();
 
 		getPatients();
+		getProfilePictures();
 	}
 
 	private void getReaders()
@@ -65,9 +66,9 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		});
 	}
 
-	private void isReader(String patientID, String profilePictureURL)
+	private void isReader(String patientID)
 	{
-		if (profilePictureURL != null)
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
 		{
 			AccountInformation.setAccountInfo("Reader", mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
@@ -83,9 +84,9 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		}
 	}
 
-	private void isPatient(String profilePictureURL)
+	private void isPatient()
 	{
-		if (profilePictureURL != null)
+		if (mAuth.getCurrentUser().getPhotoUrl() != null)
 		{
 			AccountInformation.setAccountInfo(FirebaseCalls.Patient, mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
@@ -247,8 +248,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> patientInfo = (HashMap) dataSnapshot.getValue();
-				if (patientInfo.keySet().contains("profilePictureURL")) isPatient(patientInfo.get("profilePictureURL").toString());
-				else isPatient(null);
+				isPatient();
 			}
 
 			@Override
@@ -261,15 +261,14 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getReaderPatientID()
 	{
-		DatabaseReference readerRef = mDatabase.getReference("Readers");
+		DatabaseReference readerRef = mDatabase.getReference(FirebaseCalls.Readers);
 		DatabaseReference individualReaderRef = readerRef.child(mAuth.getCurrentUser().getUid());
 		individualReaderRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> readerInfo = (HashMap) dataSnapshot.getValue();
-				if (readerInfo.keySet().contains("profilePictureURL")) isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString(), readerInfo.get("profilePictureURL").toString());
-				else isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString(), null);
+				isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString());
 			}
 
 			@Override
@@ -278,6 +277,23 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 			}
 		});
+	}
+
+	private void getProfilePictures()
+	{
+		DatabaseReference profilePictures = mDatabase.getReference(FirebaseCalls.ProfilePictures);
+		profilePictures.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Object> profilePicrtures = (HashMap) dataSnapshot.getValue();
+                AccountInformation.profilePictures = profilePicrtures;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 	}
 
 	@Override

@@ -1,9 +1,14 @@
 package com.masonsrussell.humanityhospice_android;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class AccountInformation {
 	public static String accountType;
@@ -11,6 +16,7 @@ public class AccountInformation {
 	public static String patientID;
 	public static String email;
 	public static String profilePictureURL;
+	public static Map profilePictures;
 
 	public static void setAccountInfo(String passedAccountType, String passedUsername, String patient, String userEmail, String pictureURl) {
 		accountType = passedAccountType;
