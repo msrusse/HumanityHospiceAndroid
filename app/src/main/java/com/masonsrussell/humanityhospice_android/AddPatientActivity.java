@@ -34,11 +34,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AddPatientActivity extends AppCompatActivity
 {
 
 	static ArrayList<String> patientIds = new ArrayList<>();
+	static ArrayList<String> inviteCodes = new ArrayList<>();
 	static HashMap<String, String> patientInviteCodes = new HashMap<>();
 	private DrawerLayout mDrawerLayout;
 	Bitmap bitmap = null;
@@ -59,15 +61,18 @@ public class AddPatientActivity extends AppCompatActivity
 		Button enter = findViewById(R.id.enterButton);
 		final EditText accessCode = findViewById(R.id.accessCode);
 		mAuth = FirebaseAuth.getInstance();
-		final DatabaseReference patients = mDatabase.getReference(FirebaseCalls.PatientsList);
+		final DatabaseReference patients = mDatabase.getReference(FirebaseCalls.InviteCodes);
 		patients.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
-				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
-				patientIds.addAll(allPatients.keySet());
-				getInviteCodes(patients);
+			    inviteCodes.clear();
+				HashMap<String, Map> allPatients = (HashMap) dataSnapshot.getValue();
+				inviteCodes.addAll(allPatients.keySet());
+                for(String inviteCode : inviteCodes){
+                    patientIds.add(allPatients.get(inviteCode).get(FirebaseCalls.Patient).toString());
+                }
 			}
 
 			@Override
@@ -114,9 +119,9 @@ public class AddPatientActivity extends AppCompatActivity
 
 	private boolean checkForPatientCode(String enteredCode)
 	{
-		for (String user : patientInviteCodes.keySet())
+		for (String user : inviteCodes)
 		{
-			if (patientInviteCodes.get(user).equals(enteredCode))
+			if (user.equals(enteredCode))
 			{
 				patientID = user;
 				return true;
