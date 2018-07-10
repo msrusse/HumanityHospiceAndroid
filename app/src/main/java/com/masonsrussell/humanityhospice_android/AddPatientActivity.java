@@ -39,9 +39,8 @@ import java.util.Map;
 public class AddPatientActivity extends AppCompatActivity
 {
 
-	static ArrayList<String> patientIds = new ArrayList<>();
+	static HashMap<String, Object> patientIds = new HashMap<>();
 	static ArrayList<String> inviteCodes = new ArrayList<>();
-	static HashMap<String, String> patientInviteCodes = new HashMap<>();
 	private DrawerLayout mDrawerLayout;
 	Bitmap bitmap = null;
 	byte[] data = null;
@@ -68,10 +67,10 @@ public class AddPatientActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 			    inviteCodes.clear();
-				HashMap<String, Map> allPatients = (HashMap) dataSnapshot.getValue();
+				HashMap<String, Map<String, Object>> allPatients = (HashMap) dataSnapshot.getValue();
 				inviteCodes.addAll(allPatients.keySet());
                 for(String inviteCode : inviteCodes){
-                    patientIds.add(allPatients.get(inviteCode).get(FirebaseCalls.Patient).toString());
+                    patientIds.put(inviteCode, allPatients.get(inviteCode).get(FirebaseCalls.Patient));
                 }
 			}
 
@@ -119,37 +118,14 @@ public class AddPatientActivity extends AppCompatActivity
 
 	private boolean checkForPatientCode(String enteredCode)
 	{
-		for (String user : inviteCodes)
+		for (String inviteCode : inviteCodes)
 		{
-			if (user.equals(enteredCode))
-			{
-				patientID = user;
-				return true;
-			}
+		    if(enteredCode.equals(inviteCode))
+            {
+                AccountInformation.patientID = patientIds.get(inviteCode).toString();
+            }
 		}
 		return false;
-	}
-
-	private static void getInviteCodes(DatabaseReference patients)
-	{
-		for (String id : patientIds)
-		{
-			final String finalId = id;
-			patients.child(id).child(FirebaseCalls.InviteCode).addListenerForSingleValueEvent(new ValueEventListener()
-			{
-				@Override
-				public void onDataChange(DataSnapshot dataSnapshot)
-				{
-					patientInviteCodes.put(finalId, dataSnapshot.getValue().toString());
-				}
-
-				@Override
-				public void onCancelled(DatabaseError databaseError)
-				{
-
-				}
-			});
-		}
 	}
 
 	private void setReaderNavMenu()

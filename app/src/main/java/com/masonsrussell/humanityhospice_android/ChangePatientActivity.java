@@ -78,7 +78,6 @@ public class ChangePatientActivity extends AppCompatActivity
 		DatabaseReference readersRef = mDatabase.getReference(FirebaseCalls.Readers);
 		DatabaseReference individualReadersRef = readersRef.child(mAuth.getCurrentUser().getUid());
 		DatabaseReference readersPatientsRef = individualReadersRef.child(FirebaseCalls.PatientsList);
-
 		readersPatientsRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
@@ -101,7 +100,7 @@ public class ChangePatientActivity extends AppCompatActivity
 	private void firebasePatientNamesCall(String patient)
 	{
 		final String patientUID = patient;
-		DatabaseReference patientsRef = mDatabase.getReference(FirebaseCalls.PatientsList);
+		DatabaseReference patientsRef = mDatabase.getReference(FirebaseCalls.Patients);
 		DatabaseReference individualPatientRef = patientsRef.child(patient);
 		individualPatientRef.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
