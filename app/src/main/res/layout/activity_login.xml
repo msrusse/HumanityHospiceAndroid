@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/bg"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -19,19 +20,23 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="64dp"
             android:contentDescription="@string/app_name"
-            app:srcCompat="@mipmap/logo2" />
+            android:scaleX="2"
+            android:scaleY="2"
+            app:srcCompat="@mipmap/white_logo" />
 
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:background="@mipmap/textbox"
             android:ems="10"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
-            android:textCursorDrawable="@color/colorPrimary"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
             android:textColorLink="@color/colorPrimary"
-            android:backgroundTint="@color/colorPrimary"
+            android:textCursorDrawable="@color/colorPrimary"
             tools:ignore="UnusedAttribute" />
 
         <EditText
@@ -39,12 +44,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:background="@mipmap/textbox"
             android:ems="10"
             android:hint="@string/enter_password"
             android:inputType="textPassword"
-            android:textCursorDrawable="@color/colorPrimary"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
             android:textColorLink="@color/colorPrimary"
-            android:backgroundTint="@color/colorPrimary"
+            android:textCursorDrawable="@color/colorPrimary"
             tools:ignore="UnusedAttribute" />
 
         <Button
@@ -72,7 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="@string/reset_password" />
+            android:text="@string/reset_password"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/createAccountView"
@@ -80,7 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="@string/create_new_account" />
+            android:text="@string/create_new_account"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

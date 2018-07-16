@@ -41,10 +41,12 @@ public class WritePostActivity extends AppCompatActivity
 		Button attachPhotoButton = findViewById(R.id.attachPhotoButton);
 		postImageView = findViewById(R.id.postImageView);
 		postBox = findViewById(R.id.postEditText);
+		final Intent journalActivity = new Intent(getApplicationContext(), JournalActivity.class);
 		closeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)
 			{
+				startActivity(journalActivity);
 				finish();
 			}
 		});
@@ -52,6 +54,7 @@ public class WritePostActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
+				startActivity(journalActivity);
 				finish();
 			}
 		});
@@ -84,8 +87,7 @@ public class WritePostActivity extends AppCompatActivity
 					{
 						FirebaseCalls.createJournalPostWithoutPhoto(postBox.getText().toString());
 					}
-                    Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
-                    startActivity(intent);
+                    startActivity(journalActivity);
 					finish();
 				}
 			}

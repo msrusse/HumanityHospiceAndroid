@@ -11,6 +11,7 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@mipmap/bg"
         android:orientation="vertical">
 
         <FrameLayout
@@ -21,7 +22,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/primaryWhite"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
                 <TextView
@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/invite_people"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="24sp" />
 
             </android.support.v7.widget.Toolbar>
@@ -40,11 +40,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -54,17 +52,29 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/my_private_access_code"
-                android:textSize="14sp" />
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/accessCodeView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/textview_border"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/invite_people_box"
                 android:gravity="center"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/shareMyCodeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="64dp"
+                android:background="@drawable/rounded_button"
+                android:text="@string/share_code"
+                android:textAllCaps="false"
+                android:textColor="@color/primaryWhite"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -72,28 +82,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:text="@string/my_private_access_code" />
+                android:text="@string/my_private_access_code"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/webAccessUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp"
-                android:background="@drawable/textview_border"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/invite_people_box"
                 android:gravity="center"
                 android:text="@string/patient_url"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/shareMyCodeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/rounded_button"
-                android:text="@string/share_code"
-                android:textAllCaps="false"
-                android:textColor="@color/primaryWhite" />
 
             <Button
                 android:id="@+id/button2"
@@ -102,7 +104,8 @@
                 android:background="@drawable/rounded_button"
                 android:text="@string/share_web_url"
                 android:textAllCaps="false"
-                android:textColor="@color/primaryWhite" />
+                android:textColor="@color/primaryWhite"
+                android:textSize="18sp" />
         </LinearLayout>
 
 
@@ -115,8 +118,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@mipmap/navbarbg"
         android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_view"
-        app:headerLayout="@layout/nav_header_home"/>
+        app:headerLayout="@layout/nav_header_home"
+        app:menu="@menu/drawer_view" />
 
 </android.support.v4.widget.DrawerLayout>

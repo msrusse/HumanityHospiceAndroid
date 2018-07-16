@@ -10,11 +10,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
         android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingBottom="8dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            app:srcCompat="@mipmap/white_logo" />
 
         <EditText
             android:id="@+id/firstNameEditText"
@@ -96,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:buttonTint="@color/colorPrimary"
+                android:buttonTint="@color/primaryWhite"
                 android:text="@string/patient"
                 android:textColor="@android:color/white"
                 android:textColorLink="@color/colorPrimary"
@@ -107,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:buttonTint="@color/colorPrimary"
+                android:buttonTint="@color/primaryWhite"
                 android:text="@string/reader"
                 android:textColor="@android:color/white"
                 tools:ignore="UnusedAttribute" />

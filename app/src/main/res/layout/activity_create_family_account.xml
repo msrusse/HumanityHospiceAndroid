@@ -12,6 +12,7 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@mipmap/bg"
         android:orientation="vertical">
 
         <FrameLayout
@@ -22,7 +23,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/primaryWhite"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
                 <TextView
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/create_family_account"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="24sp" />
 
             </android.support.v7.widget.Toolbar>
@@ -50,24 +50,30 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:contentDescription="@string/app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                app:srcCompat="@mipmap/logo" />
+                android:contentDescription="@string/app_name"
+                android:paddingBottom="12dp"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                app:srcCompat="@mipmap/white_logo" />
 
             <EditText
                 android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="@mipmap/textbox"
                 android:ems="10"
                 android:hint="@string/first_name"
                 android:inputType="textCapSentences|textPersonName"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
                 android:singleLine="true"
-                android:textCursorDrawable="@color/colorPrimary"
+                android:textColor="@android:color/white"
                 android:textColorLink="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"
+                android:textCursorDrawable="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
 
             <EditText
@@ -75,12 +81,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="@mipmap/textbox"
                 android:ems="10"
                 android:hint="@string/last_name"
                 android:inputType="textCapSentences|textPersonName"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:textColor="@android:color/white"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
 
             <EditText
@@ -88,12 +97,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="@mipmap/textbox"
                 android:ems="10"
                 android:hint="@string/enter_email"
                 android:inputType="textEmailAddress"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:textColor="@android:color/white"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
 
             <EditText
@@ -101,12 +113,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="@mipmap/textbox"
                 android:ems="10"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:textColor="@android:color/white"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
 
             <EditText
@@ -114,12 +129,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="@mipmap/textbox"
                 android:ems="10"
                 android:hint="@string/verify_password"
                 android:inputType="textPassword"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:textColor="@android:color/white"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
 
             <Button
@@ -145,8 +163,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@mipmap/navbarbg"
         android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_view"
-        app:headerLayout="@layout/nav_header_home"/>
+        app:headerLayout="@layout/nav_header_home"
+        app:menu="@menu/drawer_view" />
 
 </android.support.v4.widget.DrawerLayout>
