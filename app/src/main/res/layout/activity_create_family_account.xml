@@ -165,6 +165,7 @@
         android:layout_gravity="start"
         android:background="@mipmap/navbarbg"
         android:fitsSystemWindows="true"
+        app:itemIconTint="@color/primaryWhite"
         app:headerLayout="@layout/nav_header_home"
         app:menu="@menu/drawer_view" />
 
