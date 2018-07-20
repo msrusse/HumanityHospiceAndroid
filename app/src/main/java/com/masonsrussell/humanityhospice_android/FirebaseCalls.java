@@ -46,7 +46,7 @@ public class FirebaseCalls
 	public static final String InviteCode = "InviteCode";
 	public static final String PatientUID = "PatientUID";
 	public static final String Readers = "Readers";
-	public static final String PatientsList = "PatientsList";
+	public static final String PatientsList = "PatientList";
 	public static final String ReadingFrom = "ReadingFrom";
 	public static final String Family = "Family";
 	public static final String PhotoAlbum = "PhotoAlbum";
