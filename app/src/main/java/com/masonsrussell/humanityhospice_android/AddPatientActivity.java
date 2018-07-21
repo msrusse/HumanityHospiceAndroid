@@ -99,11 +99,11 @@ public class AddPatientActivity extends AppCompatActivity
 					String patientCode = accessCode.getText().toString();
 					if (checkForPatientCode(patientCode))
 					{
-						FirebaseCalls.addAdditionalPatientForReader(patientID);
+						FirebaseCalls.addAdditionalPatientForReader(AccountInformation.patientID);
 						Toast.makeText(getApplicationContext(),"Additional Patient Added", Toast.LENGTH_LONG).show();
-						Intent intent = new Intent(getApplicationContext(), AddPatientActivity.class);
+						/*Intent intent = new Intent(getApplicationContext(), AddPatientActivity.class);
 						startActivity(intent);
-						finish();
+						finish();*/
 					} else
 					{
 						Toast.makeText(getApplicationContext(), "No matching Patient for entered code", Toast.LENGTH_SHORT).show();
@@ -123,6 +123,7 @@ public class AddPatientActivity extends AppCompatActivity
 		    if(enteredCode.equals(inviteCode))
             {
                 AccountInformation.patientID = patientIds.get(inviteCode).toString();
+                return true;
             }
 		}
 		return false;

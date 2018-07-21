@@ -1,15 +1,22 @@
 package com.masonsrussell.humanityhospice_android;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,16 +40,27 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
 		holder.setIsRecyclable(false);
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get(FirebaseCalls.Timestamp).toString());
 		if (postsList.get(position).containsKey(FirebaseCalls.PostImageURL) && postsList.get(position).containsKey(FirebaseCalls.Comments))
 		{
 			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 			{
-				Glide.with(context).load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID))).into(holder.profilePictureImageView);
+				holder.imageProgressBar.setVisibility(View.VISIBLE);
+				holder.profilePictureImageView.setVisibility(View.INVISIBLE);
+				Glide.with(context)
+						.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
+						.apply(new RequestOptions()
+						.dontAnimate()
+						.placeholder(R.mipmap.logo))
+						.into(holder.profilePictureImageView);
 				holder.profilePictureImageView.getLayoutParams().width = 180;
 				holder.profilePictureImageView.getLayoutParams().height = 180;
+			}
+			else
+			{
+				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
 			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
@@ -57,7 +75,14 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		{
 			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 			{
-				Glide.with(context).load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID))).into(holder.profilePictureImageView);
+				holder.imageProgressBar.setVisibility(View.VISIBLE);
+				holder.profilePictureImageView.setVisibility(View.INVISIBLE);
+				Glide.with(context)
+						.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
+						.apply(new RequestOptions()
+								.dontAnimate()
+								.placeholder(R.mipmap.logo))
+						.into(holder.profilePictureImageView);
 				holder.profilePictureImageView.getLayoutParams().width = 180;
 				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}
@@ -73,8 +98,14 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		{
 			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 			{
-				Glide.with(context).load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID))).into(holder.profilePictureImageView);
-				holder.profilePictureImageView.getLayoutParams().width = 180;
+				holder.imageProgressBar.setVisibility(View.VISIBLE);
+				holder.profilePictureImageView.setVisibility(View.INVISIBLE);
+				Glide.with(context)
+						.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
+						.apply(new RequestOptions()
+								.dontAnimate()
+								.placeholder(R.mipmap.logo))
+						.into(holder.profilePictureImageView);				holder.profilePictureImageView.getLayoutParams().width = 180;
 				holder.profilePictureImageView.getLayoutParams().height = 180;
 			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
@@ -88,9 +119,10 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		{
 			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 			{
+				holder.imageProgressBar.setVisibility(View.VISIBLE);
+				holder.profilePictureImageView.setVisibility(View.INVISIBLE);
 				Glide.with(context)
 						.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
-                        .apply(new RequestOptions().override(180,180).fitCenter())
 						.into(holder.profilePictureImageView);
 				holder.profilePictureImageView.getLayoutParams().width = 180;
 				holder.profilePictureImageView.getLayoutParams().height = 180;
@@ -111,9 +143,11 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	class MainViewHolder extends RecyclerView.ViewHolder {
 		TextView postBody, timestamp, poster, commentsView;
 		ImageView postImageView, profilePictureImageView;
+		ProgressBar imageProgressBar;
 
 		private MainViewHolder(View itemView) {
 			super(itemView);
+			imageProgressBar = itemView.findViewById(R.id.imageProgressBar);
 			postBody = itemView.findViewById(R.id.postBodyTextView);
 			timestamp = itemView.findViewById(R.id.posterTextView);
 			poster = itemView.findViewById(R.id.usernameTextView);
