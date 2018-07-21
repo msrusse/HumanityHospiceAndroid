@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 import java.util.Map;
 
@@ -34,15 +36,23 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 		holder.setIsRecyclable(false);
 		if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 		{
-			Glide.with(context).load(AccountInformation.profilePictures.get(FirebaseCalls.PosterUID)).into(holder.profilePictureImageView);
-			holder.profilePictureImageView.getLayoutParams().width = 250;
-			holder.profilePictureImageView.getLayoutParams().height = 250;
+			loadProfilePicture(holder, position);
 		}
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get(FirebaseCalls.Timestamp).toString());
 		holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 		holder.timestamp.setText(date);
 		holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 
+	}
+
+	private void loadProfilePicture(MainViewHolder holder, int position)
+	{
+		holder.profilePictureImageView.getLayoutParams().width = 180;
+		holder.profilePictureImageView.getLayoutParams().height = 180;
+		Glide.with(context)
+				.load(AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
+				.apply(RequestOptions.circleCropTransform())
+				.into(holder.profilePictureImageView);
 	}
 
 	@Override

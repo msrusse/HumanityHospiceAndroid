@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +38,7 @@ public class JournalCommentActivity extends AppCompatActivity
 	TextView usernameView, timestampView, captionView;
 	Button addCommentButton;
 	RecyclerView commentsRecyclerView;
-	ImageView postImageView;
+	ImageView postImageView, profilePicImageView;
 	EditText enterCommentText;
 	CommentListAdapter mAdapter;
 	String postID;
@@ -54,6 +55,7 @@ public class JournalCommentActivity extends AppCompatActivity
 		screenWidth = metrics.widthPixels;
 		screenHeight = metrics.heightPixels;
 		mDatabase = FirebaseDatabase.getInstance();
+		profilePicImageView = findViewById(R.id.profilePicImageView);
 		commentsRecyclerView = findViewById(R.id.commentsRecyclerView);
 		enterCommentText = findViewById(R.id.enterCommentText);
 		addCommentButton = findViewById(R.id.addCommentButton);
@@ -67,8 +69,11 @@ public class JournalCommentActivity extends AppCompatActivity
 		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra(FirebaseCalls.Timestamp)));
 		if (getIntent().getStringExtra(FirebaseCalls.PostImageURL) != null)
 		{
-			Glide.with(this).load(getIntent().getStringExtra(FirebaseCalls.PostImageURL)).into(postImageView);
-			postImageView.getLayoutParams().height = screenHeight/3;
+			loadPostImage(getIntent().getStringExtra(FirebaseCalls.PostImageURL));
+		}
+		if(AccountInformation.profilePictures.containsKey(getIntent().getStringExtra(FirebaseCalls.PosterUID)))
+		{
+			loadProfilePicture(AccountInformation.profilePictures.get(getIntent().getStringExtra(FirebaseCalls.PosterUID)).toString());
 		}
 		getComments();
 
@@ -92,6 +97,23 @@ public class JournalCommentActivity extends AppCompatActivity
 				}
 			}
 		});
+	}
+
+	private void loadProfilePicture(String url)
+	{
+		postImageView.getLayoutParams().width = 180;
+		postImageView.getLayoutParams().height = 180;
+		Glide.with(this)
+				.load(url)
+				.apply(RequestOptions.circleCropTransform())
+				.into(profilePicImageView);
+	}
+
+	private void loadPostImage(String url)
+	{
+		Glide.with(this)
+				.load(url)
+				.into(postImageView);
 	}
 
 	private void getComments()

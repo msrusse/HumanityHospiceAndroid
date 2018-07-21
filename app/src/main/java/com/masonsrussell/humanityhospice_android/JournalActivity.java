@@ -58,6 +58,10 @@ public class JournalActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		onLoad();
+	}
+
+	protected void onLoad(){
 		if (AccountInformation.accountType.equals("Reader"))
 		{
 			setContentView(R.layout.activity_reader_journal);
@@ -275,7 +279,7 @@ public class JournalActivity extends AppCompatActivity
 				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
-					Glide.with(this).load(AccountInformation.profilePictureURL).into(profilePictureView);
+					Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()
@@ -361,6 +365,7 @@ public class JournalActivity extends AppCompatActivity
 								intent.putExtra(FirebaseCalls.PostImageURL, posts.get(position).get(FirebaseCalls.PostImageURL).toString());
 							}
 							intent.putExtra("postID", posts.get(position).get("postID").toString());
+							intent.putExtra(FirebaseCalls.PosterUID, posts.get(position).get(FirebaseCalls.PosterUID).toString());
 							intent.putExtra(FirebaseCalls.PosterName, posts.get(position).get(FirebaseCalls.PosterName).toString());
 							intent.putExtra(FirebaseCalls.Post, posts.get(position).get(FirebaseCalls.Post).toString());
 							intent.putExtra(FirebaseCalls.Timestamp, posts.get(position).get(FirebaseCalls.Timestamp).toString());
