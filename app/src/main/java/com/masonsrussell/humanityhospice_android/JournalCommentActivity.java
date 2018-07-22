@@ -71,9 +71,11 @@ public class JournalCommentActivity extends AppCompatActivity
 		{
 			loadPostImage(getIntent().getStringExtra(FirebaseCalls.PostImageURL));
 		}
-		if(AccountInformation.profilePictures.containsKey(getIntent().getStringExtra(FirebaseCalls.PosterUID)))
+		String posterUID = getIntent().getStringExtra(FirebaseCalls.PosterUID);
+		Object hasProfilePic = AccountInformation.profilePictures.get(posterUID);
+		if(hasProfilePic != null)
 		{
-			loadProfilePicture(AccountInformation.profilePictures.get(getIntent().getStringExtra(FirebaseCalls.PosterUID)).toString());
+			loadProfilePicture(AccountInformation.profilePictures.get(posterUID).toString());
 		}
 		getComments();
 

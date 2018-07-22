@@ -324,6 +324,7 @@ public class FirebaseCalls
 										Log.d("addProfilePicFromCam", "User Profile Updated");
 									}
 								});
+								addProfilePictureToDatabse();
 							}
 						});
 					}
@@ -336,7 +337,7 @@ public class FirebaseCalls
 						Log.d("addAlbumPicture", e.getMessage());
 					}
 				});
-		addProfilePictureToDatabse();
+
 	}
 
 	public static void addProfilePictureFromGallery(Uri file)
@@ -366,6 +367,7 @@ public class FirebaseCalls
 										Log.d("addProfilePicFromGal", "User Profile Updated");
 									}
 								});
+								addProfilePictureToDatabse();
 							}
 						});
 					}
@@ -378,7 +380,7 @@ public class FirebaseCalls
 						Log.d("addAlbumPicture", e.getMessage());
 					}
 				});
-		addProfilePictureToDatabse();
+
 	}
 
 	private static void addProfilePictureToDatabse()

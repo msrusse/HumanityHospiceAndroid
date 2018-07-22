@@ -87,7 +87,7 @@
                 android:inputType="textCapSentences|textPersonName"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
@@ -103,7 +103,7 @@
                 android:inputType="textEmailAddress"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
@@ -119,7 +119,7 @@
                 android:inputType="textPassword"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
@@ -135,7 +135,7 @@
                 android:inputType="textPassword"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />

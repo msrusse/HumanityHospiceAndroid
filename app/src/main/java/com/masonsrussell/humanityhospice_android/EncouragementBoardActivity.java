@@ -314,7 +314,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 
 	private void getPatientEncouragement()
 	{
-		DatabaseReference journalPostsRef = mDatabase.getReference("EncouragementBoard");
+		DatabaseReference journalPostsRef = mDatabase.getReference(FirebaseCalls.EncouragementBoards);
 		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
@@ -326,7 +326,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						addPost.put(FirebaseCalls.Post, postsMap.get(post).get(FirebaseCalls.Post).toString());
+						addPost.put(FirebaseCalls.Message, postsMap.get(post).get(FirebaseCalls.Message).toString());
 						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 						posts.add(addPost);
@@ -349,7 +349,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 
 	private void getReaderEncouragement()
 	{
-		DatabaseReference journalPostsRef = mDatabase.getReference("EncouragementBoard");
+		DatabaseReference journalPostsRef = mDatabase.getReference(FirebaseCalls.EncouragementBoards);
 		journalPostsRef.child(AccountInformation.patientID).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
@@ -361,9 +361,9 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					for (Object post : postsMap.keySet())
 					{
 						Map<String, Object> addPost = new HashMap<>();
-						if (postsMap.get(post).get(FirebaseCalls.PosterName).toString().equals(mAuth.getCurrentUser().getUid()))
+						if (postsMap.get(post).get(FirebaseCalls.PosterUID).toString().equals(mAuth.getCurrentUser().getUid()))
 						{
-							addPost.put(FirebaseCalls.Message, postsMap.get(post).get(FirebaseCalls.Post).toString());
+							addPost.put(FirebaseCalls.Message, postsMap.get(post).get(FirebaseCalls.Message).toString());
 							addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 							addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 							addPost.put(FirebaseCalls.PosterUID, postsMap.get(post).get(FirebaseCalls.PosterUID));

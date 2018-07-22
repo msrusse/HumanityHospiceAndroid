@@ -63,6 +63,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
 			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
+			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get(FirebaseCalls.Comments));
 			String commentsTotal = "Comments (" + commentsMap.size() + ") v";
@@ -81,6 +82,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
 			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
+			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 			String commentsTotal = "Comments (0) v";
 			holder.commentsView.setText(commentsTotal);
@@ -98,6 +100,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
 			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
+			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 			holder.timestamp.setText(date);
 			Map<String, Object> commentsMap = ((HashMap) postsList.get(position).get(FirebaseCalls.Comments));
@@ -115,6 +118,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
 			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
+			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 			holder.timestamp.setText(date);
 			String commentsTotal = "Comments (0) v";
@@ -124,8 +128,8 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 
 	private void loadProfilePicture(MainViewHolder holder, int position)
 	{
-		holder.profilePictureImageView.getLayoutParams().width = 180;
-		holder.profilePictureImageView.getLayoutParams().height = 180;
+		holder.profilePictureImageView.getLayoutParams().width = 60;
+		holder.profilePictureImageView.getLayoutParams().height = 60;
 		Glide.with(context)
 				.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
 				.apply(RequestOptions.circleCropTransform())

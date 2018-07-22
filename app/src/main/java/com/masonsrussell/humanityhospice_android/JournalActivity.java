@@ -277,9 +277,9 @@ public class JournalActivity extends AppCompatActivity
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
 				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
-				if (AccountInformation.profilePictureURL != null)
+				if (AccountInformation.profilePictures.containsKey(mAuth.getCurrentUser().getUid()))
 				{
-					Glide.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(profilePictureView);
+					Glide.with(this).load(AccountInformation.profilePictures.get(mAuth.getCurrentUser().getUid())).into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()
