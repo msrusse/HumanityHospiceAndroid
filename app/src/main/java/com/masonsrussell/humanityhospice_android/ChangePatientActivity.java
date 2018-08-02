@@ -29,6 +29,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -208,7 +209,10 @@ public class ChangePatientActivity extends AppCompatActivity
 				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
-					Glide.with(this).load(AccountInformation.profilePictureURL).into(profilePictureView);
+					GlideApp.with(this)
+							.load(AccountInformation.profilePictureURL)
+							.apply(RequestOptions.circleCropTransform())
+							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()

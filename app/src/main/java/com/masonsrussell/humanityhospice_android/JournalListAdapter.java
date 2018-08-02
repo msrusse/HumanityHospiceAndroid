@@ -52,16 +52,16 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 	public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
 		holder.setIsRecyclable(false);
 		String date = AccountInformation.getDateFromEpochTime(postsList.get(position).get(FirebaseCalls.Timestamp).toString());
+		if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
+		{
+			loadProfilePicture(holder, position);
+		}
+		else
+		{
+			holder.profilePictureImageView.setImageResource(R.mipmap.logo);
+		}
 		if (postsList.get(position).containsKey(FirebaseCalls.PostImageURL) && postsList.get(position).containsKey(FirebaseCalls.Comments))
 		{
-			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
-			{
-				loadProfilePicture(holder, position);
-			}
-			else
-			{
-				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
-			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
@@ -69,36 +69,20 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 			String commentsTotal = "Comments (" + commentsMap.size() + ") v";
 			holder.commentsView.setText(commentsTotal);
 			holder.timestamp.setText(date);
-			Glide.with(context).load(postsList.get(position).get(FirebaseCalls.PostImageURL)).into(holder.postImageView);
+			GlideApp.with(context).load(postsList.get(position).get(FirebaseCalls.PostImageURL)).into(holder.postImageView);
 		}
 		else if (postsList.get(position).containsKey(FirebaseCalls.PostImageURL))
 		{
-			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
-			{
-				loadProfilePicture(holder, position);
-			}
-			else
-			{
-				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
-			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
 			String commentsTotal = "Comments (0) v";
 			holder.commentsView.setText(commentsTotal);
 			holder.timestamp.setText(date);
-			Glide.with(context).load(postsList.get(position).get(FirebaseCalls.PostImageURL)).into(holder.postImageView);
+			GlideApp.with(context).load(postsList.get(position).get(FirebaseCalls.PostImageURL)).into(holder.postImageView);
 		}
 		else if (postsList.get(position).containsKey(FirebaseCalls.Comments))
 		{
-			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
-			{
-				loadProfilePicture(holder, position);
-			}
-			else
-			{
-				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
-			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
@@ -109,14 +93,6 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		}
 		else
 		{
-			if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
-			{
-				loadProfilePicture(holder, position);
-			}
-			else
-			{
-				holder.profilePictureImageView.setImageResource(R.mipmap.logo);
-			}
 			holder.postBody.setText(postsList.get(position).get(FirebaseCalls.Post).toString());
 			if(postsList.get(position).get(FirebaseCalls.Post).equals("")) holder.postBody.setVisibility(View.INVISIBLE);
 			holder.poster.setText(postsList.get(position).get(FirebaseCalls.PosterName).toString());
@@ -128,9 +104,9 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 
 	private void loadProfilePicture(MainViewHolder holder, int position)
 	{
-		holder.profilePictureImageView.getLayoutParams().width = 60;
-		holder.profilePictureImageView.getLayoutParams().height = 60;
-		Glide.with(context)
+		holder.profilePictureImageView.getLayoutParams().width = 120;
+		holder.profilePictureImageView.getLayoutParams().height = 120;
+		GlideApp.with(context)
 				.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
 				.apply(RequestOptions.circleCropTransform())
 				.into(holder.profilePictureImageView);

@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -177,7 +178,10 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
-					Glide.with(this).load(AccountInformation.profilePictureURL).into(profilePictureView);
+					GlideApp.with(this)
+							.load(AccountInformation.profilePictureURL)
+							.apply(RequestOptions.circleCropTransform())
+							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()

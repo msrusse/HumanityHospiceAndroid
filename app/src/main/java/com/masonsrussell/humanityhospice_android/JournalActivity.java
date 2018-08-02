@@ -1,5 +1,6 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,12 +28,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +66,9 @@ public class JournalActivity extends AppCompatActivity
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
+	private StorageReference storageReference;
+	private FirebaseStorage storage;
+	private Fragment fragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -277,9 +293,12 @@ public class JournalActivity extends AppCompatActivity
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
 				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
-				if (AccountInformation.profilePictures.containsKey(mAuth.getCurrentUser().getUid()))
+				if (AccountInformation.profilePictureURL != null)
 				{
-					Glide.with(this).load(AccountInformation.profilePictures.get(mAuth.getCurrentUser().getUid())).into(profilePictureView);
+					GlideApp.with(this)
+							.load(AccountInformation.profilePictureURL)
+							.apply(RequestOptions.circleCropTransform())
+							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()
@@ -455,14 +474,26 @@ public class JournalActivity extends AppCompatActivity
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 					data = baos.toByteArray();
-					FirebaseCalls.addProfilePictureFromCamera(data);
+					try {
+						FirebaseCalls.addProfilePictureFromCamera(data);
+					}
+					catch (Exception ex)
+					{
+						Log.d("addProfilePicture", ex.getMessage());
+					}
 				}
 
 				break;
 			case 1:
 				if(resultCode == RESULT_OK){
 					selectedImage = imageReturnedIntent.getData();
-					FirebaseCalls.addProfilePictureFromGallery(selectedImage);
+					try {
+						FirebaseCalls.addProfilePictureFromGallery(selectedImage);
+					}
+					catch (Exception ex)
+					{
+						Log.d("addProfilePicture", ex.getMessage());
+					}
 				}
 				break;
 		}

@@ -48,7 +48,7 @@ public class EncouragementListAdapter extends RecyclerView.Adapter<Encouragement
     {
         holder.profilePictureImageView.getLayoutParams().width = 60;
         holder.profilePictureImageView.getLayoutParams().height = 60;
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.profilePictureImageView);

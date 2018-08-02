@@ -99,6 +99,7 @@ public class WritePostActivity extends AppCompatActivity
 		final Dialog dialog = new Dialog(WritePostActivity.this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.dialog_choose_take_photo);
+		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 		Button takePictureButton = dialog.findViewById(R.id.takePictureButton);
 		Button choosePictureButton = dialog.findViewById(R.id.choosePictureButton);
 		Button cancelButton = dialog.findViewById(R.id.cancelButton);

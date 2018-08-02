@@ -105,7 +105,7 @@ public class JournalCommentActivity extends AppCompatActivity
 	{
 		postImageView.getLayoutParams().width = 180;
 		postImageView.getLayoutParams().height = 180;
-		Glide.with(this)
+		GlideApp.with(this)
 				.load(url)
 				.apply(RequestOptions.circleCropTransform())
 				.into(profilePicImageView);
@@ -113,7 +113,7 @@ public class JournalCommentActivity extends AppCompatActivity
 
 	private void loadPostImage(String url)
 	{
-		Glide.with(this)
+		GlideApp.with(this)
 				.load(url)
 				.into(postImageView);
 	}

@@ -142,7 +142,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			} else {
 				mImageView = (ImageView) convertView;
 			}
-			Glide.with(getApplicationContext()).load(imageURLs.get(position).get("url")).into(mImageView);
+			GlideApp.with(getApplicationContext()).load(imageURLs.get(position).get("url")).into(mImageView);
 			return mImageView;
 		}
 	}
@@ -331,7 +331,10 @@ public class PhotoAlbumActivity extends AppCompatActivity
 				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
-					Glide.with(this).load(AccountInformation.profilePictureURL).into(profilePictureView);
+					GlideApp.with(this)
+							.load(AccountInformation.profilePictureURL)
+							.apply(RequestOptions.circleCropTransform())
+							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()
@@ -432,7 +435,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		dialog.setContentView(R.layout.dialog_display_photo_with_caption);
 
 		ImageView photo = dialog.findViewById(R.id.photoView);
-		Glide.with(this)
+		GlideApp.with(this)
                 .load(imageURLs.get(index).get("url"))
                 .apply(new RequestOptions().override(screenWidth, screenHeight))
                 .into(photo);
