@@ -34,7 +34,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 	@Override
 	public void onBindViewHolder(MainViewHolder holder, int position) {
 		holder.setIsRecyclable(false);
-		if (AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
+		if (AccountInformation.profilePictures!=null && AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
 		{
 			loadProfilePicture(holder, position);
 		}

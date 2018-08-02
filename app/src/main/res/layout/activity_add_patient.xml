@@ -22,7 +22,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/primaryWhite"
+                android:background="@mipmap/navbarbg"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
                 <TextView
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/add_patient"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="24sp" />
 
             </android.support.v7.widget.Toolbar>
@@ -39,72 +39,72 @@
         </FrameLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center"
-            android:src="@mipmap/logo_small" />
-
-        <TextView
-            android:id="@+id/enterCodeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/enter_patient_code" />
-
-        <EditText
-            android:id="@+id/accessCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:gravity="center"
-            android:hint="@string/private_access_code"
-            android:inputType="text|textCapCharacters|textShortMessage"
-            android:textColorLink="@color/colorPrimary"
-            android:textCursorDrawable="@color/primaryPurple"
-            tools:ignore="UnusedAttribute" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/enterButton"
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight=".5"
-                android:background="@drawable/rounded_button"
-                android:text="@string/add_patient"
-                android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
-                android:textSize="18sp" />
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@mipmap/logo_small" />
 
+            <TextView
+                android:id="@+id/enterCodeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/enter_patient_code" />
+
+            <EditText
+                android:id="@+id/accessCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="4dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:hint="@string/private_access_code"
+                android:inputType="text|textCapCharacters|textShortMessage"
+                android:textColorLink="@color/colorPrimary"
+                android:textCursorDrawable="@color/primaryPurple"
+                tools:ignore="UnusedAttribute" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/enterButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_button"
+                    android:text="@string/add_patient"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
     </LinearLayout>
 

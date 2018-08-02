@@ -388,7 +388,7 @@ public class FirebaseCalls
         if (mAuth.getCurrentUser().getPhotoUrl() != null) {
             DatabaseReference profilePictures = mDatabase.getReference(ProfilePictures);
             Map<String, Object> profilePic = new HashMap<>();
-            profilePic.put(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getPhotoUrl());
+            profilePic.put(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getPhotoUrl().toString());
             profilePictures.updateChildren(profilePic);
         }
     }

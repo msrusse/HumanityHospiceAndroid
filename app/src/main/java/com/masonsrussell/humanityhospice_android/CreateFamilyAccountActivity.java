@@ -175,7 +175,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				TextView navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
+				ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)

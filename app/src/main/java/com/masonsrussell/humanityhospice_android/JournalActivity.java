@@ -77,6 +77,23 @@ public class JournalActivity extends AppCompatActivity
 		onLoad();
 	}
 
+	private void getProfilePictures()
+	{
+		DatabaseReference profilePictures = mDatabase.getReference(FirebaseCalls.ProfilePictures);
+		profilePictures.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				HashMap<String, Object> profilePicrtures = (HashMap) dataSnapshot.getValue();
+				AccountInformation.profilePictures = profilePicrtures;
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
+	}
+
 	protected void onLoad(){
 		if (AccountInformation.accountType.equals("Reader"))
 		{
@@ -120,6 +137,7 @@ public class JournalActivity extends AppCompatActivity
 				}
 			});
 		}
+		getProfilePictures();
 		getJournalPosts();
 	}
 
@@ -282,8 +300,7 @@ public class JournalActivity extends AppCompatActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
@@ -292,13 +309,13 @@ public class JournalActivity extends AppCompatActivity
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
+				ImageView userProfilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)
 							.load(AccountInformation.profilePictureURL)
 							.apply(RequestOptions.circleCropTransform())
-							.into(profilePictureView);
+							.into(userProfilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
 				profileInfo.setOnClickListener(new View.OnClickListener()

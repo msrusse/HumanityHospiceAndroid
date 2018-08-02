@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -65,6 +66,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
 		if (AccountInformation.accountType.equals(FirebaseCalls.Patient))
 		{
 			setContentView(R.layout.activity_encouragement_board);
@@ -133,8 +135,25 @@ public class EncouragementBoardActivity extends AppCompatActivity
 			});
 			getPatientEncouragement();
 		}
+		getProfilePictures();
 	}
 
+	private void getProfilePictures()
+	{
+		DatabaseReference profilePictures = mDatabase.getReference(FirebaseCalls.ProfilePictures);
+		profilePictures.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				HashMap<String, Object> profilePicrtures = (HashMap) dataSnapshot.getValue();
+				AccountInformation.profilePictures = profilePicrtures;
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
+	}
 
 	private void setReaderNavMenu()
 	{
@@ -294,7 +313,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.profilePicImageView);
+				ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)
