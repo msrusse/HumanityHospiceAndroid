@@ -22,6 +22,10 @@
             android:icon="@mipmap/invite"
             android:title="@string/invite_people"/>
         <item
+            android:id="@+id/nav_view_readers"
+            android:icon="@mipmap/ic_cached_black_24dp"
+            android:title="@string/current_readers"/>
+        <item
             android:id="@+id/nav_sign_out"
             android:icon="@mipmap/sign_out"
             android:title="@string/sign_out"/>

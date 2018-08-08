@@ -86,7 +86,9 @@ public class ChangePatientActivity extends AppCompatActivity
 				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
 				for (String UID : allPatients.keySet())
 				{
-					firebasePatientNamesCall(UID);
+					if (allPatients.get(UID).equals(true)) {
+						firebasePatientNamesCall(UID);
+					}
 				}
 			}
 

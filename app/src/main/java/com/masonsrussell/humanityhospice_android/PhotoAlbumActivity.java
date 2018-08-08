@@ -83,7 +83,8 @@ public class PhotoAlbumActivity extends AppCompatActivity
 			actionbar.setDisplayHomeAsUpEnabled(true);
 			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setReaderNavMenu();
-			getPhotoAlbumImages();
+			if (AccountInformation.patientID != null) getPhotoAlbumImages();
+			else findViewById(R.id.noPatientTextView).setVisibility(View.VISIBLE);
 		}
 		else
 		{
@@ -163,9 +164,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								Intent intent0 = new Intent(getApplicationContext(), JournalActivity.class);
-								startActivity(intent0);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Encouragement Board":
 								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
@@ -173,7 +172,9 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								finish();
 								break;
 							case "My Photo Album":
-								mDrawerLayout.closeDrawers();
+								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
+								startActivity(intent1);
+								finish();
 								break;
 							case "Create Family Account":
 								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
@@ -183,6 +184,11 @@ public class PhotoAlbumActivity extends AppCompatActivity
 							case "Invite People":
 								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
 								startActivity(intent3);
+								finish();
+								break;
+							case "Current Readers":
+								Intent intent5 = new Intent(getApplicationContext(), ViewReadersActivity.class);
+								startActivity(intent5);
 								finish();
 								break;
 							case "Sign Out":

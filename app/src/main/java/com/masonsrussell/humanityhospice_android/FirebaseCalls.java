@@ -1,6 +1,7 @@
 package com.masonsrussell.humanityhospice_android;
 
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.Reader;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -153,6 +156,12 @@ public class FirebaseCalls
 		Map<String, Object> patientsReadingMap = new HashMap<>();
 		patientsReadingMap.put(patientID, true);
 		patientsToReadFrom.updateChildren(patientsReadingMap);
+
+		Map<String, Object> patientReaderInstance = new HashMap<>();
+		patientReaderInstance.put(mAuth.getCurrentUser().getUid(), true);
+		DatabaseReference patientsRef = mDatabase.getReference(Patients);
+		DatabaseReference patientReadersRef = patientsRef.child(patientID).child(Readers);
+		patientReadersRef.updateChildren(patientReaderInstance);
 	}
 
 	public static void createFamily(String fName, String lName, String familyID)
@@ -183,6 +192,13 @@ public class FirebaseCalls
 		readersPatients.updateChildren(readersPatientsMap);
 
 		readingFromRef.setValue(patientID);
+
+		DatabaseReference patients = mDatabase.getReference(Patients);
+		DatabaseReference individualPatient = patients.child(patientID);
+		DatabaseReference readersList = individualPatient.child(Readers);
+		Map<String, Object> patientReadersMap = new HashMap<>();
+		patientReadersMap.put(mAuth.getCurrentUser().getUid(), true);
+		readersList.updateChildren(patientReadersMap);
 	}
 
 	public static void updatePatientReadingFrom(String patientID)
@@ -392,4 +408,23 @@ public class FirebaseCalls
             profilePictures.updateChildren(profilePic);
         }
     }
+
+    public static void blacklistReader(String readerUID)
+	{
+		DatabaseReference patients = mDatabase.getReference(Patients);
+		DatabaseReference individualPatient = patients.child(AccountInformation.patientID);
+		DatabaseReference patientsToReadFrom = individualPatient.child(Readers);
+
+		Map<String, Object> patientsReadingMap = new HashMap<>();
+		patientsReadingMap.put(readerUID, false);
+		patientsToReadFrom.updateChildren(patientsReadingMap);
+
+		DatabaseReference readers = mDatabase.getReference(Readers);
+		DatabaseReference individualReader = readers.child(readerUID);
+		DatabaseReference readerPatients = individualReader.child(PatientsList);
+
+		Map<String, Object> blacklistInfo = new HashMap<>();
+		blacklistInfo.put(AccountInformation.patientID, false);
+		readerPatients.updateChildren(blacklistInfo);
+	}
 }

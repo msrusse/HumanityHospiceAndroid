@@ -43,6 +43,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/noPatientTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_error"
+                android:textAlignment="center"
+                android:textColor="@color/primaryWhite"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
             <GridView
                 android:id="@+id/photo_gridview"
                 android:layout_width="match_parent"

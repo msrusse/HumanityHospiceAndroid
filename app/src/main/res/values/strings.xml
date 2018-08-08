@@ -51,4 +51,6 @@
     <string name="add_comment">Add Comment...</string>
     <string name="reset_password">Reset Password</string>
     <string name="add_post">Post</string>
+    <string name="current_readers">Current Readers</string>
+    <string name="patient_error">Error reading from current Patient, please change patients to view posts.</string>
 </resources>

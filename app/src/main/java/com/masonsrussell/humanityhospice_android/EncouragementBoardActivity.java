@@ -108,7 +108,8 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					startActivity(intent);
 				}
 			});
-			getReaderEncouragement();
+			if (AccountInformation.patientID != null) getReaderEncouragement();
+			else findViewById(R.id.noPatientTextView).setVisibility(View.VISIBLE);
 		}
 		else
 		{
@@ -243,12 +244,12 @@ public class EncouragementBoardActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
-								startActivity(intent);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Encouragement Board":
-								mDrawerLayout.closeDrawers();
+								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
+								startActivity(intent);
+								finish();
 								break;
 							case "My Photo Album":
 								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
@@ -265,10 +266,15 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								startActivity(intent3);
 								finish();
 								break;
+							case "Current Readers":
+								Intent intent5 = new Intent(getApplicationContext(), ViewReadersActivity.class);
+								startActivity(intent5);
+								finish();
+								break;
 							case "Sign Out":
 								mAuth.signOut();
-                                Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(homeIntent);
+								Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+								startActivity(homeIntent);
 								finish();
 								break;
 							case "About Humanity Hospice":

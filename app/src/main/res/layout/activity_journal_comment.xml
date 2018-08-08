@@ -23,7 +23,7 @@
                 android:orientation="horizontal">
 
                 <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profilePicImageView"
+                    android:id="@+id/posterProfilePicImageView"
                     android:layout_width="120dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
@@ -31,8 +31,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:src="@mipmap/logo_small"
-                    />
+                    android:src="@mipmap/logo_small" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

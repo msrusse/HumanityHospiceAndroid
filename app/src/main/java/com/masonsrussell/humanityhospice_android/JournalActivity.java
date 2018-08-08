@@ -66,9 +66,6 @@ public class JournalActivity extends AppCompatActivity
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
-	private StorageReference storageReference;
-	private FirebaseStorage storage;
-	private Fragment fragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -137,8 +134,14 @@ public class JournalActivity extends AppCompatActivity
 				}
 			});
 		}
-		getProfilePictures();
-		getJournalPosts();
+		if (AccountInformation.patientID != null) {
+			getProfilePictures();
+			getJournalPosts();
+		}
+		else
+		{
+			findViewById(R.id.noPatientTextView).setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void setFamilyPatientNavMenu()
@@ -175,6 +178,11 @@ public class JournalActivity extends AppCompatActivity
 							case "Invite People":
 								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
 								startActivity(intent3);
+								finish();
+								break;
+							case "Current Readers":
+								Intent intent5 = new Intent(getApplicationContext(), ViewReadersActivity.class);
+								startActivity(intent5);
 								finish();
 								break;
 							case "Sign Out":

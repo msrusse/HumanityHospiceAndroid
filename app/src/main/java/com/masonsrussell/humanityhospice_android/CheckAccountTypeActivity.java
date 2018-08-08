@@ -41,7 +41,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void getReaders()
 	{
-		DatabaseReference readersRef = mDatabase.getReference("Readers");
+		DatabaseReference readersRef = mDatabase.getReference(FirebaseCalls.Readers);
 		readersRef.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
@@ -268,7 +268,11 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> readerInfo = (HashMap) dataSnapshot.getValue();
-				isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString());
+				HashMap<String, Object> patientsList = (HashMap) readerInfo.get(FirebaseCalls.PatientsList);
+				if (patientsList.get(readerInfo.get(FirebaseCalls.ReadingFrom)).equals(true)) {
+					isReader(readerInfo.get(FirebaseCalls.ReadingFrom).toString());
+				}
+				else isReader(null);
 			}
 
 			@Override

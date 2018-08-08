@@ -55,7 +55,7 @@ public class JournalCommentActivity extends AppCompatActivity
 		screenWidth = metrics.widthPixels;
 		screenHeight = metrics.heightPixels;
 		mDatabase = FirebaseDatabase.getInstance();
-		profilePicImageView = findViewById(R.id.profilePicImageView);
+		profilePicImageView = findViewById(R.id.posterProfilePicImageView);
 		commentsRecyclerView = findViewById(R.id.commentsRecyclerView);
 		enterCommentText = findViewById(R.id.enterCommentText);
 		addCommentButton = findViewById(R.id.addCommentButton);

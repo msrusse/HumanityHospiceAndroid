@@ -79,13 +79,11 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
-								startActivity(intent);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Encouragement Board":
-								Intent intent2 = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
-								startActivity(intent2);
+								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
+								startActivity(intent);
 								finish();
 								break;
 							case "My Photo Album":
@@ -94,11 +92,18 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Create Family Account":
-								mDrawerLayout.closeDrawers();
+								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
+								startActivity(intent2);
+								finish();
 								break;
 							case "Invite People":
 								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
 								startActivity(intent3);
+								finish();
+								break;
+							case "Current Readers":
+								Intent intent5 = new Intent(getApplicationContext(), ViewReadersActivity.class);
+								startActivity(intent5);
 								finish();
 								break;
 							case "Sign Out":
