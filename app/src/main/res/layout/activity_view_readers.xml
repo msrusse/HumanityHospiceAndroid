@@ -60,8 +60,8 @@
         android:layout_gravity="start"
         android:background="@mipmap/navbarbg"
         android:fitsSystemWindows="true"
-        app:itemIconTint="@color/primaryWhite"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/reader_drawer_view" />
+        app:itemIconTint="@color/primaryWhite"
+        app:menu="@menu/drawer_view" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -79,7 +79,9 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								mDrawerLayout.closeDrawers();
+								Intent intent0 = new Intent(getApplicationContext(), JournalActivity.class);
+								startActivity(intent0);
+								finish();
 								break;
 							case "Encouragement Board":
 								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
@@ -92,9 +94,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Create Family Account":
-								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
-								startActivity(intent2);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Invite People":
 								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
@@ -117,6 +117,11 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
+							case "Call Nurse":
+								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+								if (launchIntent != null) {
+									startActivity(launchIntent);//null pointer check in case package name was not found
+								}
 						}
 						mDrawerLayout.closeDrawers();
 						return true;

@@ -282,6 +282,11 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
+							case "Call Nurse":
+								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+								if (launchIntent != null) {
+									startActivity(launchIntent);//null pointer check in case package name was not found
+								}
 						}
 						mDrawerLayout.closeDrawers();
 						return true;

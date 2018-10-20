@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -62,7 +63,7 @@ public class ViewReadersActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_patient);
+        setContentView(R.layout.activity_view_readers);
         mDatabase = FirebaseDatabase.getInstance();
         mDrawerLayout = findViewById(R.id.drawer_layout);
         patientListView = findViewById(R.id.patientListView);
@@ -82,10 +83,11 @@ public class ViewReadersActivity extends AppCompatActivity
         DatabaseReference patientsRef = mDatabase.getReference(FirebaseCalls.Patients);
         DatabaseReference individualPatientRef = patientsRef.child(AccountInformation.patientID);
         DatabaseReference readersRef = individualPatientRef.child(FirebaseCalls.Readers);
-        readersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        readersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                patientListView.setAdapter(null);
                 HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
                 for (String UID : allPatients.keySet())
                 {
@@ -112,6 +114,7 @@ public class ViewReadersActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                readerNames.clear();
                 HashMap<String, Object> allReaders = (HashMap) dataSnapshot.getValue();
                 readerInformation.put(allReaders.get(FirebaseCalls.FirstName).toString() + " " + allReaders.get(FirebaseCalls.LastName).toString(), readerUID);
                 readerUIDs.add(readerUID);
@@ -141,7 +144,7 @@ public class ViewReadersActivity extends AppCompatActivity
                     {
                         switch(menuItem.toString())
                         {
-                            case "Journal":
+                            case "My Journal":
                                 Intent intent0 = new Intent(getApplicationContext(), JournalActivity.class);
                                 startActivity(intent0);
                                 finish();
@@ -151,10 +154,23 @@ public class ViewReadersActivity extends AppCompatActivity
                                 startActivity(intent);
                                 finish();
                                 break;
-                            case "Photo Album":
+                            case "My Photo Album":
                                 Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
                                 startActivity(intent1);
                                 finish();
+                                break;
+                            case "Create Family Account":
+                                Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
+                                startActivity(intent2);
+                                finish();
+                                break;
+                            case "Invite People":
+                                Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
+                                startActivity(intent3);
+                                finish();
+                                break;
+                            case "Current Readers":
+                                mDrawerLayout.closeDrawers();
                                 break;
                             case "Sign Out":
                                 mAuth.signOut();
@@ -163,18 +179,15 @@ public class ViewReadersActivity extends AppCompatActivity
                                 finish();
                                 break;
                             case "About Humanity Hospice":
-                                Intent intent2 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
-                                startActivity(intent2);
+                                Intent intent4 = new Intent(getApplicationContext(), AboutHumanityHospiceActivity.class);
+                                startActivity(intent4);
                                 finish();
                                 break;
-                            case "Add Patient":
-                                Intent intent3 = new Intent(getApplicationContext(), AddPatientActivity.class);
-                                startActivity(intent3);
-                                finish();
-                                break;
-                            case "Change Patient":
-                                mDrawerLayout.closeDrawers();
-                                break;
+                            case "Call Nurse":
+                                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+                                if (launchIntent != null) {
+                                    startActivity(launchIntent);//null pointer check in case package name was not found
+                                }
                         }
                         mDrawerLayout.closeDrawers();
                         return true;
@@ -303,6 +316,7 @@ public class ViewReadersActivity extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         FirebaseCalls.blacklistReader(reader);
+                        removeReaderComments(reader);
                         Toast.makeText(getApplicationContext(), "Reader has been Blacklisted", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
@@ -318,6 +332,36 @@ public class ViewReadersActivity extends AppCompatActivity
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+
+    private void removeReaderComments(final String reader)
+    {
+        DatabaseReference journals = mDatabase.getReference(FirebaseCalls.Journals);
+        final DatabaseReference patientRef = journals.child(AccountInformation.patientID);
+        patientRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                HashMap<String, Map<String, Object>> postsMap = (HashMap) dataSnapshot.getValue();
+                for (String post : postsMap.keySet())
+                {
+                    if(postsMap.get(post).containsKey(FirebaseCalls.Comments))
+                    {
+                        HashMap<String, Map<String, Object>> commentsMap = (HashMap) postsMap.get(post).get(FirebaseCalls.Comments);
+                        for (String comment : commentsMap.keySet()) {
+                            if (commentsMap.get(comment).get(FirebaseCalls.PosterUID).equals(reader)) {
+                                commentsMap.remove(comment);
+                            }
+                        }
+                        HashMap<String, Object> commentsMapToPush = (HashMap) commentsMap;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void profileImagePicker()
