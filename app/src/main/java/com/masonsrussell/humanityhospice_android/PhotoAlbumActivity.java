@@ -423,17 +423,10 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		                   Map<String, Object> second)
 		{
 			long firstValue, secondValue;
-			try {
-				firstValue = (long) first.get(key);
-				secondValue = (long) second.get(key);
-			}
-			catch (Exception ex)
-			{
-				double firstDoub = (double) first.get(key);
-				double secondDoub = (double) second.get(key);
-				firstValue = (long) firstDoub;
-				secondValue = (long) secondDoub;
-			}
+			try { firstValue = (long) first.get(key); }
+			catch (Exception e) { firstValue = Math.round((double) first.get(key)); }
+			try { secondValue = (long) second.get(key); }
+			catch (Exception ex) { secondValue = Math.round((double) second.get(key)); }
 			return Long.compare(firstValue, secondValue);
 		}
 	}

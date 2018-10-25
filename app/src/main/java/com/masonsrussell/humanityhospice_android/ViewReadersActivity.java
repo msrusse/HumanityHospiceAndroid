@@ -68,7 +68,13 @@ public class ViewReadersActivity extends AppCompatActivity
         mDrawerLayout = findViewById(R.id.drawer_layout);
         patientListView = findViewById(R.id.patientListView);
         mAuth = FirebaseAuth.getInstance();
-        getReaders();
+        try {
+            getReaders();
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, "No Current Readers", Toast.LENGTH_SHORT).show();
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -83,26 +89,35 @@ public class ViewReadersActivity extends AppCompatActivity
         DatabaseReference patientsRef = mDatabase.getReference(FirebaseCalls.Patients);
         DatabaseReference individualPatientRef = patientsRef.child(AccountInformation.patientID);
         DatabaseReference readersRef = individualPatientRef.child(FirebaseCalls.Readers);
-        readersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                patientListView.setAdapter(null);
-                HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
-                for (String UID : allPatients.keySet())
-                {
-                    if (allPatients.get(UID).equals(true)) {
-                        firebasePatientNamesCall(UID);
+        try {
+            readersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    patientListView.setAdapter(null);
+                    HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
+                    try {
+                        for (String UID : allPatients.keySet()) {
+                            if (allPatients.get(UID).equals(true)) {
+                                firebasePatientNamesCall(UID);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Toast.makeText(ViewReadersActivity.this, "No Current Readers", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, "No Current Readers", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void firebasePatientNamesCall(String reader)
@@ -342,6 +357,7 @@ public class ViewReadersActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 HashMap<String, Map<String, Object>> postsMap = (HashMap) dataSnapshot.getValue();
+                HashMap<String, Object> postsMapToPush = new HashMap<>();
                 for (String post : postsMap.keySet())
                 {
                     if(postsMap.get(post).containsKey(FirebaseCalls.Comments))
@@ -352,9 +368,11 @@ public class ViewReadersActivity extends AppCompatActivity
                                 commentsMap.remove(comment);
                             }
                         }
-                        HashMap<String, Object> commentsMapToPush = (HashMap) commentsMap;
+                        postsMap.get(post).put(FirebaseCalls.Comments, commentsMap);
+                        postsMapToPush.put(post, postsMap.get(post));
                     }
                 }
+                FirebaseCalls.pushBlackList(postsMapToPush);
             }
 
             @Override

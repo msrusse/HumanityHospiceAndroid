@@ -244,12 +244,12 @@ public class EncouragementBoardActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								mDrawerLayout.closeDrawers();
+                                Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
+                                startActivity(intent);
+                                finish();
 								break;
 							case "Encouragement Board":
-								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
-								startActivity(intent);
-								finish();
+                                mDrawerLayout.closeDrawers();
 								break;
 							case "My Photo Album":
 								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
@@ -451,17 +451,10 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		                   Map<String, Object> second)
 		{
 			long firstValue, secondValue;
-			try {
-				firstValue = (long) first.get(key);
-				secondValue = (long) second.get(key);
-			}
-			catch (Exception ex)
-			{
-				double firstDoub = (double) first.get(key);
-				double secondDoub = (double) second.get(key);
-				firstValue = (long) firstDoub;
-				secondValue = (long) secondDoub;
-			}
+			try { firstValue = (long) first.get(key); }
+			catch (Exception e) { firstValue = Math.round((double) first.get(key)); }
+			try { secondValue = (long) second.get(key); }
+			catch (Exception ex) { secondValue = Math.round((double) second.get(key)); }
 			return Long.compare(firstValue, secondValue);
 		}
 	}

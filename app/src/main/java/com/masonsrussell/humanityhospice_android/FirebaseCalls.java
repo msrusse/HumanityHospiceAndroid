@@ -427,4 +427,11 @@ public class FirebaseCalls
 		blacklistInfo.put(AccountInformation.patientID, false);
 		readerPatients.updateChildren(blacklistInfo);
 	}
+
+	public static void pushBlackList(HashMap<String, Object> blackListMap)
+	{
+		DatabaseReference journals = mDatabase.getReference(Journals);
+		DatabaseReference patientJournal = journals.child(AccountInformation.patientID);
+		patientJournal.updateChildren(blackListMap);
+	}
 }

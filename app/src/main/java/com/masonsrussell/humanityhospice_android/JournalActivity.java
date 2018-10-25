@@ -107,6 +107,20 @@ public class JournalActivity extends AppCompatActivity
 			actionbar.setDisplayHomeAsUpEnabled(true);
 			actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 			setReaderNavMenu();
+			mDatabase.getReference(FirebaseCalls.Readers)
+					.child(mAuth.getUid())
+					.child(FirebaseCalls.PatientsList)
+					.addValueEventListener(new ValueEventListener() {
+						@Override
+						public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+							checkForBlackList();
+						}
+
+						@Override
+						public void onCancelled(@NonNull DatabaseError databaseError) {
+
+						}
+					});
 		} else
 		{
 			setContentView(R.layout.activity_journal);
@@ -250,11 +264,13 @@ public class JournalActivity extends AppCompatActivity
 								mDrawerLayout.closeDrawers();
 								break;
 							case "Encouragement Board":
+								checkForBlackList();
 								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
 								startActivity(intent);
 								finish();
 								break;
 							case "Photo Album":
+								checkForBlackList();
 								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
 								startActivity(intent1);
 								finish();
@@ -376,6 +392,7 @@ public class JournalActivity extends AppCompatActivity
 						posts.add(addPost);
 					}
 					setListView();
+					if (AccountInformation.accountType.equals("Reader")) checkForBlackList();
 				} catch (Exception ex)
 				{
 				    Log.d("JournalActivity", ex.getMessage());
@@ -446,17 +463,11 @@ public class JournalActivity extends AppCompatActivity
 		                   Map<String, Object> second)
 		{
 			long firstValue, secondValue;
-			try {
-				firstValue = (long) first.get(key);
-				secondValue = (long) second.get(key);
-			}
-			catch (Exception ex)
-			{
-				double firstDoub = (double) first.get(key);
-				double secondDoub = (double) second.get(key);
-				firstValue = (long) firstDoub;
-				secondValue = (long) secondDoub;
-			}
+			try { firstValue = (long) first.get(key); }
+			catch (Exception e) { firstValue = Math.round((double) first.get(key)); }
+			try { secondValue = (long) second.get(key); }
+			catch (Exception ex) { secondValue = Math.round((double) second.get(key)); }
+
 			return Long.compare(firstValue, secondValue);
 		}
 	}
@@ -527,5 +538,35 @@ public class JournalActivity extends AppCompatActivity
 				}
 				break;
 		}
+	}
+
+	private void checkForBlackList()
+	{
+		mDatabase.getReference(FirebaseCalls.Readers)
+				.child(mAuth.getUid())
+				.child(FirebaseCalls.PatientsList)
+				.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				Map<Object, Boolean> patients = (HashMap) dataSnapshot.getValue();
+				if (patients.containsKey(AccountInformation.patientID)) {
+					if (!patients.get(AccountInformation.patientID)) {
+						AccountInformation.patientID = null;
+						Intent restartJournal = new Intent(getApplicationContext(), JournalActivity.class);
+						startActivity(restartJournal);
+						finish();
+					}
+					else
+					{
+						AccountInformation.patientID = patients.get(AccountInformation.patientID).toString();
+					}
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
 	}
 }

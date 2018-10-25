@@ -42,8 +42,8 @@ public class CreateAccountActivity extends AppCompatActivity
 	RadioGroup accountTypeSelector;
 	RadioButton selectedAccountType;
 	Boolean verifiedAccess = true;
-	static ArrayList<String> patientIds = new ArrayList<>();
-	static HashMap<String, String> patientInviteCodes = new HashMap<>();
+	static HashMap<String, String> patientsList = new HashMap<>();
+	static ArrayList<String> patientInviteCodes = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -61,16 +61,20 @@ public class CreateAccountActivity extends AppCompatActivity
 		mAuth = FirebaseAuth.getInstance();
 		FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 		final DatabaseReference patients = mDatabase.getReference(FirebaseCalls.Patients);
-		patients.addListenerForSingleValueEvent(new ValueEventListener()
+		DatabaseReference inviteCodesRef = mDatabase.getReference(FirebaseCalls.InviteCodes);
+		inviteCodesRef.addListenerForSingleValueEvent(new ValueEventListener()
 		{
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				try
 				{
-					HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
-					patientIds.addAll(allPatients.keySet());
-					getInviteCodes(patients);
+					HashMap<String, HashMap<String, Object>> allPatients = (HashMap) dataSnapshot.getValue();
+					for (String id : allPatients.keySet())
+					{
+						patientsList.put(id, allPatients.get(id).get("Patient").toString());
+					}
+
 				}
 				catch(Exception ex)
 				{
@@ -224,13 +228,7 @@ public class CreateAccountActivity extends AppCompatActivity
 			FirebaseCalls.createPatient(generateRandom(), firstName, lastName);
 		} else
 		{
-			for (String PID : patientInviteCodes.keySet())
-			{
-				if (patientInviteCodes.get(PID).equals(patientAccessCode))
-				{
-					FirebaseCalls.createReader(firstName, lastName, PID);
-				}
-			}
+			if (patientsList.keySet().contains(patientAccessCode)) FirebaseCalls.createReader(firstName, lastName, patientsList.get(patientAccessCode));
 		}
 		addPersonalData();
 	}
@@ -277,14 +275,11 @@ public class CreateAccountActivity extends AppCompatActivity
 
 	static boolean checkForPatientCode(String enteredCode)
 	{
-		for (String user : patientInviteCodes.keySet())
-		{
-			if (patientInviteCodes.get(user).equals(enteredCode)) return true;
-		}
+		if (patientsList.keySet().contains(enteredCode)) return true;
 		return false;
 	}
 
-	private static void getInviteCodes(DatabaseReference patients)
+	/*private static void getInviteCodes(DatabaseReference patients)
 	{
 		for (String id : patientIds)
 		{
@@ -304,6 +299,6 @@ public class CreateAccountActivity extends AppCompatActivity
 				}
 			});
 		}
-	}
+	}*/
 
 }

@@ -201,13 +201,16 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> allFamily = (HashMap) dataSnapshot.getValue();
-				if (allFamily.containsKey(mAuth.getCurrentUser().getUid()))
-				{
-					getFamilyPatientID();
-				}
-				else
+				if (allFamily == null)
 				{
 					getReaders();
+				}
+				else {
+					if (allFamily.containsKey(mAuth.getCurrentUser().getUid())) {
+						getFamilyPatientID();
+					} else {
+						getReaders();
+					}
 				}
 			}
 
