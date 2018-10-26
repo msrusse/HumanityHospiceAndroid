@@ -56,7 +56,7 @@ import java.util.Map;
 public class JournalActivity extends AppCompatActivity
 {
 	TextView navHeaderName, navHeaderEmail;
-	Button writePostButton;
+	Button writePostButton, callNurseButton;
 	RecyclerView postsListView;
 	Bitmap bitmap = null;
 	byte[] data = null;
@@ -210,11 +210,6 @@ public class JournalActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
-							case "Call Nurse":
-								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-								if (launchIntent != null) {
-									startActivity(launchIntent);//null pointer check in case package name was not found
-								}
 						}
 						mDrawerLayout.closeDrawers();
 						return true;
@@ -347,6 +342,19 @@ public class JournalActivity extends AppCompatActivity
 							.into(userProfilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
+				callNurseButton = findViewById(R.id.call_nurse_button);
+				callNurseButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+						if (launchIntent != null) {
+							startActivity(launchIntent);//null pointer check in case package name was not found
+						}
+						else{
+							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+						}
+					}
+				});
 				profileInfo.setOnClickListener(new View.OnClickListener()
 				{
 					@Override

@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +37,7 @@ import java.io.ByteArrayOutputStream;
 public class InvitePeopleActivity extends AppCompatActivity
 {
 	TextView accessCodeView, navHeaderName, navHeaderEmail;
-	Button shareInviteCodeButton;
+	Button shareInviteCodeButton, callNurseButton;
 	private FirebaseAuth mAuth;
 	Bitmap bitmap = null;
 	byte[] data = null;
@@ -120,11 +122,6 @@ public class InvitePeopleActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
-							case "Call Nurse":
-								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-								if (launchIntent != null) {
-									startActivity(launchIntent);//null pointer check in case package name was not found
-								}
 						}
 						mDrawerLayout.closeDrawers();
 						return true;
@@ -159,8 +156,15 @@ public class InvitePeopleActivity extends AppCompatActivity
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				String shareBody = accessCodeView.getText().toString();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "View my Humanity Hospice Profile using the following access code:");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+				String sharingMessage =  AccountInformation.patientName + " has invited you to follow their profile on Humanity Connect!\n" +
+						"\n" +
+						"When creating an account, use access code " + shareBody + " to view their profile.\n" +
+						"\n" +
+						"View their profile online at (URL for website viewing here) or, Download the App!\n" +
+						"\n" +
+						"For iPhone: (iOS URL here)\n" +
+						"For Android: (Android URL here)";
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 				startActivity(Intent.createChooser(sharingIntent, "Share via"));
 			}
 		});
@@ -184,6 +188,19 @@ public class InvitePeopleActivity extends AppCompatActivity
 							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
+				callNurseButton = findViewById(R.id.call_nurse_button);
+				callNurseButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+						if (launchIntent != null) {
+							startActivity(launchIntent);//null pointer check in case package name was not found
+						}
+						else{
+							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+						}
+					}
+				});
 				profileInfo.setOnClickListener(new View.OnClickListener()
 				{
 					@Override

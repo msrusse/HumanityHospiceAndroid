@@ -39,6 +39,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 {
 	private FirebaseAuth mAuth;
 	private FirebaseAuth mAuth2;
+	private Button callNurseButton;
 	private DrawerLayout mDrawerLayout;
 	private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, verifyPasswordEditText;
 	private String password, email, firstName, lastName;
@@ -117,11 +118,6 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
-							case "Call Nurse":
-								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-								if (launchIntent != null) {
-									startActivity(launchIntent);//null pointer check in case package name was not found
-								}
 						}
 						mDrawerLayout.closeDrawers();
 						return true;
@@ -194,6 +190,19 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
+				callNurseButton = findViewById(R.id.call_nurse_button);
+				callNurseButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+						if (launchIntent != null) {
+							startActivity(launchIntent);//null pointer check in case package name was not found
+						}
+						else{
+							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+						}
+					}
+				});
 				profileInfo.setOnClickListener(new View.OnClickListener()
 				{
 					@Override

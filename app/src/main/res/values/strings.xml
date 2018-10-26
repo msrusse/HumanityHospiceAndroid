@@ -42,7 +42,7 @@
     <string name="enter_password">Enter Password</string>
     <string name="verify_password">Verify Password</string>
     <string name="patient">Patient</string>
-    <string name="reader">Friend</string>
+    <string name="reader">Reader</string>
     <string name="patient_url">https://www.HPPatientPortal.com/John-Smith/583693</string>
     <string name="x">x</string>
     <string name="choose_picture">Choose Picture</string>

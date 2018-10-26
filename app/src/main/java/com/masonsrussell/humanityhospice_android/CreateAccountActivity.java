@@ -95,7 +95,7 @@ public class CreateAccountActivity extends AppCompatActivity
 			public void onCheckedChanged(RadioGroup group, final int checkedId)
 			{
 				selectedAccountType = findViewById(checkedId);
-				if (selectedAccountType.getText().equals("Friend"))
+				if (selectedAccountType.getText().equals("Reader"))
 				{
 					displayDialog();
 				} else

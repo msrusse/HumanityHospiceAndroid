@@ -17,6 +17,7 @@ public class AccountInformation {
 	public static String email;
 	public static String profilePictureURL;
 	public static Map profilePictures;
+	public static String patientName;
 
 	public static void setAccountInfo(String passedAccountType, String passedUsername, String patient, String userEmail, String pictureURl) {
 		accountType = passedAccountType;

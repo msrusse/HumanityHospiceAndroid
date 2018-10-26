@@ -86,6 +86,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 
 	private void isPatient()
 	{
+		AccountInformation.patientName = mAuth.getCurrentUser().getDisplayName();
 		if (mAuth.getCurrentUser().getPhotoUrl() != null)
 		{
 			AccountInformation.setAccountInfo(FirebaseCalls.Patient, mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
@@ -110,6 +111,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		}
 		else if (profilePictureURL != null)
 		{
+			getPatientName(patientID);
 			AccountInformation.setAccountInfo(FirebaseCalls.Family, mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getPhotoUrl().toString());
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
@@ -117,11 +119,28 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		}
 		else
 		{
+			getPatientName(patientID);
 			AccountInformation.setAccountInfo(FirebaseCalls.Family, mAuth.getCurrentUser().getDisplayName(), patientID, mAuth.getCurrentUser().getEmail(), null);
 			Intent intent = new Intent(getApplicationContext(), JournalActivity.class);
 			startActivity(intent);
 			finish();
 		}
+	}
+
+	private void getPatientName(String patientID)
+	{
+		mDatabase.getReference(FirebaseCalls.Patients).child(patientID).addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				HashMap<String, String> patientInfo = (HashMap) dataSnapshot.getValue();
+				AccountInformation.patientName = patientInfo.get("FullName");
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
 	}
 
 	private void getFamilyName(final String patientID, final String profilePictureURL)
@@ -231,8 +250,8 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
 				HashMap<String, Object> familyInfo = (HashMap) dataSnapshot.getValue();
-				if (familyInfo.keySet().contains("profilePictureURL")) isFamily(familyInfo.get("PatientID").toString(), familyInfo.get("profilePictureURL").toString());
-				else isFamily(familyInfo.get("PatientID").toString(), null);
+				if (familyInfo.keySet().contains("profilePictureURL")) isFamily(familyInfo.get("PatientUID").toString(), familyInfo.get("profilePictureURL").toString());
+				else isFamily(familyInfo.get("PatientUID").toString(), null);
 			}
 
 			@Override

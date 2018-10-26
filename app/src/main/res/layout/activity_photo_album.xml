@@ -91,6 +91,16 @@
         android:fitsSystemWindows="true"
         app:itemIconTint="@color/primaryWhite"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/drawer_view" />
+        app:menu="@menu/drawer_view" >
+
+        <Button
+            android:id="@+id/call_nurse_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:background="@mipmap/contact_nurse_button"/>
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

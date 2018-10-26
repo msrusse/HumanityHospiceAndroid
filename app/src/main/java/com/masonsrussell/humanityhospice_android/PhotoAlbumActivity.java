@@ -52,6 +52,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 {
 	private DrawerLayout mDrawerLayout;
 	TextView navHeaderName, navHeaderEmail;
+	private Button callNurseButton;
 	private FirebaseDatabase mDatabase;
 	private FirebaseAuth mAuth;
 	Bitmap bitmap = null;
@@ -202,11 +203,6 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
-							case "Call Nurse":
-								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-								if (launchIntent != null) {
-									startActivity(launchIntent);//null pointer check in case package name was not found
-								}
 						}
 						// close drawer when item is tapped
 						mDrawerLayout.closeDrawers();
@@ -348,6 +344,19 @@ public class PhotoAlbumActivity extends AppCompatActivity
 							.into(profilePictureView);
 				}
 				LinearLayout profileInfo = findViewById(R.id.profileInfo);
+				callNurseButton = findViewById(R.id.call_nurse_button);
+				callNurseButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+						if (launchIntent != null) {
+							startActivity(launchIntent);//null pointer check in case package name was not found
+						}
+						else{
+							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+						}
+					}
+				});
 				profileInfo.setOnClickListener(new View.OnClickListener()
 				{
 					@Override

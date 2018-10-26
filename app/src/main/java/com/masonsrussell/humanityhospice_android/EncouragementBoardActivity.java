@@ -51,7 +51,7 @@ import java.util.Map;
 public class EncouragementBoardActivity extends AppCompatActivity
 {
 	TextView navHeaderName, navHeaderEmail;
-	Button writePostButton;
+	Button writePostButton, callNurseButton;
 	RecyclerView encouragementBoardListView;
 	Bitmap bitmap = null;
 	byte[] data = null;
@@ -145,8 +145,8 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		profilePictures.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				HashMap<String, Object> profilePicrtures = (HashMap) dataSnapshot.getValue();
-				AccountInformation.profilePictures = profilePicrtures;
+				HashMap<String, Object> profilePictures = (HashMap) dataSnapshot.getValue();
+				AccountInformation.profilePictures = profilePictures;
 			}
 
 			@Override
@@ -282,11 +282,6 @@ public class EncouragementBoardActivity extends AppCompatActivity
 								startActivity(intent4);
 								finish();
 								break;
-							case "Call Nurse":
-								Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-								if (launchIntent != null) {
-									startActivity(launchIntent);//null pointer check in case package name was not found
-								}
 						}
 						mDrawerLayout.closeDrawers();
 						return true;
@@ -339,6 +334,19 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					public void onClick(View v)
 					{
 						profileImagePicker();
+					}
+				});
+				callNurseButton = findViewById(R.id.call_nurse_button);
+				callNurseButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+						if (launchIntent != null) {
+							startActivity(launchIntent);//null pointer check in case package name was not found
+						}
+						else{
+							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+						}
 					}
 				});
 				return true;
