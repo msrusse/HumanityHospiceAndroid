@@ -336,19 +336,20 @@ public class EncouragementBoardActivity extends AppCompatActivity
 						profileImagePicker();
 					}
 				});
-				callNurseButton = findViewById(R.id.call_nurse_button);
-				callNurseButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-						if (launchIntent != null) {
-							startActivity(launchIntent);//null pointer check in case package name was not found
+				if (!AccountInformation.accountType.equals("Reader")) {
+					callNurseButton = findViewById(R.id.call_nurse_button);
+					callNurseButton.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+							if (launchIntent != null) {
+								startActivity(launchIntent);//null pointer check in case package name was not found
+							} else {
+								Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+							}
 						}
-						else{
-							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
-						}
-					}
-				});
+					});
+				}
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

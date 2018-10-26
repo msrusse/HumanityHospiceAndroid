@@ -84,7 +84,9 @@ public class InvitePeopleActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								mDrawerLayout.closeDrawers();
+								Intent journalIntent = new Intent(getApplicationContext(), JournalActivity.class);
+								startActivity(journalIntent);
+								finish();
 								break;
 							case "Encouragement Board":
 								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
@@ -102,9 +104,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 								finish();
 								break;
 							case "Invite People":
-								Intent intent3 = new Intent(getApplicationContext(), InvitePeopleActivity.class);
-								startActivity(intent3);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Current Readers":
 								Intent intent5 = new Intent(getApplicationContext(), ViewReadersActivity.class);
