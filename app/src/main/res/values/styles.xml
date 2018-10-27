@@ -6,7 +6,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryPurple</item>
         <item name="colorPrimaryDark">@color/headerPurple</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/primaryPurple</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

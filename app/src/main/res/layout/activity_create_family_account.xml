@@ -68,10 +68,10 @@
                 android:ems="10"
                 android:hint="@string/first_name"
                 android:inputType="textCapSentences|textPersonName"
-                android:paddingLeft="8dp"
                 android:paddingStart="8dp"
+                android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textColorLink="@color/colorPrimary"
                 android:textCursorDrawable="@color/colorPrimary"
                 tools:ignore="UnusedAttribute" />
