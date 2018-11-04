@@ -1,5 +1,6 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -19,7 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -157,7 +161,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 					if (passwordEditText.getText().toString().equals(verifyPasswordEditText.getText().toString()))
 					{
 						password = passwordEditText.getText().toString();
-						createAccount();
+						displayPrivacyDialog();
 					} else
 					{
 						Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
@@ -324,5 +328,22 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				}
 				break;
 		}
+	}
+
+	private void displayPrivacyDialog() {
+		Dialog dialog = new Dialog(CreateFamilyAccountActivity.this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_privacy_policy);
+		TextView privacyPolicy = dialog.findViewById(R.id.privacyPolicyView);
+		privacyPolicy.setText(CreateAccountActivity.privacyPolicyString);
+		CheckBox agreeBox = dialog.findViewById(R.id.agreeBox);
+		dialog.show();
+
+		agreeBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				createAccount();
+			}
+		});
 	}
 }

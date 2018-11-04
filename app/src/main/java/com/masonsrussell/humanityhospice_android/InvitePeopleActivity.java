@@ -156,14 +156,17 @@ public class InvitePeopleActivity extends AppCompatActivity
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				String shareBody = accessCodeView.getText().toString();
+				String iosLink = "https://apple.co/2StPCRu";
+				String androidLink = "https://goo.gl/DGWdQf";
+				String webLink = "Connect.HumanityHospice.com";
 				String sharingMessage =  AccountInformation.patientName + " has invited you to follow their profile on Humanity Connect!\n" +
 						"\n" +
 						"When creating an account, use access code " + shareBody + " to view their profile.\n" +
 						"\n" +
-						"View their profile online at (URL for website viewing here) or, Download the App!\n" +
+						"View their profile online at " + webLink + " or, Download the App!\n" +
 						"\n" +
-						"For iPhone: (iOS URL here)\n" +
-						"For Android: (Android URL here)";
+						"For iPhone: " + iosLink + "\n" +
+						"For Android: " + androidLink;
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, sharingMessage);
 				startActivity(Intent.createChooser(sharingIntent, "Share via"));
 			}

@@ -54,4 +54,5 @@
     <string name="current_readers">Current Readers</string>
     <string name="patient_error">Error reading from current Patient, please change patients to view posts.</string>
     <string name="call_nurse">Call Nurse</string>
+    <string name="agree">I Agree</string>
 </resources>
