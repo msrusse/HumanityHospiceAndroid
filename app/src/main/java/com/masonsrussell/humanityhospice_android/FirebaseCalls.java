@@ -1,11 +1,8 @@
 package com.masonsrussell.humanityhospice_android;
 
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,7 +16,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.Reader;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -340,9 +336,10 @@ public class FirebaseCalls
 									public void onComplete(@NonNull Task<Void> task)
 									{
 										Log.d("addProfilePicFromCam", "User Profile Updated");
+										addProfilePictureToDatabase();
 									}
 								});
-								addProfilePictureToDatabse();
+
 							}
 						});
 					}
@@ -383,9 +380,10 @@ public class FirebaseCalls
 									public void onComplete(@NonNull Task<Void> task)
 									{
 										Log.d("addProfilePicFromGal", "User Profile Updated");
+										addProfilePictureToDatabase();
 									}
 								});
-								addProfilePictureToDatabse();
+
 							}
 						});
 					}
@@ -401,7 +399,7 @@ public class FirebaseCalls
 
 	}
 
-	private static void addProfilePictureToDatabse()
+	private static void addProfilePictureToDatabase()
     {
         if (mAuth.getCurrentUser().getPhotoUrl() != null) {
             DatabaseReference profilePictures = mDatabase.getReference(ProfilePictures);

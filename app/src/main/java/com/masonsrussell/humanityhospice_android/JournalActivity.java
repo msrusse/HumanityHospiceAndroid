@@ -514,4 +514,6 @@ public class JournalActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 }

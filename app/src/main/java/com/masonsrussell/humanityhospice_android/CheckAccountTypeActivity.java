@@ -311,8 +311,7 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 		profilePictures.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                HashMap<String, Object> profilePicrtures = (HashMap) dataSnapshot.getValue();
-                AccountInformation.profilePictures = profilePicrtures;
+                AccountInformation.profilePictures = (HashMap) dataSnapshot.getValue();
             }
 
             @Override

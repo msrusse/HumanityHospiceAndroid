@@ -371,6 +371,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 			{
 				try
 				{
+					posts.clear();
 					dataSnapshot.getValue();
 					Map<Object, Map> postsMap = (HashMap) dataSnapshot.getValue();
 					for (Object post : postsMap.keySet())
@@ -406,6 +407,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 			{
 				try
 				{
+					posts.clear();
 					dataSnapshot.getValue();
 					Map<Object, Map> postsMap = (HashMap) dataSnapshot.getValue();
 					for (Object post : postsMap.keySet())
@@ -551,13 +553,14 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		dialog.setContentView(R.layout.dialog_edit_delete);
 		Button deleteButton = dialog.findViewById(R.id.deletePostButton);
 		Button editButton = dialog.findViewById(R.id.editPostButton);
-		Button cancelButton = dialog.findViewById(R.id.cancelButton);
+		Button cancelButton = dialog.findViewById(R.id.editDeleteCancelButton);
 		dialog.show();
 
 		deleteButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				mDatabase.getReference(FirebaseCalls.EncouragementBoards).child(AccountInformation.patientID).child(posts.get(selectedPost).get("postID").toString()).setValue(null);
+				dialog.hide();
 			}
 		});
 
@@ -581,7 +584,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		final Dialog dialog = new Dialog(EncouragementBoardActivity.this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.dialog_edit_post);
-		final EditText editPost = dialog.findViewById(R.id.postEditText);
+		final EditText editPost = dialog.findViewById(R.id.postText);
 		Button cancelButton = dialog.findViewById(R.id.cancelButton);
 		Button enterButton = dialog.findViewById(R.id.enterButton);
 		dialog.show();
@@ -599,7 +602,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 		enterButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mDatabase.getReference(FirebaseCalls.EncouragementBoards).child(AccountInformation.patientID).child(posts.get(selectedPost).get("postID").toString()).setValue(editPost.getText().toString());
+				mDatabase.getReference(FirebaseCalls.EncouragementBoards).child(AccountInformation.patientID).child(posts.get(selectedPost).get("postID").toString()).child(FirebaseCalls.Message).setValue(editPost.getText().toString());
 				dialog.hide();
 			}
 		});

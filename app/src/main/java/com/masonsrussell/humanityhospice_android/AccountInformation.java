@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class AccountInformation {
 	public static String patientID;
 	public static String email;
 	public static String profilePictureURL;
-	public static Map profilePictures;
+	public static Map<String, Object> profilePictures = new HashMap<>();
 	public static String patientName;
 
 	public static void setAccountInfo(String passedAccountType, String passedUsername, String patient, String userEmail, String pictureURl) {

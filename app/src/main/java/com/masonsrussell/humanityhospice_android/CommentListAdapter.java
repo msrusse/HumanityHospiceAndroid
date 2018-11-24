@@ -47,10 +47,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
 	private void loadProfilePicture(MainViewHolder holder, int position)
 	{
-		holder.profilePictureImageView.getLayoutParams().width = 180;
-		holder.profilePictureImageView.getLayoutParams().height = 180;
+		//holder.profilePictureImageView.getLayoutParams().width = 180;
+		//holder.profilePictureImageView.getLayoutParams().height = 180;
 		GlideApp.with(context)
-				.load(AccountInformation.profilePictures.containsKey(postsList.get(position).get(FirebaseCalls.PosterUID)))
+				.load(AccountInformation.profilePictures.get(postsList.get(position).get(FirebaseCalls.PosterUID)))
 				.apply(RequestOptions.circleCropTransform())
 				.into(holder.profilePictureImageView);
 	}
