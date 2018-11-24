@@ -1,8 +1,8 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +11,14 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,14 +37,16 @@ public class JournalCommentActivity extends AppCompatActivity
 {
 
 	TextView usernameView, timestampView, captionView;
-	Button addCommentButton;
+	Button addCommentButton, deletePostButton, editPostButton;
 	RecyclerView commentsRecyclerView;
 	ImageView postImageView, profilePicImageView;
+	LinearLayout patientButtons;
 	EditText enterCommentText;
 	CommentListAdapter mAdapter;
 	String postID;
 	public int screenWidth, screenHeight;
 	private FirebaseDatabase mDatabase;
+	private FirebaseAuth mAuth;
 	List<Map<String, Object>> comments = new ArrayList<>();
 
 	@Override
@@ -63,7 +66,11 @@ public class JournalCommentActivity extends AppCompatActivity
 		timestampView = findViewById(R.id.posterTextView);
 		captionView = findViewById(R.id.postBodyTextView);
 		postImageView = findViewById(R.id.postImageView);
+		deletePostButton = findViewById(R.id.deletePostButton);
+		editPostButton = findViewById(R.id.editPostButton);
+		patientButtons = findViewById(R.id.patientButtonView);
 		postID = getIntent().getStringExtra("postID");
+		mAuth = FirebaseAuth.getInstance();
 		usernameView.setText(getIntent().getStringExtra(FirebaseCalls.PosterName));
 		captionView.setText(getIntent().getStringExtra(FirebaseCalls.Post));
 		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra(FirebaseCalls.Timestamp)));
@@ -78,6 +85,30 @@ public class JournalCommentActivity extends AppCompatActivity
 			loadProfilePicture(AccountInformation.profilePictures.get(posterUID).toString());
 		}
 		getComments();
+
+		if (AccountInformation.accountType.equals("Reader"))
+		{
+			patientButtons.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+			editPostButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					displayEditPostDialog(null, "post");
+				}
+			});
+
+			deletePostButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(getIntent().getStringExtra("postID")).setValue(null);
+					Intent homeIntent = new Intent(getApplicationContext(), JournalActivity.class);
+					startActivity(homeIntent);
+					finish();
+				}
+			});
+		}
 
 		addCommentButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -138,6 +169,7 @@ public class JournalCommentActivity extends AppCompatActivity
 						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 						addPost.put(FirebaseCalls.PosterUID, postsMap.get(post).get(FirebaseCalls.PosterUID));
+						addPost.put("postID", post);
 						comments.add(addPost);
 					}
 					setListView();
@@ -166,6 +198,17 @@ public class JournalCommentActivity extends AppCompatActivity
 			commentsRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
 			commentsRecyclerView.setNestedScrollingEnabled(true);
 			commentsRecyclerView.smoothScrollBy(1, 1);
+			commentsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(JournalCommentActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+						@Override
+						public void onItemClick(View view, int position) {
+                            if(comments.get(position).get(FirebaseCalls.PosterUID).equals(mAuth.getUid()))
+                            {
+                                displayEditDeleteDialog(position);
+                            }
+						}
+					})
+
+			);
 		} catch (Exception ex)
 		{
 			Log.e("JournalActivity", ex.getMessage());
@@ -200,4 +243,79 @@ public class JournalCommentActivity extends AppCompatActivity
 		startActivity(intent);
 		finish();
 	}
+
+    private void displayEditDeleteDialog(final Integer selectedPost){
+        final Dialog dialog = new Dialog(JournalCommentActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_edit_delete);
+        Button deleteButton = dialog.findViewById(R.id.deletePostButton);
+        Button editButton = dialog.findViewById(R.id.editPostButton);
+        Button dialogCancelButton = dialog.findViewById(R.id.editDeleteCancelButton);
+        dialog.show();
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(postID).child(FirebaseCalls.Comments).child(comments.get(selectedPost).get("postID").toString()).setValue(null);
+                dialog.hide();
+                getComments();
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.hide();
+                displayEditPostDialog(selectedPost, "comment");
+            }
+        });
+
+        dialogCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.hide();
+            }
+        });
+    }
+
+    private void displayEditPostDialog(final Integer selectedPost, final String postOrComment) {
+        final Dialog dialog = new Dialog(JournalCommentActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_edit_post);
+        final EditText editPost = dialog.findViewById(R.id.postText);
+        Button editDialogCancelButton = dialog.findViewById(R.id.cancelButton);
+        Button enterButton = dialog.findViewById(R.id.enterButton);
+        dialog.show();
+
+        if (postOrComment.equals("comment")) {
+			editPost.setText(comments.get(selectedPost).get(FirebaseCalls.Post).toString());
+		}
+		else {
+        	editPost.setText(getIntent().getStringExtra(FirebaseCalls.Post));
+		}
+		editDialogCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.hide();
+                displayEditDeleteDialog(selectedPost);
+            }
+        });
+
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            	if (postOrComment.equals("comment")) {
+					String currentPostId = comments.get(selectedPost).get("postID").toString();
+					comments.get(selectedPost).put(FirebaseCalls.Comment, editPost.getText().toString());
+					comments.get(selectedPost).remove(FirebaseCalls.Post);
+					comments.get(selectedPost).remove("postID");
+					mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(postID).child(FirebaseCalls.Comments).child(currentPostId).updateChildren(comments.get(selectedPost));
+				}
+				else {
+            		mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(postID).child(FirebaseCalls.Post).setValue(editPost.getText().toString());
+				}
+                dialog.hide();
+            }
+        });
+    }
 }

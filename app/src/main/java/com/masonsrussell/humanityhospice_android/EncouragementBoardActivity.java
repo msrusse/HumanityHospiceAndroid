@@ -1,5 +1,7 @@
 package com.masonsrussell.humanityhospice_android;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,8 +26,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -34,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -406,6 +413,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 						Map<String, Object> addPost = new HashMap<>();
 						if (postsMap.get(post).get(FirebaseCalls.PosterUID).toString().equals(mAuth.getCurrentUser().getUid()))
 						{
+							addPost.put("postID", post);
 							addPost.put(FirebaseCalls.Message, postsMap.get(post).get(FirebaseCalls.Message).toString());
 							addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 							addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
@@ -440,6 +448,15 @@ public class EncouragementBoardActivity extends AppCompatActivity
 			encouragementBoardListView.getRecycledViewPool().setMaxRecycledViews(0, 0);
 			encouragementBoardListView.setNestedScrollingEnabled(true);
 			encouragementBoardListView.smoothScrollBy(1, 1);
+			if (AccountInformation.accountType.equals("Reader"))
+			{
+				encouragementBoardListView.addOnItemTouchListener(new RecyclerItemClickListener(EncouragementBoardActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+					@Override
+					public void onItemClick(View view, int position) {
+						displayEditDeleteDialog(position);
+					}
+				}));
+			}
 		}
 		catch (Exception ex)
 		{
@@ -526,5 +543,65 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				}
 				break;
 		}
+	}
+
+	private void displayEditDeleteDialog(final Integer selectedPost){
+		final Dialog dialog = new Dialog(EncouragementBoardActivity.this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_edit_delete);
+		Button deleteButton = dialog.findViewById(R.id.deletePostButton);
+		Button editButton = dialog.findViewById(R.id.editPostButton);
+		Button cancelButton = dialog.findViewById(R.id.cancelButton);
+		dialog.show();
+
+		deleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mDatabase.getReference(FirebaseCalls.EncouragementBoards).child(AccountInformation.patientID).child(posts.get(selectedPost).get("postID").toString()).setValue(null);
+			}
+		});
+
+		editButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				dialog.hide();
+				displayEditPostDialog(selectedPost);
+			}
+		});
+
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				dialog.hide();
+			}
+		});
+	}
+
+	private void displayEditPostDialog(final Integer selectedPost) {
+		final Dialog dialog = new Dialog(EncouragementBoardActivity.this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.dialog_edit_post);
+		final EditText editPost = dialog.findViewById(R.id.postEditText);
+		Button cancelButton = dialog.findViewById(R.id.cancelButton);
+		Button enterButton = dialog.findViewById(R.id.enterButton);
+		dialog.show();
+
+		editPost.setText(posts.get(selectedPost).get(FirebaseCalls.Message).toString());
+
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				dialog.hide();
+				displayEditPostDialog(selectedPost);
+			}
+		});
+
+		enterButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mDatabase.getReference(FirebaseCalls.EncouragementBoards).child(AccountInformation.patientID).child(posts.get(selectedPost).get("postID").toString()).setValue(editPost.getText().toString());
+				dialog.hide();
+			}
+		});
 	}
 }

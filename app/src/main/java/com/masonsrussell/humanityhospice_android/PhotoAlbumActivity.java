@@ -165,7 +165,9 @@ public class PhotoAlbumActivity extends AppCompatActivity
 						switch(menuItem.toString())
 						{
 							case "My Journal":
-								mDrawerLayout.closeDrawers();
+								Intent intent0 = new Intent(getApplicationContext(), JournalActivity.class);
+								startActivity(intent0);
+								finish();
 								break;
 							case "Encouragement Board":
 								Intent intent = new Intent(getApplicationContext(), EncouragementBoardActivity.class);
@@ -173,9 +175,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								finish();
 								break;
 							case "My Photo Album":
-								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
-								startActivity(intent1);
-								finish();
+								mDrawerLayout.closeDrawers();
 								break;
 							case "Create Family Account":
 								Intent intent2 = new Intent(getApplicationContext(), CreateFamilyAccountActivity.class);
@@ -204,12 +204,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								finish();
 								break;
 						}
-						// close drawer when item is tapped
 						mDrawerLayout.closeDrawers();
-
-						// Add code here to update the UI based on the item selected
-						// For example, swap UI fragments here
-
 						return true;
 					}
 				});
@@ -388,6 +383,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 						Map<String, Object> addImage = new HashMap<>();
 						addImage.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
 						addImage.put("url", postsMap.get(post).get(FirebaseCalls.URL).toString());
+						addImage.put("postID", post);
 						imageURLs.add(addImage);
 					}
 					setAdapter();
@@ -441,19 +437,35 @@ public class PhotoAlbumActivity extends AppCompatActivity
 		}
 	}
 
-	private void displayDialog(int index)
+	private void displayDialog(final int index)
 	{
 		final Dialog dialog = new Dialog(PhotoAlbumActivity.this);
 
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.dialog_display_photo_with_caption);
+		Button deleteButton = dialog.findViewById(R.id.button);
+		LinearLayout readerPatientView = dialog.findViewById(R.id.readerPatientView);
+
+		if (AccountInformation.accountType.equals("Reader"))
+		{
+			readerPatientView.setVisibility(View.INVISIBLE);
+		}
 
 		ImageView photo = dialog.findViewById(R.id.photoView);
 		GlideApp.with(this)
                 .load(imageURLs.get(index).get("url"))
-                .apply(new RequestOptions().override(screenWidth, screenHeight))
+                .apply(new RequestOptions().override(screenWidth, (int)(screenHeight*.8)))
                 .into(photo);
 		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+		deleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mDatabase.getReference(FirebaseCalls.PhotoAlbum).child(AccountInformation.patientID).child(imageURLs.get(index).get("postID").toString()).setValue(null);
+				dialog.hide();
+				getPhotoAlbumImages();
+			}
+		});
 		dialog.show();
 	}
 

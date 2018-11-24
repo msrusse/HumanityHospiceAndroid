@@ -197,7 +197,7 @@ public class CreateAccountActivity extends AppCompatActivity
 	}
 
 	private void displayPrivacyDialog() {
-		Dialog dialog = new Dialog(CreateAccountActivity.this);
+		final Dialog dialog = new Dialog(CreateAccountActivity.this);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.dialog_privacy_policy);
 		TextView privacyPolicy = dialog.findViewById(R.id.privacyPolicyView);
@@ -208,6 +208,7 @@ public class CreateAccountActivity extends AppCompatActivity
 		agreeBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				dialog.hide();
 				createAccount();
 			}
 		});

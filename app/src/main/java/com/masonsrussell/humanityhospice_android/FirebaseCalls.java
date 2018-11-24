@@ -56,6 +56,7 @@ public class FirebaseCalls
 	public static final String Comment = "Comment";
 	public static final String ProfilePictures = "ProfilePictures";
 	public static final String URL = "URL";
+	static String ImageName = "imageName";
 
 	public static void createJournalPostWithoutPhoto(String post)
 	{
@@ -71,7 +72,7 @@ public class FirebaseCalls
 		newPost.updateChildren(posterInfo);
 	}
 
-	public static void createJournalPostWithPhoto(String post, Object imageURl)
+	public static void createJournalPostWithPhoto(String post, Object imageURl, String imageName)
 	{
 		DatabaseReference posts = mDatabase.getReference(Journals);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
@@ -84,7 +85,7 @@ public class FirebaseCalls
 		posterInfo.put(FirebaseCalls.PostImageURL, imageURl);
 		posterInfo.put(Post, post);
 		newPost.updateChildren(posterInfo);
-		createAlbumPost(imageURl);
+		createAlbumPost(imageURl, imageName);
 	}
 
 	public static void createEncouragementPost(String post)
@@ -228,10 +229,10 @@ public class FirebaseCalls
 							{
 								if (activity.equals(Journals))
 								{
-									createJournalPostWithPhoto(post, uri.toString());
+									createJournalPostWithPhoto(post, uri.toString(), albumImageRef.getName());
 								} else
 								{
-									createAlbumPost(uri.toString());
+									createAlbumPost(uri.toString(), albumImageRef.getName());
 								}
 							}
 						});
@@ -247,7 +248,7 @@ public class FirebaseCalls
 				});
 	}
 
-	private static void createAlbumPost(Object imageURL)
+	private static void createAlbumPost(Object imageURL, String imageName)
 	{
 		DatabaseReference posts = mDatabase.getReference(PhotoAlbum);
 		DatabaseReference patientsPosts = posts.child(AccountInformation.patientID);
@@ -256,6 +257,7 @@ public class FirebaseCalls
 		Map<String, Object> posterInfo = new HashMap<>();
 		posterInfo.put(Timestamp, Calendar.getInstance().getTime().getTime() / 1000);
 		posterInfo.put(URL, imageURL);
+		posterInfo.put(ImageName, imageName);
 		newPost.updateChildren(posterInfo);
 	}
 
@@ -277,10 +279,10 @@ public class FirebaseCalls
 							{
 								if (activity.equals(Journals))
 								{
-									createJournalPostWithPhoto(post, uri.toString());
+									createJournalPostWithPhoto(post, uri.toString(), albumImageRef.getName());
 								} else
 								{
-									createAlbumPost(uri.toString());
+									createAlbumPost(uri.toString(), albumImageRef.getName());
 								}
 							}
 						});

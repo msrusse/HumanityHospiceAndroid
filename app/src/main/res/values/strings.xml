@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Humanity Hospice</string>
+    <string name="app_name">Humanity Connect</string>
     <string name="sign_in">Sign In</string>
     <string name="create_new_account">Create New Account</string>
     <string name="copyright" tools:ignore="Typos">© 2017 Momento Inc.</string>
@@ -55,4 +55,6 @@
     <string name="patient_error">Error reading from current Patient, please change patients to view posts.</string>
     <string name="call_nurse">Call Nurse</string>
     <string name="agree">I Agree</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="delete_post">Delete Post</string>
 </resources>
