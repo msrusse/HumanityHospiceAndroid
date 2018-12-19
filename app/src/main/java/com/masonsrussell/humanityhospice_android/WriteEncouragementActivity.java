@@ -6,7 +6,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +32,14 @@ public class WriteEncouragementActivity extends AppCompatActivity
 		postBox = findViewById(R.id.postEditText);
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
+		ImageView profilePicture = findViewById(R.id.profilePicture);
+		if (AccountInformation.profilePictureURL != null)
+		{
+			GlideApp.with(this)
+					.load(mAuth.getCurrentUser().getPhotoUrl().toString())
+					.apply(RequestOptions.circleCropTransform())
+					.into(profilePicture);
+		}
 		writePostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v)

@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.ByteArrayOutputStream;
 
 public class WritePostActivity extends AppCompatActivity
@@ -41,6 +45,15 @@ public class WritePostActivity extends AppCompatActivity
 		Button attachPhotoButton = findViewById(R.id.attachPhotoButton);
 		postImageView = findViewById(R.id.postImageView);
 		postBox = findViewById(R.id.postEditText);
+		ImageView profilePicture = findViewById(R.id.profilePicture);
+		FirebaseAuth mAuth = FirebaseAuth.getInstance();
+		if (AccountInformation.profilePictureURL != null)
+		{
+			GlideApp.with(this)
+					.load(mAuth.getCurrentUser().getPhotoUrl().toString())
+					.apply(RequestOptions.circleCropTransform())
+					.into(profilePicture);
+		}
 		final Intent journalActivity = new Intent(getApplicationContext(), JournalActivity.class);
 		closeButton.setOnClickListener(new View.OnClickListener() {
 			@Override
