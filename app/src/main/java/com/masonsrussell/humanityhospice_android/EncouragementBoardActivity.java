@@ -380,6 +380,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 						addPost.put(FirebaseCalls.Message, postsMap.get(post).get(FirebaseCalls.Message).toString());
 						addPost.put(FirebaseCalls.PosterName, postsMap.get(post).get(FirebaseCalls.PosterName).toString());
 						addPost.put(FirebaseCalls.Timestamp, postsMap.get(post).get(FirebaseCalls.Timestamp));
+						addPost.put(FirebaseCalls.PosterUID, postsMap.get(post).get(FirebaseCalls.PosterUID));
 						posts.add(addPost);
 					}
 					setListView();
