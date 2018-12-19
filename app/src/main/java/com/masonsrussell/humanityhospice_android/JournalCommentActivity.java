@@ -142,7 +142,7 @@ public class JournalCommentActivity extends AppCompatActivity
 
 	private void loadPostImage(String url)
 	{
-		postImageView.getLayoutParams().height = 150;
+		postImageView.getLayoutParams().height = 400;
 		GlideApp.with(this)
 				.load(url)
 				.into(postImageView);
@@ -268,7 +268,6 @@ public class JournalCommentActivity extends AppCompatActivity
                 displayEditPostDialog(selectedPost, "comment");
             }
         });
-
         dialogCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
