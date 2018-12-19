@@ -55,6 +55,7 @@ public class JournalActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawerLayout;
     private FirebaseDatabase mDatabase;
+    ImageView userProfilePictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,7 +296,7 @@ public class JournalActivity extends AppCompatActivity {
                 navHeaderEmail = findViewById(R.id.navHeaderEmail);
                 navHeaderEmail.setText(AccountInformation.email);
                 navHeaderName.setText(AccountInformation.username);
-                ImageView userProfilePictureView = findViewById(R.id.userProfilePicImageView);
+                userProfilePictureView = findViewById(R.id.userProfilePicImageView);
                 if (AccountInformation.profilePictureURL != null) {
                     GlideApp.with(this)
                             .load(AccountInformation.profilePictureURL)
@@ -471,6 +472,7 @@ public class JournalActivity extends AppCompatActivity {
                     data = baos.toByteArray();
                     try {
                         FirebaseCalls.addProfilePictureFromCamera(data);
+                        reloadProfilePicture();
                     } catch (Exception ex) {
                         Log.d("addProfilePicture", ex.getMessage());
                     }
@@ -482,12 +484,21 @@ public class JournalActivity extends AppCompatActivity {
                     selectedImage = imageReturnedIntent.getData();
                     try {
                         FirebaseCalls.addProfilePictureFromGallery(selectedImage);
+                        reloadProfilePicture();
                     } catch (Exception ex) {
                         Log.d("addProfilePicture", ex.getMessage());
                     }
                 }
                 break;
         }
+    }
+
+    private void reloadProfilePicture()
+    {
+        GlideApp.with(this)
+                .load(AccountInformation.profilePictureURL)
+                .apply(RequestOptions.circleCropTransform())
+                .into(userProfilePictureView);
     }
 
     private void checkForBlackList() {

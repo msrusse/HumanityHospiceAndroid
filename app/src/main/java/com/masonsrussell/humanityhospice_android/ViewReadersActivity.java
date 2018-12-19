@@ -58,6 +58,7 @@ public class ViewReadersActivity extends AppCompatActivity
     TextView navHeaderName, navHeaderEmail;
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
+    ImageView profilePictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -235,7 +236,7 @@ public class ViewReadersActivity extends AppCompatActivity
                 navHeaderEmail = findViewById(R.id.navHeaderEmail);
                 navHeaderEmail.setText(AccountInformation.email);
                 navHeaderName.setText(AccountInformation.username);
-                ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
+                profilePictureView = findViewById(R.id.userProfilePicImageView);
                 if (AccountInformation.profilePictureURL != null)
                 {
                     GlideApp.with(this)
@@ -431,5 +432,13 @@ public class ViewReadersActivity extends AppCompatActivity
                 }
                 break;
         }
+    }
+
+    private void reloadProfilePicture()
+    {
+        GlideApp.with(this)
+                .load(AccountInformation.profilePictureURL)
+                .apply(RequestOptions.circleCropTransform())
+                .into(profilePictureView);
     }
 }

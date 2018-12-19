@@ -67,6 +67,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 	private FirebaseAuth mAuth;
 	private DrawerLayout mDrawerLayout;
 	private FirebaseDatabase mDatabase;
+	ImageView profilePictureView;
 	List<Map<String, Object>> posts = new ArrayList<>();
 
 	@Override
@@ -326,7 +327,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
+				profilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)
@@ -536,6 +537,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 					data = baos.toByteArray();
 					FirebaseCalls.addProfilePictureFromCamera(data);
+					reloadProfilePicture();
 				}
 
 				break;
@@ -543,6 +545,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				if(resultCode == RESULT_OK){
 					selectedImage = imageReturnedIntent.getData();
 					FirebaseCalls.addProfilePictureFromGallery(selectedImage);
+					reloadProfilePicture();
 				}
 				break;
 		}
@@ -607,5 +610,13 @@ public class EncouragementBoardActivity extends AppCompatActivity
 				dialog.hide();
 			}
 		});
+	}
+
+	private void reloadProfilePicture()
+	{
+		GlideApp.with(this)
+				.load(AccountInformation.profilePictureURL)
+				.apply(RequestOptions.circleCropTransform())
+				.into(profilePictureView);
 	}
 }

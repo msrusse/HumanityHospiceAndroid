@@ -62,6 +62,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 	private List<Map<String, Object>> imageURLs = new ArrayList<>();
 	int screenWidth;
 	int screenHeight;
+	ImageView profilePictureView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -330,7 +331,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
+				profilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)
@@ -526,6 +527,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 					data = baos.toByteArray();
 					FirebaseCalls.addProfilePictureFromCamera(data);
+					reloadProfilePicture();
 				}
 
 				break;
@@ -533,8 +535,17 @@ public class PhotoAlbumActivity extends AppCompatActivity
 				if(resultCode == RESULT_OK){
 					selectedImage = imageReturnedIntent.getData();
 					FirebaseCalls.addProfilePictureFromGallery(selectedImage);
+					reloadProfilePicture();
 				}
 				break;
 		}
+	}
+
+	private void reloadProfilePicture()
+	{
+		GlideApp.with(this)
+				.load(AccountInformation.profilePictureURL)
+				.apply(RequestOptions.circleCropTransform())
+				.into(profilePictureView);
 	}
 }

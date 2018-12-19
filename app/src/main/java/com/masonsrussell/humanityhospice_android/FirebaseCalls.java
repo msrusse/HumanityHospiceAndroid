@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -406,6 +407,7 @@ public class FirebaseCalls
             Map<String, Object> profilePic = new HashMap<>();
             profilePic.put(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getPhotoUrl().toString());
             profilePictures.updateChildren(profilePic);
+            AccountInformation.profilePictureURL = mAuth.getCurrentUser().getPhotoUrl().toString();
         }
     }
 

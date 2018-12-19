@@ -46,6 +46,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 	private DrawerLayout mDrawerLayout;
 	@SuppressWarnings("FieldCanBeLocal")
 	private static String TAG = "InvitePeopleActivity";
+	ImageView profilePictureView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -182,7 +183,7 @@ public class InvitePeopleActivity extends AppCompatActivity
 				navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
+				profilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)
@@ -298,5 +299,13 @@ public class InvitePeopleActivity extends AppCompatActivity
 				}
 				break;
 		}
+	}
+
+	private void reloadProfilePicture()
+	{
+		GlideApp.with(this)
+				.load(AccountInformation.profilePictureURL)
+				.apply(RequestOptions.circleCropTransform())
+				.into(profilePictureView);
 	}
 }

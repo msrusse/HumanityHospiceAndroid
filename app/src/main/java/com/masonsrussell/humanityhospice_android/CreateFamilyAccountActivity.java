@@ -51,6 +51,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 	byte[] data = null;
 	Uri selectedImage = null;
 	private static final String TAG = "CreateFamilyAccount";
+	ImageView profilePictureView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -185,7 +186,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				TextView navHeaderEmail = findViewById(R.id.navHeaderEmail);
 				navHeaderEmail.setText(AccountInformation.email);
 				navHeaderName.setText(AccountInformation.username);
-				ImageView profilePictureView = findViewById(R.id.userProfilePicImageView);
+				profilePictureView = findViewById(R.id.userProfilePicImageView);
 				if (AccountInformation.profilePictureURL != null)
 				{
 					GlideApp.with(this)
@@ -318,6 +319,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 					data = baos.toByteArray();
 					FirebaseCalls.addProfilePictureFromCamera(data);
+					reloadProfilePicture();
 				}
 
 				break;
@@ -325,6 +327,7 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				if(resultCode == RESULT_OK){
 					selectedImage = imageReturnedIntent.getData();
 					FirebaseCalls.addProfilePictureFromGallery(selectedImage);
+					reloadProfilePicture();
 				}
 				break;
 		}
@@ -345,5 +348,13 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				createAccount();
 			}
 		});
+	}
+
+	private void reloadProfilePicture()
+	{
+		GlideApp.with(this)
+				.load(AccountInformation.profilePictureURL)
+				.apply(RequestOptions.circleCropTransform())
+				.into(profilePictureView);
 	}
 }
