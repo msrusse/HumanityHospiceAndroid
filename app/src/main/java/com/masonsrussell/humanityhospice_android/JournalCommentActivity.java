@@ -140,12 +140,39 @@ public class JournalCommentActivity extends AppCompatActivity
 				.into(profilePicImageView);
 	}
 
-	private void loadPostImage(String url)
+	private void loadPostImage(final String url)
 	{
-		postImageView.getLayoutParams().height = 150;
+//		postImageView.getLayoutParams().height = 800;
+		postImageView.getLayoutParams().width = captionView.getLayoutParams().width;
 		GlideApp.with(this)
 				.load(url)
 				.into(postImageView);
+		postImageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final Dialog dialog = new Dialog(JournalCommentActivity.this);
+
+				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				dialog.setContentView(R.layout.dialog_display_photo_with_caption);
+				Button deleteButton = dialog.findViewById(R.id.button);
+				LinearLayout readerPatientView = dialog.findViewById(R.id.readerPatientView);
+
+				if (AccountInformation.accountType.equals("Reader"))
+				{
+					readerPatientView.setVisibility(View.INVISIBLE);
+				}
+
+				ImageView photo = dialog.findViewById(R.id.photoView);
+				GlideApp.with(v.getContext())
+						.load(url)
+						.apply(new RequestOptions().override(screenWidth, (int)(screenHeight*.8)))
+						.into(photo);
+				dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+				deleteButton.setVisibility(View.GONE);
+				dialog.show();
+
+			}
+		});
 	}
 
 	private void getComments()

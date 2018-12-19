@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -30,6 +32,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.MainViewHolder> {
 	private LayoutInflater inflater;
@@ -110,6 +114,10 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 				.into(holder.profilePictureImageView);
 	}
 
+	private void viewImage() {
+
+	}
+
 	@Override
 	public int getItemCount() {
 		return postsList.size();
@@ -119,7 +127,7 @@ public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.
 		TextView postBody, timestamp, poster, commentsView;
 		ImageView postImageView, profilePictureImageView;
 
-		private MainViewHolder(View itemView) {
+		private MainViewHolder(final View itemView) {
 			super(itemView);
 			postBody = itemView.findViewById(R.id.postBodyTextView);
 			timestamp = itemView.findViewById(R.id.posterTextView);

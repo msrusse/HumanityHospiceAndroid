@@ -42,7 +42,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px">
 
                         <TextView
                             android:id="@+id/usernameTextView"
@@ -74,6 +75,7 @@
                         android:id="@+id/postBodyTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8px"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_display"
                         android:padding="8dp"
@@ -81,9 +83,10 @@
 
                     <ImageView
                         android:id="@+id/postImageView"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:paddingTop="12px" />
 
                 </LinearLayout>
 
