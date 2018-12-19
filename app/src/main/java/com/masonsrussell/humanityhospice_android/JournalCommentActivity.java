@@ -134,8 +134,6 @@ public class JournalCommentActivity extends AppCompatActivity
 
 	private void loadProfilePicture(String url)
 	{
-		postImageView.getLayoutParams().width = 180;
-		postImageView.getLayoutParams().height = 180;
 		GlideApp.with(this)
 				.load(url)
 				.apply(RequestOptions.circleCropTransform())
