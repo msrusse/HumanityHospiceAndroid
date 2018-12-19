@@ -211,7 +211,7 @@ public class FirebaseCalls
 		storage = FirebaseStorage.getInstance();
 		storageReference = storage.getReference();
 
-		final StorageReference albumImageRef = storageReference.child(activity + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime() / 1000);
+		final StorageReference albumImageRef = storageReference.child(FirebaseCalls.PhotoAlbum + "/" + AccountInformation.patientID + "/post-" + Calendar.getInstance().getTime().getTime() / 1000);
 		albumImageRef.putFile(file)
 				.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
 				{
