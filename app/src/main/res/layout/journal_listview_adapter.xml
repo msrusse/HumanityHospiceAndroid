@@ -70,6 +70,7 @@
                     android:id="@+id/postBodyTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_display"
                     android:padding="8dp"
@@ -79,8 +80,8 @@
                     android:id="@+id/postImageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12px"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:paddingTop="12px" />
 
                 <TextView
                     android:id="@+id/commentsView"

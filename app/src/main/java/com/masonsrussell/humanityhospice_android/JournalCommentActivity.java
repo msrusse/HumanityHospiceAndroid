@@ -142,6 +142,7 @@ public class JournalCommentActivity extends AppCompatActivity
 
 	private void loadPostImage(String url)
 	{
+		postImageView.getLayoutParams().height = 150;
 		GlideApp.with(this)
 				.load(url)
 				.into(postImageView);
