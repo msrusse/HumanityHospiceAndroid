@@ -8,7 +8,7 @@
     <string name="create_account">Create Account</string>
     <string name="journal">My Journal</string>
     <string name="encouragement_board">Encouragement Board</string>
-    <string name="photo_album">My Photo Album</string>
+    <string name="photo_album">Photo Album</string>
     <string name="create_family_account">Create Family Account</string>
     <string name="invite_people">Invite People</string>
     <string name="sign_out">Sign Out</string>
@@ -57,4 +57,6 @@
     <string name="agree">I Agree</string>
     <string name="edit_post">Edit Post</string>
     <string name="delete_post">Delete Post</string>
+    <string name="send">Send</string>
+    <string name="compose">Compose</string>
 </resources>

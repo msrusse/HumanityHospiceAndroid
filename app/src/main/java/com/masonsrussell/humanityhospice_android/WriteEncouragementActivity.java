@@ -27,7 +27,7 @@ public class WriteEncouragementActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_write_post);
+		setContentView(R.layout.activity_write_encouragement);
 		Button writePostButton = findViewById(R.id.writePostButton);
 		postBox = findViewById(R.id.postEditText);
 		mAuth = FirebaseAuth.getInstance();
@@ -46,13 +46,20 @@ public class WriteEncouragementActivity extends AppCompatActivity
 			{
 				if (TextUtils.isEmpty(postBox.getText()))
 				{
-					Toast.makeText(getApplicationContext(), "A post must be written to publish", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "A message must be written to be sent", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
 					getTotalPosts(postBox.getText().toString());
 					finish();
 				}
+			}
+		});
+		Button cancelButton = findViewById(R.id.cancelButton);
+		cancelButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
 		});
 	}

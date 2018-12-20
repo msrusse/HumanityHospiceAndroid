@@ -175,7 +175,7 @@ public class PhotoAlbumActivity extends AppCompatActivity
 								startActivity(intent);
 								finish();
 								break;
-							case "My Photo Album":
+							case "Photo Album":
 								mDrawerLayout.closeDrawers();
 								break;
 							case "Create Family Account":

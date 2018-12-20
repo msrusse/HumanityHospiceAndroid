@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".JournalCommentActivity">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -96,6 +96,7 @@
                 android:id="@+id/patientButtonView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal">
 
                 <Button
@@ -121,13 +122,6 @@
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/commentsRecyclerView"
                 android:layout_width="match_parent"
@@ -137,7 +131,7 @@
                 android:layout_marginRight="16dp" />
         </LinearLayout>
 
-    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

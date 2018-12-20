@@ -259,7 +259,7 @@ public class EncouragementBoardActivity extends AppCompatActivity
 							case "Encouragement Board":
                                 mDrawerLayout.closeDrawers();
 								break;
-							case "My Photo Album":
+							case "Photo Album":
 								Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
 								startActivity(intent1);
 								finish();

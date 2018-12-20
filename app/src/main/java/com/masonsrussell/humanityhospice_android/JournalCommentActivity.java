@@ -323,7 +323,6 @@ public class JournalCommentActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 dialog.hide();
-                displayEditDeleteDialog(selectedPost);
             }
         });
 

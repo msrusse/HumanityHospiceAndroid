@@ -170,7 +170,7 @@ public class ViewReadersActivity extends AppCompatActivity
                                 startActivity(intent);
                                 finish();
                                 break;
-                            case "My Photo Album":
+                            case "Photo Album":
                                 Intent intent1 = new Intent(getApplicationContext(), PhotoAlbumActivity.class);
                                 startActivity(intent1);
                                 finish();
