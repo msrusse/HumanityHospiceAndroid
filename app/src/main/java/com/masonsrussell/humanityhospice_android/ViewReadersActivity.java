@@ -361,14 +361,11 @@ public class ViewReadersActivity extends AppCompatActivity
                         HashMap<String, Map<String, Object>> commentsMap = (HashMap) postsMap.get(post).get(FirebaseCalls.Comments);
                         for (String comment : commentsMap.keySet()) {
                             if (commentsMap.get(comment).get(FirebaseCalls.PosterUID).equals(reader)) {
-                                commentsMap.remove(comment);
+                                patientRef.child(post).child(FirebaseCalls.Comments).child(comment).setValue(null);
                             }
                         }
-                        postsMap.get(post).put(FirebaseCalls.Comments, commentsMap);
-                        postsMapToPush.put(post, postsMap.get(post));
                     }
                 }
-                FirebaseCalls.pushBlackList(postsMapToPush);
             }
 
             @Override
