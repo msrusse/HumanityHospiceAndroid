@@ -17,6 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
         <Button
@@ -25,8 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_weight=".5"
             android:background="@drawable/rounded_button"
             android:text="@string/cancel"
@@ -42,7 +41,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="16dp"
             android:layout_weight=".5"
             android:background="@drawable/rounded_button"
             android:text="@string/enter"
@@ -50,6 +48,23 @@
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/deletePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:text="Delete Photo"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

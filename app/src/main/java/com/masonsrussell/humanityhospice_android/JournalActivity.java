@@ -383,13 +383,11 @@ public class JournalActivity extends AppCompatActivity {
                         public void onItemClick(View v, int position) {
                             Intent intent = new Intent(getApplicationContext(), JournalCommentActivity.class);
                             if (posts.get(position).containsKey(FirebaseCalls.PostImageURL)) {
-                                intent.putExtra(FirebaseCalls.PostImageURL, posts.get(position).get(FirebaseCalls.PostImageURL).toString());
+                                PostInformation.setPostInfo(posts.get(position).get("postID").toString(), posts.get(position).get(FirebaseCalls.PostImageURL).toString(), posts.get(position).get(FirebaseCalls.PosterUID).toString(), posts.get(position).get(FirebaseCalls.PosterName).toString(), posts.get(position).get(FirebaseCalls.Post).toString(), posts.get(position).get(FirebaseCalls.Timestamp).toString());
                             }
-                            intent.putExtra("postID", posts.get(position).get("postID").toString());
-                            intent.putExtra(FirebaseCalls.PosterUID, posts.get(position).get(FirebaseCalls.PosterUID).toString());
-                            intent.putExtra(FirebaseCalls.PosterName, posts.get(position).get(FirebaseCalls.PosterName).toString());
-                            intent.putExtra(FirebaseCalls.Post, posts.get(position).get(FirebaseCalls.Post).toString());
-                            intent.putExtra(FirebaseCalls.Timestamp, posts.get(position).get(FirebaseCalls.Timestamp).toString());
+                            else {
+                                PostInformation.setPostInfo(posts.get(position).get("postID").toString(), null, posts.get(position).get(FirebaseCalls.PosterUID).toString(), posts.get(position).get(FirebaseCalls.PosterName).toString(), posts.get(position).get(FirebaseCalls.Post).toString(), posts.get(position).get(FirebaseCalls.Timestamp).toString());
+                            }
                             intent.putExtra("position", position);
                             startActivity(intent);
                         }

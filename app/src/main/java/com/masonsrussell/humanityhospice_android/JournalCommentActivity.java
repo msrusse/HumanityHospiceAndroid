@@ -69,16 +69,16 @@ public class JournalCommentActivity extends AppCompatActivity
 		deletePostButton = findViewById(R.id.deletePostButton);
 		editPostButton = findViewById(R.id.editPostButton);
 		patientButtons = findViewById(R.id.patientButtonView);
-		postID = getIntent().getStringExtra("postID");
+		postID = PostInformation.postID;
 		mAuth = FirebaseAuth.getInstance();
-		usernameView.setText(getIntent().getStringExtra(FirebaseCalls.PosterName));
-		captionView.setText(getIntent().getStringExtra(FirebaseCalls.Post));
-		timestampView.setText(AccountInformation.getDateFromEpochTime(getIntent().getStringExtra(FirebaseCalls.Timestamp)));
-		if (getIntent().getStringExtra(FirebaseCalls.PostImageURL) != null)
+		usernameView.setText(PostInformation.PosterName);
+		captionView.setText(PostInformation.Post);
+		timestampView.setText(AccountInformation.getDateFromEpochTime(PostInformation.Timestamp));
+		if (PostInformation.PostImageURL != null)
 		{
-			loadPostImage(getIntent().getStringExtra(FirebaseCalls.PostImageURL));
+			loadPostImage(PostInformation.PostImageURL);
 		}
-		String posterUID = getIntent().getStringExtra(FirebaseCalls.PosterUID);
+		String posterUID = PostInformation.PosterUID;
 		Object hasProfilePic = AccountInformation.profilePictures.get(posterUID);
 		if(hasProfilePic != null)
 		{
@@ -102,7 +102,7 @@ public class JournalCommentActivity extends AppCompatActivity
 			deletePostButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(getIntent().getStringExtra("postID")).setValue(null);
+					mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(PostInformation.postID).setValue(null);
 					Intent homeIntent = new Intent(getApplicationContext(), JournalActivity.class);
 					startActivity(homeIntent);
 					finish();
@@ -311,13 +311,17 @@ public class JournalCommentActivity extends AppCompatActivity
         final EditText editPost = dialog.findViewById(R.id.postText);
         Button editDialogCancelButton = dialog.findViewById(R.id.cancelButton);
         Button enterButton = dialog.findViewById(R.id.enterButton);
+        Button deleteButton = dialog.findViewById(R.id.deletePhoto);
+        if(PostInformation.PostImageURL == null){
+        	deleteButton.setVisibility(View.INVISIBLE);
+		}
         dialog.show();
 
         if (postOrComment.equals("comment")) {
 			editPost.setText(comments.get(selectedPost).get(FirebaseCalls.Post).toString());
 		}
 		else {
-        	editPost.setText(getIntent().getStringExtra(FirebaseCalls.Post));
+        	editPost.setText(PostInformation.Post);
 		}
 		editDialogCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,5 +346,15 @@ public class JournalCommentActivity extends AppCompatActivity
                 dialog.hide();
             }
         });
+		deleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mDatabase.getReference(FirebaseCalls.Journals).child(AccountInformation.patientID).child(postID).child("PostImageURL").setValue(null);
+				PostInformation.setPostInfo(PostInformation.postID, null, PostInformation.PosterUID, PostInformation.PosterName, PostInformation.Post, PostInformation.Timestamp);
+				Intent intent = getIntent();
+				finish();
+				startActivity(intent);
+			}
+		});
     }
 }
