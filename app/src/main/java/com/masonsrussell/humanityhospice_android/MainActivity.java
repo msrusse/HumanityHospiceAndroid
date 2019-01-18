@@ -9,15 +9,13 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 	private FirebaseAuth mAuth;
 	Button signInButton;
 	TextView createAccountView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mAuth = FirebaseAuth.getInstance();
@@ -27,20 +25,16 @@ public class MainActivity extends AppCompatActivity
 	public void onStart() {
 		super.onStart();
 		FirebaseUser currentUser = mAuth.getCurrentUser();
-		if (currentUser != null)
-		{
+		if (currentUser != null) {
 			Intent intent = new Intent(this, CheckAccountTypeActivity.class);
 			startActivity(intent);
 			finish();
-		}
-		else
-		{
+		} else {
 			onLoad();
 		}
 	}
 
-	private void onLoad()
-	{
+	private void onLoad() {
 		signInButton = findViewById(R.id.signInButton);
 		createAccountView = findViewById(R.id.createAccountView);
 
