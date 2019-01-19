@@ -312,26 +312,21 @@ public class JournalActivity extends AppCompatActivity {
                     callNurseButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (AccountInformation.accountType == FirebaseCalls.Patient) {
+                                FirebaseCalls.getNurseDetails(new com.masonsrussell.humanityhospice_android.CompletionHandler() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.d(TAG, "onSuccess: Got nurse details");
+                                        Intent intent = new Intent(getApplicationContext(), VideoChat.class);
+                                        startActivity(intent);
+                                    }
 
-                            FirebaseCalls.getNurseDetails(new com.masonsrussell.humanityhospice_android.CompletionHandler() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.d(TAG, "onSuccess: Got nurse details");
-
-                                }
-
-                                @Override
-                                public void onFail(String reason) {
-                                    Log.d(TAG, "onFail: " + reason);
-                                }
-                            });
-
-//                            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-//                            if (launchIntent != null) {
-//                                startActivity(launchIntent);//null pointer check in case package name was not found
-//                            } else {
-//                                Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
-//                            }
+                                    @Override
+                                    public void onFail(String reason) {
+                                        Log.d(TAG, "onFail: " + reason);
+                                    }
+                                });
+                            }
                         }
                     });
                 }
@@ -344,6 +339,11 @@ public class JournalActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void gotToVideoChat() {
+        Intent intent = new Intent(this, VideoChat.class);
+        startActivity(intent);
     }
 
     private void getJournalPosts() {

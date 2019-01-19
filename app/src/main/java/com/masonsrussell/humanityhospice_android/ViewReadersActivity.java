@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -59,6 +60,9 @@ public class ViewReadersActivity extends AppCompatActivity
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
     ImageView profilePictureView;
+    Button callNurseButton;
+
+    private static final String TAG = "ViewReadersActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -245,6 +249,27 @@ public class ViewReadersActivity extends AppCompatActivity
                             .into(profilePictureView);
                 }
                 LinearLayout profileInfo = findViewById(R.id.profileInfo);
+                callNurseButton = findViewById(R.id.call_nurse_button);
+                callNurseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (AccountInformation.accountType == FirebaseCalls.Patient) {
+                            FirebaseCalls.getNurseDetails(new com.masonsrussell.humanityhospice_android.CompletionHandler() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.d(TAG, "onSuccess: Got nurse details");
+                                    Intent intent = new Intent(getApplicationContext(), VideoChat.class);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFail(String reason) {
+                                    Log.d(TAG, "onFail: " + reason);
+                                }
+                            });
+                        }
+                    }
+                });
                 profileInfo.setOnClickListener(new View.OnClickListener()
                 {
                     @Override

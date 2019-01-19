@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -199,12 +200,20 @@ public class CreateFamilyAccountActivity extends AppCompatActivity
 				callNurseButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-						if (launchIntent != null) {
-							startActivity(launchIntent);//null pointer check in case package name was not found
-						}
-						else{
-							Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+						if (AccountInformation.accountType == FirebaseCalls.Patient) {
+							FirebaseCalls.getNurseDetails(new com.masonsrussell.humanityhospice_android.CompletionHandler() {
+								@Override
+								public void onSuccess() {
+									Log.d(TAG, "onSuccess: Got nurse details");
+									Intent intent = new Intent(getApplicationContext(), VideoChat.class);
+									startActivity(intent);
+								}
+
+								@Override
+								public void onFail(String reason) {
+									Log.d(TAG, "onFail: " + reason);
+								}
+							});
 						}
 					}
 				});
