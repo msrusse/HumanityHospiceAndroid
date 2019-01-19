@@ -11,15 +11,21 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.nio.channels.CompletionHandler;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class FirebaseCalls
 {
@@ -436,4 +442,66 @@ public class FirebaseCalls
 		DatabaseReference patientJournal = journals.child(AccountInformation.patientID);
 		patientJournal.updateChildren(blackListMap);
 	}
+
+
+	public static void getNurseDetails(final com.masonsrussell.humanityhospice_android.CompletionHandler completionHandler) {
+
+		final String patientID = mAuth.getCurrentUser().getUid();
+		DatabaseReference reference = mDatabase.getReference(Patients);
+		DatabaseReference patientRef = reference.child(patientID);
+
+		final DatabaseReference nurseRef = mDatabase.getReference("Staff");
+
+		patientRef.child("PrimaryNurseID").addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				final String nurseID = dataSnapshot.getValue(String.class);
+				Log.d(TAG, "onDataChange: NurseID - " + nurseID);
+
+				nurseRef.child(nurseID).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+					@Override
+					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+						String token = dataSnapshot.getValue(String.class);
+						sendAPNRequest(patientID, nurseID, token);
+						completionHandler.onSuccess();
+					}
+
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+						Log.e(TAG, "onCancelled: ", databaseError.toException());
+						completionHandler.onFail(databaseError.getMessage());
+					}
+				});
+
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				Log.e(TAG, "onCancelled: ", databaseError.toException());
+				completionHandler.onFail(databaseError.getMessage());
+			}
+		});
+
+	}
+
+	private static void sendAPNRequest(String patientID, String nurseID, String nurseToken) {
+		String patientName = mAuth.getCurrentUser().getDisplayName();
+		String name = AccountInformation.username;
+
+		DatabaseReference calls = mDatabase.getReference("NotificationCenter/Calls");
+		Map<String, String> data = new HashMap<>();
+
+		data.put("nurseID", nurseID);
+		data.put("patientID", patientID);
+
+		if (patientName.isEmpty()) {
+			data.put("greeting", name);
+		} else {
+			data.put("greeting", patientName);
+		}
+
+		calls.push().setValue(data);
+
+	}
+
 }

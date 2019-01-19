@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "669612038928-aab5dab7blc0llfq4lub1e8gqmc5sp6d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.masonsrussell.humanityhospice_android",
+            "certificate_hash": "0c2ff1101c50ed4d945a2c04c3a79d1219c110f1"
+          }
+        },
+        {
           "client_id": "669612038928-g38bsstn9aivb9vvtcscsqnob9rjcmqv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -40,15 +48,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "669612038928-9789l6sv9r8ifb40t765d14qombtr22s.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.paradigmappdev.HumanityHospice"
-              }
-            },
-            {
               "client_id": "669612038928-n9g2ddsb1hrqq5h7v6rvgut2il6f7fam.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "669612038928-8g6tmrctjmm6kpfbt789p8v4l52l6bhl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paradigmappdev.HumanityHospiceApp"
+              }
             }
           ]
         },
@@ -91,15 +99,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "669612038928-9789l6sv9r8ifb40t765d14qombtr22s.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.paradigmappdev.HumanityHospice"
-              }
-            },
-            {
               "client_id": "669612038928-n9g2ddsb1hrqq5h7v6rvgut2il6f7fam.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "669612038928-8g6tmrctjmm6kpfbt789p8v4l52l6bhl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.paradigmappdev.HumanityHospiceApp"
+              }
             }
           ]
         },

@@ -36,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -56,6 +57,8 @@ public class JournalActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private FirebaseDatabase mDatabase;
     ImageView userProfilePictureView;
+
+    private static final String TAG = "JournalActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -309,12 +312,26 @@ public class JournalActivity extends AppCompatActivity {
                     callNurseButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
-                            if (launchIntent != null) {
-                                startActivity(launchIntent);//null pointer check in case package name was not found
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
-                            }
+
+                            FirebaseCalls.getNurseDetails(new com.masonsrussell.humanityhospice_android.CompletionHandler() {
+                                @Override
+                                public void onSuccess() {
+                                    Log.d(TAG, "onSuccess: Got nurse details");
+
+                                }
+
+                                @Override
+                                public void onFail(String reason) {
+                                    Log.d(TAG, "onFail: " + reason);
+                                }
+                            });
+
+//                            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.talk");
+//                            if (launchIntent != null) {
+//                                startActivity(launchIntent);//null pointer check in case package name was not found
+//                            } else {
+//                                Toast.makeText(getApplicationContext(), "Please install Google Hangouts", Toast.LENGTH_LONG).show();
+//                            }
                         }
                     });
                 }
