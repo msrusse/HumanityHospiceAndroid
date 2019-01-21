@@ -5,8 +5,11 @@ import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ProgressBar;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,6 +19,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.HashMap;
 
 public class CheckAccountTypeActivity extends AppCompatActivity
@@ -195,6 +201,25 @@ public class CheckAccountTypeActivity extends AppCompatActivity
 				HashMap<String, Object> allPatients = (HashMap) dataSnapshot.getValue();
 				if (allPatients.containsKey(mAuth.getCurrentUser().getUid()))
 				{
+					FirebaseInstanceId.getInstance().getInstanceId()
+							.addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+								@Override
+								public void onSuccess(InstanceIdResult instanceIdResult) {
+									String token = instanceIdResult.getToken();
+									Log.d(TAG, "onSuccess: Token: " + token);
+
+									DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+									reference.child(FirebaseCalls.Patients).child("token").setValue(token);
+
+								}
+							})
+							.addOnFailureListener(new OnFailureListener() {
+								@Override
+								public void onFailure(@NonNull Exception e) {
+									Log.e(TAG, "onFailure: Error with Token", e);
+								}
+							});
+
 					getPatientProfilePic();
 				}
 				else
