@@ -16,14 +16,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.snapshot.BooleanNode;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.nio.channels.CompletionHandler;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -450,29 +454,46 @@ public class FirebaseCalls
 		DatabaseReference reference = mDatabase.getReference(Patients);
 		DatabaseReference patientRef = reference.child(patientID);
 
-		final DatabaseReference nurseRef = mDatabase.getReference("Staff");
-
 		patientRef.child("PrimaryNurseID").addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				final String nurseID = dataSnapshot.getValue(String.class);
 				Log.d(TAG, "onDataChange: NurseID - " + nurseID);
 
-				nurseRef.child(nurseID).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
-					@Override
-					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-						String token = dataSnapshot.getValue(String.class);
-						sendAPNRequest(patientID, nurseID, token);
-						completionHandler.onSuccess();
-					}
+				if (nurseID == null) {
+				    completionHandler.onFail("No Assigned Nurse");
+                } else {
+                    DatabaseReference nursesRef = mDatabase.getReference("Staff");
+                    nursesRef.child(nurseID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-					@Override
-					public void onCancelled(@NonNull DatabaseError databaseError) {
-						Log.e(TAG, "onCancelled: ", databaseError.toException());
-						completionHandler.onFail(databaseError.getMessage());
-					}
-				});
+                        	try {
+								Nurse myNurse = dataSnapshot.getValue(Nurse.class);
+								String team = myNurse.getTeam();
 
+								if (myNurse.getIsOnCall()) {
+									// Send the APN
+									sendAPNRequest(patientID, nurseID);
+									completionHandler.onSuccess();
+								} else {
+									// Request on call nurse
+									requestOnCallNurse(patientID, team, completionHandler);
+								}
+
+							} catch (Exception e) {
+								Log.d(TAG, "onDataChange: " + e.getLocalizedMessage());
+							}
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.e(TAG, "onCancelled: ", databaseError.toException());
+                            completionHandler.onFail(databaseError.getMessage());
+                        }
+                    });
+                }
 			}
 
 			@Override
@@ -484,7 +505,7 @@ public class FirebaseCalls
 
 	}
 
-	private static void sendAPNRequest(String patientID, String nurseID, String nurseToken) {
+	private static void sendAPNRequest(String patientID, String nurseID) {
 		String patientName = mAuth.getCurrentUser().getDisplayName();
 		String name = AccountInformation.username;
 
@@ -502,6 +523,35 @@ public class FirebaseCalls
 
 		calls.push().setValue(data);
 
+	}
+
+	private static void requestOnCallNurse(final String patientID, final String team, final com.masonsrussell.humanityhospice_android.CompletionHandler completion) {
+		DatabaseReference nursesRef = mDatabase.getReference("Staff");
+		nursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+				List<Nurse> nurses = new ArrayList<>();
+				for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+					Nurse nurse = snapshot.getValue(Nurse.class);
+
+					if (nurse.getIsOnCall() && nurse.getTeam() == team) {
+						nurses.add(nurse);
+					}
+				}
+
+				int rnd = new Random().nextInt(nurses.size());
+				Nurse chosen = nurses.get(rnd);
+
+				sendAPNRequest(patientID, chosen.getId());
+
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				completion.onFail(databaseError.getMessage());
+			}
+		});
 	}
 
 }
