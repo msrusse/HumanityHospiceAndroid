@@ -324,6 +324,7 @@ public class JournalActivity extends AppCompatActivity {
                                     @Override
                                     public void onFail(String reason) {
                                         Log.d(TAG, "onFail: " + reason);
+                                        Toast.makeText(JournalActivity.this, reason, Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
